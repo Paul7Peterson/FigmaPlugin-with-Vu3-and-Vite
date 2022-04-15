@@ -1,6 +1,4 @@
-import type { CreateRectanglePayload } from '@/types';
-
-export function createRectangles ({ count }: CreateRectanglePayload) {
+export function createRectangles (count: number) {
   const nodes: SceneNode[] = [];
   for (let i = 0; i < count; i++) {
     const rect = figma.createRectangle();

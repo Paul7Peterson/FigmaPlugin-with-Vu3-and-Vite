@@ -1,8 +1,12 @@
+import type { GetAllStylesReturn } from '@/client/figma';
+
 type VoidFunction = (arg: null) => null;
 
 export type UIMessagePayload = {
   createRectangles: (arg: { count: number; }) => null;
   receiveMessage: (arg: { number: number; }) => number;
+  getTokens: (arg: null) => GetAllStylesReturn;
+  resize: (args: { width: number, height: number; }) => null;
   closePlugin: VoidFunction;
 };
 
