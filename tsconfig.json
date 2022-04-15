@@ -21,6 +21,7 @@
     "types": [
       "plugin-typings",
       "node",
+      "vitest",
       "vite/client",
     ],
     "typeRoots": [

@@ -1,0 +1,6 @@
+dist/
+node_modules/
+
+webpack.mix.js
+*.config.js
+src/shims-vue.d.ts

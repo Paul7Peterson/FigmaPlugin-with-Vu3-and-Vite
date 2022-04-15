@@ -1,10 +1,10 @@
+/// <reference types="vitest" />
 
 import { defineConfig } from 'vite';
 import path from 'path';
 
 import vue from '@vitejs/plugin-vue';
 import { viteSingleFile } from 'vite-plugin-singlefile';
-// import vueI18n from '@intlify/vite-plugin-vue-i18n';
 // import svgLoader from 'vite-svg-loader';
 
 // https://vitejs.dev/config/
@@ -59,10 +59,10 @@ export default defineConfig({
   define: {
     'process.env': process.env
   },
-  // test: {
-  //   watch: false,
-  //   globals: true,
-  //   include: ['src/**/*.spec.ts'],
-  //   environment: 'jsdom',
-  // },
+  test: {
+    watch: false,
+    globals: true,
+    include: ['src/**/*.spec.ts'],
+    environment: 'jsdom',
+  },
 });

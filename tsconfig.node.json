@@ -3,7 +3,9 @@
     "composite": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": [],
+    "types": [
+      "vue/ref-macros"
+    ],
     "allowSyntheticDefaultImports": true
   },
   "include": [

@@ -6,5 +6,10 @@
   "ui": "dist/src/ui.html",
   "editorType": [
     "figma"
+  ],
+  "menu": [],
+  "permissions": [
+    "currentuser",
+    "activeusers"
   ]
 }
