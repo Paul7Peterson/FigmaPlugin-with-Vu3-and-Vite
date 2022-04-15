@@ -1,8 +1,8 @@
 // This plugin will open a window to prompt the user to enter a number, and
 // it will then create that many rectangles on the screen.
 
-import { createRectangles } from './func';
 import { UIMessageCode, UIMessage } from '../types/messages';
+import { PostBroker } from '@/client/postBroker';
 
 // This file holds the main code for the plugins. It has access to the *document*.
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
@@ -20,9 +20,13 @@ figma.ui.onmessage = (msg: UIMessage<UIMessageCode>) => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
 
+  console.log('📦', msg);
+
   switch (msg.type) {
-    case 'createRectangles': return createRectangles(msg as UIMessage<'createRectangles'>);
-    case 'receiveMessage': return figma.ui.postMessage({ type: msg.type, id: msg.id, payload: 42 });
+    case 'createRectangles':
+      return PostBroker.createRectangles?.(msg as UIMessage<'createRectangles'>);
+    case 'receiveMessage':
+      return PostBroker.receiveMessage?.(msg as UIMessage<'receiveMessage'>);
     case 'closePlugin': return figma.closePlugin();
     default: throw new Error();
   }
