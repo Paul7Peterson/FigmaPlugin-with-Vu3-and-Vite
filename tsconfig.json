@@ -1,17 +1,49 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
     "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
     "lib": [
-      "es6"
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
+    "types": [
+      "plugin-typings",
+      "node",
+      "vite/client",
     ],
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma"
-    ]
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@client/*": [
+        "src/client/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@messages/*": [
+        "stub/messages/*"
+      ]
+    },
   },
   "exclude": [
-    "dist/**/*.*"
+    "node_modules",
+    "dist"
   ]
 }

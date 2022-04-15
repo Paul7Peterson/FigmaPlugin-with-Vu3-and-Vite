@@ -23,12 +23,21 @@ export default defineConfig({
     rollupOptions: {
       inlineDynamicImports: true,
       output: {
+        manualChunks: {
+          code: [
+            // path.resolve(__dirname, 'src', 'shared', 'index.ts'),
+            path.resolve(__dirname, 'src', 'client', 'index.ts'),
+          ],
+          html: [
+            path.resolve(__dirname, 'src', 'ui.html')
+          ]
+        },
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`
       },
       input: {
-        code: path.resolve(__dirname, 'src', 'code.ts'),
+        code: path.resolve(__dirname, 'src', 'client', 'index.ts'),
         // ui: path.resolve(__dirname, 'src', 'ui.ts'),
         html: path.resolve(__dirname, 'src', 'ui.html'),
       }
@@ -43,6 +52,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      '@client': path.resolve(__dirname, 'src', 'client'),
+      '@shared': path.resolve(__dirname, 'src', 'shared'),
     },
   },
   define: {
