@@ -21,6 +21,7 @@
     "types": [
       "plugin-typings",
       "node",
+      "jest",
       "vitest",
       "vite/client",
     ],

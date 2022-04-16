@@ -4,9 +4,9 @@ import {
   UIMessageCode,
 } from '@/types';
 
-export type PostBrokerType = {
-  [K in UIMessageCode]: ((msg: UIMessage<K>) => void)
-};
+export type PostBrokerType =
+  & { [K in UIMessageCode]: ((msg: UIMessage<K>) => void) }
+  & { throwError: (arg: Error) => void; };
 
 type AnswerHeader<T extends UIMessageCode> = { type: T, id: string; };
 

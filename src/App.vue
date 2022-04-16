@@ -8,14 +8,21 @@ import { ResizeCorner } from './components'
     <router-link to="/tokens">Tokens</router-link>
   </nav>
   <main id="app__main">
-    <router-view></router-view>
+    <KeepAlive>
+      <router-view></router-view>
+    </KeepAlive>
   </main>
   <ResizeCorner/>
 </template>
 
 <style lang="scss">
+  :root {
+    font-size: 14px;
+  }
+
   body {
     margin: 0;
+    font-family: Inter, Arial, Helvetica, sans-serif;
   }
 
   #nav {
@@ -38,6 +45,6 @@ import { ResizeCorner } from './components'
   }
 
   #app__main {
-    padding: 5px;
+    padding: 10px;
   }
 </style>

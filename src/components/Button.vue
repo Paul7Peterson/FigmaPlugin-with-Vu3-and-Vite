@@ -3,7 +3,13 @@
 </script>
 
 <template>
-  <button>
+  <button class="btn">
     <slot></slot>
   </button>
 </template>
+
+<style lang="scss">
+  button.btn {
+    cursor: pointer;
+  }
+</style>

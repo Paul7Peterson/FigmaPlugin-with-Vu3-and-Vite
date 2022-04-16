@@ -19,7 +19,7 @@ function onPointerUp (e: PointerEvent) {
 
 function resizeWindow(e: PointerEvent) {
   const size = {
-    width: Math.max(300, Math.floor(e.clientX + 5)),
+    width: Math.max(400, Math.floor(e.clientX + 5)),
     height: Math.max(600, Math.floor(e.clientY + 5))
   };
   Broker.resize(size)

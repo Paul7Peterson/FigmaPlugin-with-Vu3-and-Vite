@@ -3,25 +3,30 @@ import {
   UIMessageCode,
   UIMessageReturn,
   UIMessageArg,
+  ErrorMessage,
 } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
+type VoidFunc = (...args: any[]) => void;
 
 /** */
-const REGISTER = new Map<string, (...args: any[]) => void>();
+const REGISTER = new Map<string, { resolve: VoidFunc; reject: VoidFunc; }>();
 
 type FigmaMessage = {
-  pluginMessage: UIMessage<UIMessageCode>,
+  pluginMessage: UIMessage<UIMessageCode> | ErrorMessage,
   pluginId: string;
 };
 
 self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
-  const resolver = REGISTER.get(data.pluginMessage.id);
-  if (data.pluginMessage.type !== 'resize')
-    console.log(['💌', data.pluginMessage.type, data.pluginMessage.payload]);
-  if (!resolver) throw new Error('No resolver');
-  resolver(data.pluginMessage.payload || null);
-  REGISTER.delete(data.pluginMessage.id);
+  if (data.pluginMessage.type === 'error') {
+    console.error(data.pluginMessage.payload.message);
+  } else {
+    const result = REGISTER.get(data.pluginMessage.id);
+    // console.log(['💌', data.pluginMessage.type, data.pluginMessage.payload]);
+    if (!result) throw new Error('No resolver');
+    result.resolve(data.pluginMessage.payload || null);
+    REGISTER.delete(data.pluginMessage.id);
+  }
 });
 
 /** */
@@ -31,7 +36,7 @@ export function registerCall<T extends UIMessageCode> (name: T, payload: UIMessa
     parent.postMessage({
       pluginMessage: { payload, type: name, id }
     }, '*');
-    REGISTER.set(id, resolve);
+    REGISTER.set(id, { resolve, reject });
   });
 }
 

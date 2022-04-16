@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { reactive, onBeforeMount } from 'vue';
-import type { Color, Text, Grid, Effect } from '@client/figma'
+import type { Text, Grid, Effect } from '@client/styles/index.types'
 
 import { Broker } from '../worker.api';
-import { ColorToken } from '../components';
+import { ColorGroup } from '../components';
 
 const tokens = reactive({
-  colors:[] as Color[],
   texts:[] as Text[],
   effects:[] as Effect[],
   grids:[] as Grid[],
@@ -14,24 +13,22 @@ const tokens = reactive({
 
 onBeforeMount(async () => {
   const sourceTokens = await Broker.getTokens();
-  tokens.colors = sourceTokens.colors;
   tokens.texts = sourceTokens.texts;
   tokens.grids = sourceTokens.grids;
   tokens.effects = sourceTokens.effects;
+
+  console.log(tokens);
 })
 </script>
 
 <template>
   <section class="token-section">
-    <header>Colors</header>
+    <header>Sizes</header>
     <div class="token-section__list">
-      <ColorToken 
-        v-for="(token, i) in tokens.colors"
-        :key="i"
-        :color="token"
-      />
+
     </div>
   </section>
+  <ColorGroup />
   <section class="token-section">
     <header>Texts</header>
     <div class="token-section__list">

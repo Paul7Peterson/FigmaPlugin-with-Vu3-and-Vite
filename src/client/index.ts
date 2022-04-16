@@ -1,6 +1,7 @@
 // This plugin will open a window to prompt the user to enter a number, and
 // it will then create that many rectangles on the screen.
 
+import { FigmaStore } from './store';
 import { UIMessageCode, UIMessage } from '../types/messages';
 import { PostBroker } from './postBroker.api';
 
@@ -9,22 +10,33 @@ import { PostBroker } from './postBroker.api';
 // full browser environment (see documentation).
 
 // This shows the HTML page in "ui.html".
+
+const WIDTH = 400;
+const HEIGHT = 600;
+
 figma.showUI(__html__, {
-  height: 600,
-  width: 300,
-  position: { x: -300, y: -300 },
+  height: HEIGHT,
+  width: WIDTH,
+  position: { x: -WIDTH, y: -(HEIGHT / 2) },
   title: 'PohlCon Plugin',
   visible: true,
 });
 
 // For retrieving the previous size
-figma.clientStorage.getAsync('size').then((size) => {
+FigmaStore.getInstance.getKey('size').then((size) => {
   if (size) figma.ui.resize(size.width, size.height);
 }).catch(err => { console.error(err); });
 
 figma.ui.onmessage = (msg: UIMessage<UIMessageCode>) => {
-  if (msg.type !== 'resize') console.log('📦', msg);
-  PostBroker[msg.type]?.(msg as any);
+  // if (msg.type !== 'resize') console.log('📦', msg);
+  try {
+    PostBroker[msg.type]?.(msg as any);
+  } catch (error) {
+    console.trace(error);
+    // console.error({ msg });
+    figma.notify((error as Error).message, { error: true });
+    PostBroker.throwError(error as any);
+  }
 };
 
 figma.on('selectionchange', () => {

@@ -1,5 +1,3 @@
-export * from './styles';
-
 export function getDocumentInfo () {
   return {
     id: figma.root.id,
