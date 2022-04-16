@@ -16,11 +16,14 @@ defineEmits<{
 <template>
   <div id="modal__background" v-if="modelValue" title="">
     <div id="modal__card">
-      <header>
+      <header id="modal__header">
         <slot name="header"></slot>
-        <span>{{ title }}</span>
-        <Button @click="$emit('update:modelValue', !modelValue)">X</Button>
+        <span v-if="title">{{ title }}</span>
       </header>
+      <Button 
+        id="modal__close" 
+        @click="$emit('update:modelValue', !modelValue)"
+      >X</Button>
       <section id="modal__content">
         <slot name="default"></slot>
       </section>
@@ -53,13 +56,15 @@ defineEmits<{
       padding: 10px 20px;
       border-radius: 5px;
 
-      header {
-        display: grid;
-        grid-template-columns: max-content 1fr max-content;
-        column-gap: 5px;
-        align-items: center;
-        margin-bottom: 10px;
-      }
+    }
+    &__header {
+      margin-bottom: 10px;
+      padding-right: 50px;
+    }
+    &__close {
+      position: absolute;
+      top: 15px;
+      right: 15;
     }
   }
 </style>

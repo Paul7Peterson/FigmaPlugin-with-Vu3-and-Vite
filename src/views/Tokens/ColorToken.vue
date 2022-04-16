@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 
-import type { SolidColor } from '@client/styles/index.types';
+import type { SolidColor } from '@api/styles/index.types';
 import ColorDetails from './ColorDetails.vue';
 
 const props = defineProps<{

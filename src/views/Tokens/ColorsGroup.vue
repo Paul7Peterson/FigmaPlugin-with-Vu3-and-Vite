@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onBeforeMount, reactive } from 'vue';
-import ColorToken from './ColorToken.vue';
-import { SolidColor } from '@/client/styles/color.types';
+import { SolidColor } from '@api/styles/color.types';
 import { Broker } from '@/worker.api';
+import { ColorToken, TokenSection } from '.';
 
 const data = reactive({
   colors: {} as Record<string, SolidColor[]>
@@ -23,31 +23,31 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <section class="token-section">
-    <header>Colors</header>
-    <div class="token-section__list">
-      <details 
-        class="color-tokens" open
-        v-for="(colors, name) in data.colors"
-        :key="name"
-        :name="name"
-        :colors="colors"
-      >
-        <summary>
-          <span>{{ name }}</span>
-        </summary>
-        <div class="color-tokens__list">
-          <ColorToken 
-            v-for="(color, i) in colors"
-            :key="i"
-            :color="color"
-            @rerender="getColors()"
-          />
-        </div>
-      </details>
-    </div>
-  </section>
-  
+  <TokenSection 
+    title="Colors"
+    description="..."
+    hasCreate
+  >
+    <details 
+      class="color-tokens" open
+      v-for="(colors, name) in data.colors"
+      :key="name"
+      :name="name"
+      :colors="colors"
+    >
+      <summary>
+        <span>{{ name }}</span>
+      </summary>
+      <div class="color-tokens__list">
+        <ColorToken 
+          v-for="(color, i) in colors"
+          :key="i"
+          :color="color"
+          @rerender="getColors()"
+        />
+      </div>
+    </details>
+  </TokenSection>
 </template>
 
 <style lang="scss">

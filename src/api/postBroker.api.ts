@@ -1,42 +1,37 @@
 import { answer, PostBrokerType } from './postBroker';
 
-import { createRectangles } from './func';
 import {
-  getAllStyles,
   createSolidColor,
   deleteColor,
   modifySolidColor,
   getSolidColors,
   getSolidColorInfo,
+  getRootSizes,
 } from './styles';
-import { FigmaStore } from './store';
+import { FigmaStore } from './store/store';
+import { getUser } from '@/api/figma';
 
 /** */
 export const PostBroker: PostBrokerType = {
   /** */
-  receiveMessage: (msg) =>
-    answer(msg, msg.payload.number * 2),
-  /** */
-  createRectangles: (msg) => {
-    createRectangles(msg.payload.count);
-    answer(msg, null);
-  },
+  getUser: (msg) =>
+    answer(msg, getUser()),
   /** */
   resize: (msg) => {
     figma.ui.resize(msg.payload.width, msg.payload.height);
-    FigmaStore.getInstance.setKey('size', msg.payload)
+    FigmaStore.getInstance.setKey('windowSize', msg.payload)
       .catch((err) => { console.log(err); });
     answer(msg, null);
   },
-  /** */
-  getTokens: (msg) =>
-    answer(msg, getAllStyles()),
   /** */
   getColorInfo: (msg) =>
     answer(msg, getSolidColorInfo(msg.payload)),
   /** */
   listSolidColors: (msg) =>
     answer(msg, getSolidColors()),
+  /** */
+  listRootSizes: (msg) =>
+    answer(msg, getRootSizes()),
   /** */
   deleteSolidColor: async (msg) => {
     await deleteColor(msg.payload.id);

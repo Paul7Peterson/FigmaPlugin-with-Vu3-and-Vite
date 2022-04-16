@@ -6,6 +6,8 @@ import { ResizeCorner } from './components'
   <nav id="nav">
     <router-link to="/">Home</router-link>
     <router-link to="/tokens">Tokens</router-link>
+    <router-link to="/semantic">Semantic</router-link>
+    <router-link to="/components">Components</router-link>
   </nav>
   <main id="app__main">
     <KeepAlive>
@@ -25,6 +27,10 @@ import { ResizeCorner } from './components'
     font-family: Inter, Arial, Helvetica, sans-serif;
   }
 
+  h1, h2, h3, h4 {
+    margin: 0
+  }
+
   #nav {
     display: grid;
     grid-auto-flow: column;
@@ -42,6 +48,9 @@ import { ResizeCorner } from './components'
         color: black;
       }
     }
+  }
+  .warning-icon {
+    cursor: help;
   }
 
   #app__main {

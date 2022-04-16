@@ -14,7 +14,6 @@ import {
 
 /** */
 export function getSolidColors (): SolidColor[] {
-
   return figma.getLocalPaintStyles()
     .filter((color) => {
       const { paints } = color;
@@ -45,6 +44,7 @@ export function getSolidColors (): SolidColor[] {
     });
 }
 
+/** */
 export function modifySolidColor (id: string, color: Color) {
   const baseColor = figma.getStyleById(id);
   if (!baseColor) throw new Error('Color not found');
@@ -72,11 +72,13 @@ export function modifySolidColor (id: string, color: Color) {
   };
 }
 
+/** */
 export function createSolidColor (color: Color): SolidColor {
   const newColor = figma.createPaintStyle();
   return modifySolidColor(newColor.id, color);
 }
 
+/** */
 export function getSolidColorInfo (color: Color): SolidColorInfo {
   return {
     ...getColorNameAndShadow(color),
@@ -85,6 +87,7 @@ export function getSolidColorInfo (color: Color): SolidColorInfo {
   };
 }
 
+/** */
 export function deleteColor (id: string) {
   const color = figma.getStyleById(id);
   if (!color) throw new Error('Color not found.');
@@ -103,7 +106,8 @@ function getColorNameAndShadow (color: Color): { colorName: ColorName; colorShad
   return { colorName: getColorName(color), colorShadow: getColorShadow(color) };
 }
 
-function getColorNameAndShadowFromName (paint: PaintStyle): { colorName: ColorName; colorShadow: number; } {
+function getColorNameAndShadowFromName (paint: PaintStyle): { colorName: ColorName; colorShadow: number; errors: string[]; } {
+  const errors: string[] = [];
 
   const [name, shadow, ..._] = paint.name.split('/');
 
@@ -120,15 +124,16 @@ function getColorNameAndShadowFromName (paint: PaintStyle): { colorName: ColorNa
 
   const real = getColorNameAndShadow(getRGBColor(color));
 
-  if (real.colorName !== colorName)
-    console.error(`${paint.name} should have the name "${real.colorName}" and not "${colorName}"`);
+  if (real.colorName !== colorName) {
+    errors.push(`${paint.name} should have the name "${real.colorName}" and not "${colorName}"`);
+  }
   if (real.colorShadow !== colorShadow)
-    console.error(`${paint.name} should have the name "${real.colorShadow}" and not "${colorShadow}"`);
+    errors.push(`${paint.name} should have the name "${real.colorShadow}" and not "${colorShadow}"`);
 
-  return { colorName, colorShadow };
+  return { colorName, colorShadow, errors };
 }
 
-export function getColorSpaces (color: Color): SolidColor['colorSpaces'] {
+function getColorSpaces (color: Color): SolidColor['colorSpaces'] {
   const API = fromRGB(color);
   return {
     RGB: API.text(),

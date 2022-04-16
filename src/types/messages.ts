@@ -1,19 +1,18 @@
-import type { GetAllStylesReturn } from '@/client/styles';
 import type {
   SolidColor,
   Color,
   SolidColorInfo,
-} from '@/client/styles/index.types';
+  RootSize,
+} from '@/api/styles/index.types';
 
 type VoidFunction = (arg: null) => null;
 
 export type UIMessagePayload = {
-  createRectangles: (arg: { count: number; }) => null;
-  receiveMessage: (arg: { number: number; }) => number;
-  getTokens: (arg: null) => GetAllStylesReturn;
+  getUser: (arg: null) => User;
   resize: (args: { width: number, height: number; }) => null;
   getColorInfo: (args: Color) => SolidColorInfo;
   listSolidColors: (args: null) => SolidColor[];
+  listRootSizes: (args: null) => RootSize[];
   deleteSolidColor: (args: { id: string; }) => null;
   createSolidColor: (args: Color) => SolidColor;
   modifySolidColor: (args: { id: string, color: Color; }) => SolidColor;

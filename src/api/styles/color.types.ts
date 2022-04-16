@@ -84,4 +84,5 @@ export interface SolidColorInfo {
 
 export type SolidColor =
   & BaseToken
-  & SolidColorInfo;
+  & SolidColorInfo
+  & { errors: string[]; };

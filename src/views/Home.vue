@@ -1,26 +1,42 @@
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { onBeforeMount, reactive } from 'vue';
 
 import { Broker } from '../worker.api';
 import { Button } from '../components';
 
 const data = reactive({
-  input: 0,
-  result: 0,
+  user: null as User | null,
 })
 
-async function onResponse () {
-  data.result = await Broker.receiveMessage({ number: data.input })
-}
+const singleName = $computed(() => 
+  data.user?.name.split(' ')[0] || '')
+
+onBeforeMount(async () => {
+  data.user = await Broker.getUser()
+})
 </script>
 
 <template>
-  <div>
-    <input type="number" v-model="data.input">
-    <Button @click="onResponse()">Multiply</Button>
-  </div>
-
-  <div>
-    <span>Result: {{ data.result }}</span>
-  </div>
+  <header id="welcome" v-if="data.user">
+    <img class="avatar" :src="data.user.photoUrl || ''" :alt="singleName">
+    <h3>Hello, {{ singleName }}!</h3>
+  </header>
 </template>
+
+<style lang="scss">
+  $avatar-size: 30px;
+
+  #welcome {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 20px;
+    justify-content: center;
+    align-items: center;
+
+    .avatar {
+      width: $avatar-size;
+      height: $avatar-size;
+      border-radius: calc($avatar-size / 2);
+    }
+  }
+</style>

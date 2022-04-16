@@ -1,8 +1,4 @@
-export type Store = {
-  size: { width: number; height: number; };
-};
-
-export type StoreKey = keyof Store;
+import { StoreKey, Store } from './store.api';
 
 /** */
 export class FigmaStore {

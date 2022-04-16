@@ -1,7 +1,7 @@
 // This plugin will open a window to prompt the user to enter a number, and
 // it will then create that many rectangles on the screen.
 
-import { FigmaStore } from './store';
+import { FigmaStore } from './store/store';
 import { UIMessageCode, UIMessage } from '../types/messages';
 import { PostBroker } from './postBroker.api';
 
@@ -23,7 +23,7 @@ figma.showUI(__html__, {
 });
 
 // For retrieving the previous size
-FigmaStore.getInstance.getKey('size').then((size) => {
+FigmaStore.getInstance.getKey('windowSize').then((size) => {
   if (size) figma.ui.resize(size.width, size.height);
 }).catch(err => { console.error(err); });
 

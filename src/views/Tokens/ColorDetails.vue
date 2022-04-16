@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { reactive, watch } from 'vue';
-import { hex } from 'color-convert';
 
 import { Broker } from '@/worker.api';
-import type { SolidColor, SolidColorInfo, Color } from '@client/styles/index.types';
-import { Modal, Button } from '.';
+import type { SolidColor, SolidColorInfo, Color } from '@api/styles/index.types';
+import { Modal, Button } from '@/components';
 
 const props = defineProps<{
   /** */
@@ -76,10 +75,17 @@ function onFinish() {
   <Modal 
     :modelValue="props.modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
-    :title="`${colorPicked.colorName}/${colorPicked.colorShadow}`"
   >
     <template #header>
-      <span class="color__sample" :style="{ '--color': colorPicked.colorSpaces.HEX }"></span>
+      <header id="color-details__header">
+        <span class="color__sample" :style="{ '--color': colorPicked.colorSpaces.HEX }"></span>
+        <h3>{{ `${colorPicked.colorName}/${colorPicked.colorShadow}` }}</h3>
+        <span 
+          v-if="color.errors.length" 
+          class="warning-icon"
+          :title="color.errors.join('\n')"
+        >⚠</span>
+      </header>
     </template>
     <template #default>
       <code class="color-id">{{ color.id }}</code>
@@ -110,6 +116,13 @@ function onFinish() {
 
 <style lang="scss">
   $sample-size: 20px;
+
+  #color-details__header {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
+    column-gap: 10px;
+    align-items: center;
+  }
   
   code.color-id {
     font-size: 12px;
