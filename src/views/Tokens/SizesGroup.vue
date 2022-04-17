@@ -1,21 +1,41 @@
 <script lang="ts" setup>
 import { reactive, watch } from 'vue';
 import { TokenSection } from '.';
-import SizeCreate from './SizeCreate.vue';
+import { SliderMultiple, Slider } from '@/components';
 import { useStylesStore } from '@/store';
+import { RootSize, RootSizeName } from '@/api/styles/space.types';
 
 const store = useStylesStore()
 
-const data = reactive({
-  showCreateModal: false,
-  showEditModal: false,
-})
-
 const rootSizes = $computed(() => store.rootSizes)
 
-watch(() => [data.showCreateModal, data.showEditModal], () => {
-  store.fetchRootSizes()
+const data = reactive({
+  values: rootSizes.map((s) => ({ value: s.size })),  
 })
+
+watch(() => [store.rootSizes], () => {
+  data.values = rootSizes.map((s) => ({ value: s.size }))
+  console.log(data.values);
+})
+
+async function onCreate() {
+  const amount = data.values.length
+  if (amount >= 5) return
+
+  if (amount % 2) {
+    data.values.push({
+      value: (data.values.at(-1)!.value || 14) + 2,
+      // name: (rootSizes.at(-1)?.name === 'Medium' ? 'Big' : 'Huge') as RootSizeName
+    })
+  } else {
+    data.values.unshift({
+      value: data.values[0].value - 2,
+      // name: (rootSizes[0].name === 'Medium' ? 'Small' : 'Tiny') as RootSizeName
+    })
+  }
+}
+
+const x = $ref(50)
 </script>
 
 <template>
@@ -23,35 +43,27 @@ watch(() => [data.showCreateModal, data.showEditModal], () => {
     title="Sizes"
     description="..."
     hasCreate
-    @create="data.showCreateModal = true"
+    @create="onCreate"
   >
-    <details 
-      class="size-tokens" open
-      v-for="(sizes, name) in rootSizes"
-      :key="name"
-    >
+    <details class="size-tokens" open>
       <summary>
-        <span>{{ name }}</span>
+        <span>Root sizes</span>
       </summary>
       <div class="size-tokens__list">
-        <div 
-          v-for="(size, name) in sizes"
-          :key="name"
-        >
-          {{ size }}
-        </div> 
-        <Modal v-model="data.showEditModal">Edit</Modal>
+        <SliderMultiple 
+          :values="data.values"
+          :range="[6, 30]"
+          label=""
+        />
+        <!-- <Slider :limit="[20, 60]" v-model="x" label=""/> -->
       </div>
     </details>
-    <SizeCreate 
-      v-model="data.showCreateModal" 
-      :existingValues="rootSizes"
-    />
   </TokenSection>
 </template>
 
 <style lang="scss">
   $radius: 4px;
+  $padding-sides: 10px;
 
   .size-tokens {
     border-radius: $radius;
@@ -70,12 +82,10 @@ watch(() => [data.showCreateModal, data.showEditModal], () => {
       border-top-right-radius: $radius;
     }
     &__list {
+      position: relative;
       display: grid;
-      grid-auto-flow: column;
-      grid-template-columns: max-content;
-      justify-content: left;
       gap: 5px;
-      padding: 5px 10px;
+      padding: 30px $padding-sides 10px;
     }
   }
 </style>

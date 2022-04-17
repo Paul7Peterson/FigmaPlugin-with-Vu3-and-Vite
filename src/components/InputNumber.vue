@@ -34,7 +34,7 @@ function onInput (e: Event) {
       :min="range[0]"
       :max="range[1]"
       :disabled="disabled"
-      @input="onInput($event)"
+      @input="onInput"
     />
   </div>
 </template>

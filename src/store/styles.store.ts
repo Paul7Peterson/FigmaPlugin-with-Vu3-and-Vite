@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 
 import type {
-  SizesMap,
   Gutter,
   FontStyle,
   GridStyle,
@@ -10,21 +9,24 @@ import type {
   ColorNameExtended,
   BoxShadowStyle,
   SolidColorInfo,
-  BoxShadowType,
+  ExtendedBoxShadowType,
   ExtendedFontStyleCategory,
+  RootSize,
 } from '@/api/styles/index.types';
+
 import { Broker } from '@/worker.api';
+
 import { hexToRgb } from './styles.store.helpers';
 
 /** */
 export const useStylesStore = defineStore('styles', {
   state: () => {
     return {
-      rootSizes: {} as SizesMap,
+      rootSizes: [] as RootSize[],
       gutters: [] as Gutter[],
       colors: {} as Record<ColorNameExtended, SolidColor[]>,
       fontStyles: {} as Record<ExtendedFontStyleCategory, FontStyle[]>,
-      boxShadows: {} as Record<BoxShadowType, BoxShadowStyle[]>,
+      boxShadows: {} as Record<ExtendedBoxShadowType, BoxShadowStyle[]>,
       gridStyles: [] as GridStyle[],
       borderStyles: [] as BorderStyle[],
     };
@@ -34,7 +36,8 @@ export const useStylesStore = defineStore('styles', {
   },
   actions: {
     async fetchRootSizes (): Promise<void> {
-      this.rootSizes = await Broker.listRootSizes();
+      const rootSizes = await Broker.listRootSizes();
+      this.rootSizes = Object.values(rootSizes).sort((a, b) => Number(a.size > b.size));
     },
     async fetchGutters (): Promise<void> {
       this.gutters = await Broker.listGutters();
@@ -69,7 +72,7 @@ export const useStylesStore = defineStore('styles', {
         if (!t[shadow.type]) t[shadow.type] = [shadow];
         else t[shadow.type].push(shadow);
         return t;
-      }, {} as Record<BoxShadowType, BoxShadowStyle[]>);
+      }, {} as Record<ExtendedBoxShadowType, BoxShadowStyle[]>);
     },
     async fetchGridStyles (): Promise<void> {
       this.gridStyles = await Broker.listGridStyles();

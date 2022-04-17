@@ -5,6 +5,8 @@ import Select from './Select.vue';
 import InputNumber from './InputNumber.vue';
 import Details from './Details.vue';
 import ErrorsBadge from './ErrorsBadge.vue';
+import Slider from './Slider.vue';
+import SliderMultiple from './SliderMultiple.vue';
 
 export {
   Button,
@@ -14,4 +16,6 @@ export {
   InputNumber,
   Details,
   ErrorsBadge,
+  Slider,
+  SliderMultiple,
 };
