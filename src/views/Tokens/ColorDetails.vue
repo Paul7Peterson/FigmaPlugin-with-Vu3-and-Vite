@@ -3,7 +3,9 @@ import { reactive, watch } from 'vue';
 
 import { Broker } from '@/worker.api';
 import type { SolidColor, SolidColorInfo, Color } from '@api/styles/index.types';
-import { Modal, Button } from '@/components';
+import { useStylesStore } from '@/store';
+
+const store = useStylesStore()
 
 const props = defineProps<{
   /** */
@@ -25,15 +27,6 @@ const data = reactive({
 const colorPicked = $computed(() => 
   data.newColor && data.newColorInfo ? data.newColorInfo : props.color)
 
-function hexToRgb (hex: string): Color {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) throw new Error('')
-  return {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  };
-}
 
 async function onDelete () {
   if (window.confirm('Are you sure?')) {
@@ -52,16 +45,14 @@ async function onEdit () {
     return data.isEditing = true
   }
   if (window.confirm('Are you sure?')) {
-    const RGB = hexToRgb(data.newColor)
-    await Broker.modifySolidColor({ id: props.color.id, color: RGB })
+    await store.createOrModifyColor(data.newColor, props.color.id)
     onFinish()
   }
 }
 
 async function updateColorInfo () { 
   if (data.isEditing && data.newColor) {
-    const RGB = hexToRgb(data.newColor)
-    data.newColorInfo = await Broker.getColorInfo(RGB)
+    data.newColorInfo = await store.getColorInfo(data.newColor)
   }
 }
 

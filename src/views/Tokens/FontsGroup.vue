@@ -1,27 +1,34 @@
 <script lang="ts" setup>
-import { TokenSection } from '.';
+import { TokenSection, FontToken } from '.';
 import { useStylesStore } from '@/store';
+import type { ExtendedFontStyleCategory, FontStyle } from '@/api/styles/text.types';
 
 const store = useStylesStore()
 
-const gutters = $computed(() => store.gutters)
+const textStyles: Record<ExtendedFontStyleCategory, FontStyle[]> = $computed(() => store.fontStyles)
 </script>
 
 <template>
   <TokenSection 
-    title="Gutters"
+    title="Texts"
     description="..."
     hasCreate
   >
     <details 
-      class="spacing-tokens" open
-      v-for="(gutter, name) in gutters"
-      :key="name"
+      class="font-style-tokens" open
+      v-for="(categoryTexts, category) in textStyles"
+      :key="category"
     >
       <summary>
-        <span>{{ name }}</span>
+        <span>{{ category }}</span>
       </summary>
-      <div class="spacing-tokens__list">{{ gutter }}</div>
+      <div class="font-style-tokens__list">
+        <FontToken 
+          v-for="(fontStyle, i) in categoryTexts"
+          :key="i"
+          :fontStyle="fontStyle"
+        />
+      </div>
     </details>
   </TokenSection>
 </template>
@@ -29,7 +36,7 @@ const gutters = $computed(() => store.gutters)
 <style lang="scss">
   $radius: 4px;
 
-  .spacing-tokens {
+  .font-style-tokens {
     border-radius: $radius;
     border: 1px solid rgb(44, 44, 44);
 
@@ -47,9 +54,7 @@ const gutters = $computed(() => store.gutters)
     }
     &__list {
       display: grid;
-      grid-auto-flow: column;
-      grid-template-columns: max-content;
-      justify-content: left;
+      grid-auto-flow: row;
       gap: 5px;
       padding: 5px 10px;
     }

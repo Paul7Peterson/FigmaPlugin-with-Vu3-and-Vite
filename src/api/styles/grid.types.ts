@@ -2,6 +2,6 @@
 import { BaseToken } from './_shared';
 
 /** */
-export interface Grid extends BaseToken {
+export interface GridStyle extends BaseToken {
 
 }

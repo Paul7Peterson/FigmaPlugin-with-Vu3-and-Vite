@@ -1,49 +1,28 @@
 <script lang="ts" setup>
-import { onBeforeMount, reactive } from 'vue';
-import { RootSize } from '@api/styles/index.types';
-import { Broker } from '@/worker.api';
-import { ColorToken, TokenSection } from '.';
+import { TokenSection, BorderToken } from '.';
+import { useStylesStore } from '@/store';
 
-const data = reactive({
-  gutters: {} as Record<string, RootSize>
-})
+const store = useStylesStore()
 
-async function getColors () {
-  const colors = await Broker.listRootSizes();
-  data.gutters = colors.reduce((t, size) => {
-    t[size.name] = size
-    return t
-  }, {} as Record<string, RootSize>);
-}
-
-onBeforeMount(() => {
-  getColors()
-})
+const borderStyles = $computed(() => store.borderStyles) 
 </script>
 
 <template>
   <TokenSection 
-    title="Texts"
+    title="Borders"
     description="..."
     hasCreate
   >
     <details 
       class="spacing-tokens" open
-      v-for="(colors, name) in data.gutters"
+      v-for="(border, name) in borderStyles"
       :key="name"
-      :name="name"
-      :colors="colors"
     >
       <summary>
         <span>{{ name }}</span>
       </summary>
       <div class="spacing-tokens__list">
-        <!-- <ColorToken 
-          v-for="(color, i) in colors"
-          :key="i"
-          :color="color"
-          @rerender="getColors()"
-        /> -->
+        <BorderToken :border="border"/>
       </div>
     </details>
   </TokenSection>

@@ -1,8 +1,8 @@
 import { parseBaseToken } from './_shared';
-import { Grid } from './grid.types';
+import { GridStyle } from './grid.types';
 
 /** */
-export function getGrids (): Grid[] {
+export function listGridStyles (): GridStyle[] {
   return figma.getLocalGridStyles().map((grid) => {
     return {
       ...parseBaseToken(grid),

@@ -2,7 +2,13 @@ import type {
   SolidColor,
   Color,
   SolidColorInfo,
+  SizesMap,
   RootSize,
+  GridStyle,
+  BoxShadowStyle,
+  FontStyle,
+  Gutter,
+  BorderStyle,
 } from '@/api/styles/index.types';
 
 type VoidFunction = (arg: null) => null;
@@ -12,9 +18,15 @@ export type UIMessagePayload = {
   resize: (args: { width: number, height: number; }) => null;
   getColorInfo: (args: Color) => SolidColorInfo;
   listSolidColors: (args: null) => SolidColor[];
-  listRootSizes: (args: null) => RootSize[];
+  listRootSizes: (args: null) => SizesMap;
+  listFontStyles: (args: null) => FontStyle[];
+  listBoxShadowStyles: (args: null) => BoxShadowStyle[];
+  listGridStyles: (args: null) => GridStyle[];
+  listGutters: (args: null) => Gutter[];
+  listBorderStyles: (args: null) => BorderStyle[];
   deleteSolidColor: (args: { id: string; }) => null;
   createSolidColor: (args: Color) => SolidColor;
+  createOrModifyRootSize: (args: RootSize) => RootSize;
   modifySolidColor: (args: { id: string, color: Color; }) => SolidColor;
   closePlugin: VoidFunction;
 };

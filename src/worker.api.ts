@@ -12,6 +12,8 @@ export const Broker: BrokerType = {
   /** */
   createSolidColor: (payload) => registerCall('createSolidColor', payload),
   /** */
+  createOrModifyRootSize: (payload) => registerCall('createOrModifyRootSize', payload),
+  /** */
   modifySolidColor: (payload) => registerCall('modifySolidColor', payload),
   /** */
   resize: (payload) => registerCall('resize', payload),
@@ -19,4 +21,14 @@ export const Broker: BrokerType = {
   closePlugin: () => registerCall('closePlugin', null),
   /** */
   listRootSizes: () => registerCall('listRootSizes', null),
+  /** */
+  listFontStyles: () => registerCall('listFontStyles', null),
+  /** */
+  listBoxShadowStyles: () => registerCall('listBoxShadowStyles', null),
+  /** */
+  listBorderStyles: () => registerCall('listBorderStyles', null),
+  /** */
+  listGridStyles: () => registerCall('listGridStyles', null),
+  /** */
+  listGutters: () => registerCall('listGutters', null),
 };

@@ -1,24 +1,10 @@
 <script lang="ts" setup>
-import { onBeforeMount, reactive } from 'vue';
-import { RootSize } from '@api/styles/index.types';
-import { Broker } from '@/worker.api';
-import { ColorToken, TokenSection } from '.';
+import { TokenSection } from '.';
+import { useStylesStore } from '@/store';
 
-const data = reactive({
-  spacings: {} as Record<string, RootSize>
-})
+const store = useStylesStore()
 
-async function getColors () {
-  const colors = await Broker.listRootSizes();
-  data.spacings = colors.reduce((t, size) => {
-    t[size.name] = size
-    return t
-  }, {} as Record<string, RootSize>);
-}
-
-onBeforeMount(() => {
-  getColors()
-})
+const gridStyles = $computed(() => store.gridStyles)
 </script>
 
 <template>
@@ -29,22 +15,13 @@ onBeforeMount(() => {
   >
     <details 
       class="spacing-tokens" open
-      v-for="(colors, name) in data.spacings"
+      v-for="(grid, name) in gridStyles"
       :key="name"
-      :name="name"
-      :colors="colors"
     >
       <summary>
         <span>{{ name }}</span>
       </summary>
-      <div class="spacing-tokens__list">
-        <!-- <ColorToken 
-          v-for="(color, i) in colors"
-          :key="i"
-          :color="color"
-          @rerender="getColors()"
-        /> -->
-      </div>
+      <div class="spacing-tokens__list">{{ grid }}</div>
     </details>
   </TokenSection>
 </template>

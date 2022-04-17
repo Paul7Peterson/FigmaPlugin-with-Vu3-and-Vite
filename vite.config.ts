@@ -45,7 +45,7 @@ export default defineConfig({
     vue({
       reactivityTransform: true,
     }),
-    viteSingleFile()
+    viteSingleFile(),
   ],
   resolve: {
     alias: {

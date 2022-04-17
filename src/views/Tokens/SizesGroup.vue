@@ -1,23 +1,20 @@
 <script lang="ts" setup>
-import { onBeforeMount, reactive } from 'vue';
-import { RootSize } from '@api/styles/index.types';
-import { Broker } from '@/worker.api';
-import { ColorToken, TokenSection } from '.';
+import { reactive, watch } from 'vue';
+import { TokenSection } from '.';
+import SizeCreate from './SizeCreate.vue';
+import { useStylesStore } from '@/store';
+
+const store = useStylesStore()
 
 const data = reactive({
-  sizes: {} as Record<string, RootSize>
+  showCreateModal: false,
+  showEditModal: false,
 })
 
-async function getColors () {
-  const colors = await Broker.listRootSizes();
-  data.sizes = colors.reduce((t, size) => {
-    t[size.name] = size
-    return t
-  }, {} as Record<string, RootSize>);
-}
+const rootSizes = $computed(() => store.rootSizes)
 
-onBeforeMount(() => {
-  getColors()
+watch(() => [data.showCreateModal, data.showEditModal], () => {
+  store.fetchRootSizes()
 })
 </script>
 
@@ -26,26 +23,30 @@ onBeforeMount(() => {
     title="Sizes"
     description="..."
     hasCreate
+    @create="data.showCreateModal = true"
   >
     <details 
       class="size-tokens" open
-      v-for="(colors, name) in data.sizes"
+      v-for="(sizes, name) in rootSizes"
       :key="name"
-      :name="name"
-      :colors="colors"
     >
       <summary>
         <span>{{ name }}</span>
       </summary>
       <div class="size-tokens__list">
-        <!-- <ColorToken 
-          v-for="(color, i) in colors"
-          :key="i"
-          :color="color"
-          @rerender="getColors()"
-        /> -->
+        <div 
+          v-for="(size, name) in sizes"
+          :key="name"
+        >
+          {{ size }}
+        </div> 
+        <Modal v-model="data.showEditModal">Edit</Modal>
       </div>
     </details>
+    <SizeCreate 
+      v-model="data.showCreateModal" 
+      :existingValues="rootSizes"
+    />
   </TokenSection>
 </template>
 

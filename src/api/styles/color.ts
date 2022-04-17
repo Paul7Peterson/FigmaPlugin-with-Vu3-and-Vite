@@ -5,6 +5,7 @@ import {
   ColorValues,
   SolidColorInfo,
   Color,
+  ColorNameExtended,
 } from './color.types';
 import {
   getColorName,
@@ -45,23 +46,19 @@ export function getSolidColors (): SolidColor[] {
 }
 
 /** */
-export function modifySolidColor (id: string, color: Color) {
-  const baseColor = figma.getStyleById(id);
-  if (!baseColor) throw new Error('Color not found');
-  if (baseColor.type !== 'PAINT') throw new Error('The token is not a color');
-  const parsedColor = baseColor as PaintStyle;
+export function createOrModifySolidColor (color: Color, id?: string) {
+  let parsedColor: PaintStyle;
 
-  const paint: SolidPaint = {
-    type: 'SOLID',
-    opacity: 1,
-    visible: true,
-    color: {
-      r: color.r / 255,
-      g: color.g / 255,
-      b: color.b / 255,
-    },
-  };
-  parsedColor.paints = [paint];
+  if (id) {
+    const baseColor = figma.getStyleById(id);
+    if (!baseColor) throw new Error('Color not found');
+    if (baseColor.type !== 'PAINT') throw new Error('The token is not a color');
+    parsedColor = baseColor as PaintStyle;
+  } else {
+    parsedColor = figma.createPaintStyle();
+  }
+
+  parsedColor.paints = [createSolidPaint(color)];
   parsedColor.name = `${getColorName(color)}/${getColorShadow(color)}`;
 
   return {
@@ -70,12 +67,6 @@ export function modifySolidColor (id: string, color: Color) {
     color,
     colorSpaces: getColorSpaces(color),
   };
-}
-
-/** */
-export function createSolidColor (color: Color): SolidColor {
-  const newColor = figma.createPaintStyle();
-  return modifySolidColor(newColor.id, color);
 }
 
 /** */
@@ -94,6 +85,15 @@ export function deleteColor (id: string) {
   color.remove();
 }
 
+function createSolidPaint ({ r, g, b }: Color): SolidPaint {
+  return {
+    type: 'SOLID',
+    opacity: 1,
+    visible: true,
+    color: { r: r / 255, g: g / 255, b: b / 255 },
+  };
+}
+
 function getRGBColor (paint: SolidPaint): Color {
   return {
     r: Math.round(paint.color.r * 255),
@@ -106,18 +106,31 @@ function getColorNameAndShadow (color: Color): { colorName: ColorName; colorShad
   return { colorName: getColorName(color), colorShadow: getColorShadow(color) };
 }
 
-function getColorNameAndShadowFromName (paint: PaintStyle): { colorName: ColorName; colorShadow: number; errors: string[]; } {
+interface ValidatedOutput {
+  colorName: ColorNameExtended; colorShadow: number; errors: string[]; alternativeText?: string;
+}
+
+function getColorNameAndShadowFromName (paint: PaintStyle): ValidatedOutput {
   const errors: string[] = [];
 
   const [name, shadow, ..._] = paint.name.split('/');
 
   if (!name) throw new Error('A solid color must be categorized in a color');
-  if (![...Object.keys(ColorValues), 'Grey'].includes(name)) throw new Error('A solid color must have valid color name');
-  const colorName: ColorName = name as ColorName;
+  let colorName: ColorNameExtended = name as ColorName;
+  if (![...Object.keys(ColorValues), 'Grey'].includes(name)) {
+    errors.push('A solid color must have valid color name');
+    colorName = 'Other';
+  }
 
-  if (!shadow) throw new Error('A solid color must have a shadow value');
-  if (isNaN(+shadow)) throw new Error('A solid color must have numeric shadow value');
-  const colorShadow = +shadow;
+  let alternativeText: string = '';
+  let colorShadow = 0;
+  if (!shadow) {
+    errors.push('A solid color must have a shadow value');
+    alternativeText = name;
+  } else {
+    if (isNaN(+shadow)) throw new Error('A solid color must have numeric shadow value');
+    colorShadow = +shadow;
+  }
 
   const color = paint.paints[0];
   if (!color || color.type !== 'SOLID') throw new Error('');
@@ -125,12 +138,14 @@ function getColorNameAndShadowFromName (paint: PaintStyle): { colorName: ColorNa
   const real = getColorNameAndShadow(getRGBColor(color));
 
   if (real.colorName !== colorName) {
-    errors.push(`${paint.name} should have the name "${real.colorName}" and not "${colorName}"`);
+    errors.push(`"${paint.name}" should have the name "${real.colorName}" and not "${colorName}"`);
   }
   if (real.colorShadow !== colorShadow)
-    errors.push(`${paint.name} should have the name "${real.colorShadow}" and not "${colorShadow}"`);
+    errors.push(`"${paint.name}" should have the name "${real.colorShadow}" and not "${colorShadow}"`);
 
-  return { colorName, colorShadow, errors };
+  const result: ValidatedOutput = { colorName, colorShadow, errors };
+  if (alternativeText) result.alternativeText = alternativeText;
+  return result;
 }
 
 function getColorSpaces (color: Color): SolidColor['colorSpaces'] {

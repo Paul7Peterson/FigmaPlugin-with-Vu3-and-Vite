@@ -1,6 +1,7 @@
 
 export type {
   ColorName,
+  ColorNameExtended,
   SolidColor,
   SolidColorInfo,
   Color,
@@ -9,16 +10,24 @@ export type {
 
 export type {
   RootSize,
+  RootSizeName,
+  SizesMap,
+  Gutter,
+  GutterName,
 } from './space.types';
 
 export type {
-  Text,
+  FontStyle,
+  FontStyleCategory,
+  ExtendedFontStyleCategory,
 } from './text.types';
 
 export type {
-  Grid,
+  GridStyle,
 } from './grid.types';
 
 export type {
-  Effect,
+  BoxShadowStyle,
+  BoxShadowType,
+  BorderStyle,
 } from './effect.types';

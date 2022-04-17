@@ -1,5 +1,12 @@
 <script lang="ts" setup>
+import { onBeforeMount } from 'vue';
+import { useStylesStore } from '@/store';
+
 import { ResizeCorner } from './components'
+
+const store = useStylesStore()
+
+onBeforeMount(() => store.fetchStyles())
 </script>
 
 <template>
@@ -18,10 +25,6 @@ import { ResizeCorner } from './components'
 </template>
 
 <style lang="scss">
-  :root {
-    font-size: 14px;
-  }
-
   body {
     margin: 0;
     font-family: Inter, Arial, Helvetica, sans-serif;

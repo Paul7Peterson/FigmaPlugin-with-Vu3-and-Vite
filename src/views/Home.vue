@@ -2,7 +2,6 @@
 import { onBeforeMount, reactive } from 'vue';
 
 import { Broker } from '../worker.api';
-import { Button } from '../components';
 
 const data = reactive({
   user: null as User | null,

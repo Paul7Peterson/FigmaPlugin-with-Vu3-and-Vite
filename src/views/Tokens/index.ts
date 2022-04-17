@@ -6,13 +6,18 @@ import ColorsGroup from './ColorsGroup.vue';
 
 import SizesGroup from './SizesGroup.vue';
 
-import EffectsGroup from './EffectsGroup.vue';
+import BoxShadowToken from './BoxShadowToken.vue';
+import BoxShadowsGroup from './BoxShadowsGroup.vue';
 
 import GridsGroup from './GridsGroup.vue';
 
-import TextsGroup from './TextsGroup.vue';
+import FontToken from './FontToken.vue';
+import FontsGroup from './FontsGroup.vue';
 
 import GuttersGroup from './GuttersGroup.vue';
+
+import BorderToken from './BorderToken.vue';
+import BordersGroup from './BordersGroup.vue';
 
 export {
   ColorDetails,
@@ -20,8 +25,12 @@ export {
   ColorsGroup,
   TokenSection,
   SizesGroup,
-  EffectsGroup,
+  BoxShadowToken,
+  BoxShadowsGroup,
   GridsGroup,
-  TextsGroup,
+  FontToken,
+  FontsGroup,
   GuttersGroup,
+  BorderToken,
+  BordersGroup,
 };

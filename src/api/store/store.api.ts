@@ -1,8 +1,8 @@
-import { RootSize } from '../styles/index.types';
+import { RootSize, RootSizeName } from '../styles/index.types';
 
 export type Store = {
   windowSize: { width: number; height: number; };
-  sizes: RootSize[];
+  sizes: Partial<Record<RootSizeName, RootSize>>;
 };
 
 export type StoreKey = keyof Store;

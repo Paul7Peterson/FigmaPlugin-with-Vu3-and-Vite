@@ -10,6 +10,10 @@
 
 <style lang="scss">
   button.btn {
+    background-color: var(--color-dark);
+    color: white;
     cursor: pointer;
+    border: none;
+    border-radius: 4px;
   }
 </style>

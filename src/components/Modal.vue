@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { Button } from '.'
-
 defineProps<{
   /** */
   modelValue: boolean;
@@ -34,6 +32,7 @@ defineEmits<{
 <style lang="scss">
   #modal {
     &__background {
+      z-index: 100;
       position: fixed;
       display: grid;
       align-items: top;

@@ -68,9 +68,11 @@ export const ColorValues = Object.freeze({
 /** */
 export type ColorName = keyof typeof ColorValues | 'Grey';
 
+export type ColorNameExtended = ColorName | 'Other';
+
 export interface SolidColorInfo {
   color: { r: number, g: number, b: number; };
-  colorName: ColorName;
+  colorName: ColorNameExtended;
   colorShadow: number;
   colorSpaces: {
     RGB: string;
@@ -85,4 +87,7 @@ export interface SolidColorInfo {
 export type SolidColor =
   & BaseToken
   & SolidColorInfo
-  & { errors: string[]; };
+  & {
+    errors: string[];
+    alternativeText?: string;
+  };

@@ -2,9 +2,10 @@
 import { 
   ColorsGroup, 
   SizesGroup, 
-  TextsGroup, 
+  FontsGroup, 
   GuttersGroup,
-  EffectsGroup,
+  BoxShadowsGroup,
+  BordersGroup,
   GridsGroup,
 } from './Tokens';
 </script>
@@ -13,8 +14,9 @@ import {
   <SizesGroup/>
   <GuttersGroup/>
   <ColorsGroup />
-  <TextsGroup />
-  <EffectsGroup />
+  <FontsGroup />
+  <BoxShadowsGroup />
+  <BordersGroup />
   <GridsGroup />
 </template>
 

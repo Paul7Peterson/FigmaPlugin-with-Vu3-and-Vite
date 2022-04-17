@@ -1,49 +1,33 @@
 <script lang="ts" setup>
-import { onBeforeMount, reactive } from 'vue';
-import { RootSize } from '@api/styles/index.types';
-import { Broker } from '@/worker.api';
-import { ColorToken, TokenSection } from '.';
+import { TokenSection, BoxShadowToken } from '.';
+import { useStylesStore } from '@/store';
+import { BoxShadowStyle, BoxShadowType } from '@/api/styles/index.types';
 
-const data = reactive({
-  spacings: {} as Record<string, RootSize>
-})
+const store = useStylesStore()
 
-async function getColors () {
-  const colors = await Broker.listRootSizes();
-  data.spacings = colors.reduce((t, size) => {
-    t[size.name] = size
-    return t
-  }, {} as Record<string, RootSize>);
-}
-
-onBeforeMount(() => {
-  getColors()
-})
+const boxShadowStyles: Record<BoxShadowType, BoxShadowStyle[]> = $computed(() => store.boxShadows)
 </script>
 
 <template>
   <TokenSection 
-    title="Effects"
+    title="Box shadows"
     description="..."
     hasCreate
   >
     <details 
       class="spacing-tokens" open
-      v-for="(colors, name) in data.spacings"
-      :key="name"
-      :name="name"
-      :colors="colors"
+      v-for="(typeGroup, type) in boxShadowStyles"
+      :key="type"
     >
       <summary>
-        <span>{{ name }}</span>
+        <span>{{ type }}</span>
       </summary>
       <div class="spacing-tokens__list">
-        <!-- <ColorToken 
-          v-for="(color, i) in colors"
+        <BoxShadowToken 
+          v-for="(shadow, i) in typeGroup"
           :key="i"
-          :color="color"
-          @rerender="getColors()"
-        /> -->
+          :boxShadow="shadow"
+        />
       </div>
     </details>
   </TokenSection>

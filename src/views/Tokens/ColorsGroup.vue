@@ -1,25 +1,11 @@
 <script lang="ts" setup>
-import { onBeforeMount, reactive } from 'vue';
-import { SolidColor } from '@api/styles/color.types';
-import { Broker } from '@/worker.api';
 import { ColorToken, TokenSection } from '.';
+import { useStylesStore } from '@/store';
+import { ColorNameExtended, SolidColor } from '@/api/styles/color.types';
 
-const data = reactive({
-  colors: {} as Record<string, SolidColor[]>
-})
+const store = useStylesStore()
 
-async function getColors () {
-  const colors = await Broker.listSolidColors();
-  data.colors = colors.reduce((t, color) => {
-    if (!t[color.colorName]) t[color.colorName] = []
-    t[color.colorName].push(color)
-    return t
-  }, {} as Record<string, SolidColor[]>);
-}
-
-onBeforeMount(() => {
-  getColors()
-})
+const colors: Record<ColorNameExtended, SolidColor[]> = $computed(() => store.colors)
 </script>
 
 <template>
@@ -30,22 +16,21 @@ onBeforeMount(() => {
   >
     <details 
       class="color-tokens" open
-      v-for="(colors, name) in data.colors"
+      v-for="(colorGroup, name) in colors"
       :key="name"
-      :name="name"
-      :colors="colors"
     >
-      <summary>
-        <span>{{ name }}</span>
-      </summary>
-      <div class="color-tokens__list">
-        <ColorToken 
-          v-for="(color, i) in colors"
-          :key="i"
-          :color="color"
-          @rerender="getColors()"
-        />
-      </div>
+      <template v-if="colorGroup">
+        <summary>
+          <span>{{ name }}</span>
+        </summary>
+        <div class="color-tokens__list">
+          <ColorToken 
+            v-for="(color, i) in colorGroup"
+            :key="i"
+            :color="color"
+          />
+        </div>
+      </template>
     </details>
   </TokenSection>
 </template>
