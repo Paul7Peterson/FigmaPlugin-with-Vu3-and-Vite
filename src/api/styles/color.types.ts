@@ -70,18 +70,20 @@ export type ColorName = keyof typeof ColorValues | 'Grey';
 
 export type ColorNameExtended = ColorName | 'Other';
 
+export interface ColorSpaces {
+  RGB: string;
+  HEX: string;
+  HSL: string;
+  Lab: string;
+  LCH: string;
+  Grey: number;
+};
+
 export interface SolidColorInfo {
   color: { r: number, g: number, b: number; };
   colorName: ColorNameExtended;
   colorShadow: number;
-  colorSpaces: {
-    RGB: string;
-    HEX: string;
-    HSL: string;
-    Lab: string;
-    LCH: string;
-    Grey: number;
-  };
+  colorSpaces: ColorSpaces;
 }
 
 export type SolidColor =

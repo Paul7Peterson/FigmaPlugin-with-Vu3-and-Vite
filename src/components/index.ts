@@ -4,6 +4,7 @@ import Modal from './Modal.vue';
 import Select from './Select.vue';
 import InputNumber from './InputNumber.vue';
 import Details from './Details.vue';
+import ErrorsBadge from './ErrorsBadge.vue';
 
 export {
   Button,
@@ -12,4 +13,5 @@ export {
   Select,
   InputNumber,
   Details,
+  ErrorsBadge,
 };

@@ -1,5 +1,5 @@
 import { BaseToken } from './_shared';
-import { SolidColor } from './color.types';
+import { SolidColor, ColorSpaces } from './color.types';
 
 export enum BoxShadowType {
   Elevation = 'Elevation',
@@ -8,13 +8,31 @@ export enum BoxShadowType {
   Setoff = 'Setoff',
 }
 
+export type ExtendedBoxShadowType = BoxShadowType | 'Other';
+
+
+export interface Blur {
+  blur: number;
+}
+
+export interface Shadow extends Blur {
+  x: number;
+  y: number;
+  spread: number;
+  color: ColorSpaces;
+  blendMode: string;
+}
+
 /** */
 export interface BoxShadowStyle extends BaseToken {
-  type: BoxShadowType,
+  type: ExtendedBoxShadowType,
   level: number;
-  dropShadows: any[];
-  innerShadows: any[];
-  blurEffects: any[];
+  dropShadows: Shadow[];
+  innerShadows: Shadow[];
+  backgroundBlurs: Blur[];
+  layerBlurs: Blur[];
+  alternativeText?: string;
+  errors: string[];
 }
 
 export type StrokeDirection =

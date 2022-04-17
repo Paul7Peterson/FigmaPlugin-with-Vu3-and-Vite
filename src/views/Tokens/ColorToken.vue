@@ -18,13 +18,10 @@ const data = reactive({
   isEditing: false,
 });
 
-const title = $computed(
-  () => `
-  RGB: ${props.color.colorSpaces.RGB}
-  HEX: ${props.color.colorSpaces.HEX}
-  HSL: ${props.color.colorSpaces.HSL}
-`
-);
+const title = $computed(() => 
+  Object.entries(props.color.colorSpaces)
+    .map(([k, v]) => `${k}: ${v};`).join('\n'))
+
 </script>
 
 <template>
@@ -37,17 +34,13 @@ const title = $computed(
       :title="title" 
       @click="data.showModal = true"
     >
-      <span class="color__sample"></span>
+      <span class="color-token__sample"></span>
       <span
-        class="color-token__label"
+        class="color-token__label truncate"
         :title="color.alternativeText || `${color.colorName} - ${color.colorShadow}`"
       >
         {{ color.alternativeText || color.colorShadow }}
-        <span 
-          class="error-warning" 
-          v-if="color.errors.length"
-          :title="color.errors.join('\n')"
-        >🟡</span>
+        <ErrorsBadge :errors="color.errors"/>
       </span>
     </div>
     <ColorDetails 
@@ -70,7 +63,6 @@ $sample-size: 20px;
     grid-template-columns: max-content 1fr;
     align-items: center;
     column-gap: 5px;
-    cursor: pointer;
   }
 
   &__sample {
@@ -78,21 +70,18 @@ $sample-size: 20px;
     width: $sample-size;
     height: $sample-size;
     border-radius: calc($sample-size / 2);
+    cursor: pointer;
   }
+
   &__label {
     width: 20px;
     font-size: 12px;
     font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
   }
-  .error-warning {
-    position: absolute;
+
+  .errors-badge {
     left: calc($sample-size - 6px);
     bottom: -2px;
-    font-size: 8px;
   }
 
   .color-picker {

@@ -1,5 +1,11 @@
 import { parseBaseToken } from './_shared';
-import { BoxShadowStyle, BorderStyle, BoxShadowType } from './effect.types';
+import {
+  BoxShadowStyle,
+  BorderStyle,
+  BoxShadowType,
+  ExtendedBoxShadowType
+} from './effect.types';
+import { getColorSpaces, paintToColor } from './color.helpers';
 
 /** */
 export function listBoxShadows (): BoxShadowStyle[] {
@@ -17,33 +23,91 @@ export function listBoxShadows (): BoxShadowStyle[] {
       return validBoxShadow;
     })
     .map((effect) => {
-      return {
+      const result: BoxShadowStyle = {
         ...parseBaseToken(effect),
         ...getBoxShadowTypeAndElevation(effect),
         dropShadows: [],
         innerShadows: [],
-        blurEffects: [],
+        backgroundBlurs: [],
+        layerBlurs: [],
       };
+      effect.effects.forEach((e) => {
+        switch (e.type) {
+          case 'BACKGROUND_BLUR':
+          case 'LAYER_BLUR':
+            result[e.type === 'LAYER_BLUR'
+              ? 'layerBlurs'
+              : 'backgroundBlurs'
+            ].push({ blur: e.radius });
+            break;
+          case 'DROP_SHADOW':
+          case 'INNER_SHADOW':
+            result[e.type === 'DROP_SHADOW'
+              ? 'dropShadows'
+              : 'innerShadows'
+            ].push({
+              blur: e.radius,
+              x: e.offset.x,
+              y: e.offset.y,
+              spread: e.spread || 0,
+              blendMode: e.blendMode,
+              color: getColorSpaces(paintToColor(e.color))
+            });
+            break;
+          default: throw new Error(`Unknown effect.`);
+        } e.type;
+      });
+
+      result.errors.push(...validateBoxShadow(result));
+      return result;
     });
 }
 
-function getBoxShadowTypeAndElevation (effect: EffectStyle): { type: BoxShadowType; level: number; errors: string[]; } {
+interface ValidationExports {
+  type: ExtendedBoxShadowType;
+  level: number;
+  errors: string[];
+  alternativeText?: string;
+}
+
+function getBoxShadowTypeAndElevation (effect: EffectStyle): ValidationExports {
   const errors: string[] = [];
 
   const [_type, _level, ..._] = effect.name.split('/');
 
 
+  let alternativeText: string = '';
   if (!_type) throw new Error('A box shadow must be categorized in a type');
-  if (!Object.values(BoxShadowType).includes(_type as BoxShadowType)) throw new Error('A box shadow must have valid type');
-  const type: BoxShadowType = _type as BoxShadowType;
 
-  if (!_level) throw new Error('A box shadow must have a level value');
-  if (isNaN(+_level)) throw new Error('A box shadow must have numeric level value');
-  const level = +_level;
+  let type = _type as ExtendedBoxShadowType;
+  if (!Object.values(BoxShadowType).includes(_type as BoxShadowType)) {
+    errors.push('A box shadow must have valid type');
+    type = 'Other';
+  }
 
-  return { type, level, errors };
+  let level = 0;
+  if (!_level) {
+    errors.push('A box shadow must have a level value');
+    alternativeText = _type;
+  }
+  if (isNaN(+_level)) {
+    errors.push('A box shadow must have numeric level value');
+    alternativeText = _level;
+  } else {
+    level = +_level;
+  }
+
+  const result: ValidationExports = { type, level, errors };
+  if (alternativeText) result.alternativeText = alternativeText;
+  return result;
 }
 
 export function listBorderStyles (): BorderStyle[] {
+  return [];
+}
+
+function validateBoxShadow (boxShadow: BoxShadowStyle): string[] {
+  const errors: string[] = [];
+  // TODO
   return [];
 }

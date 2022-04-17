@@ -15,14 +15,14 @@ const boxShadowStyles: Record<BoxShadowType, BoxShadowStyle[]> = $computed(() =>
     hasCreate
   >
     <details 
-      class="spacing-tokens" open
+      class="box-shadow-tokens" open
       v-for="(typeGroup, type) in boxShadowStyles"
       :key="type"
     >
       <summary>
         <span>{{ type }}</span>
       </summary>
-      <div class="spacing-tokens__list">
+      <div class="box-shadow-tokens__list">
         <BoxShadowToken 
           v-for="(shadow, i) in typeGroup"
           :key="i"
@@ -36,7 +36,7 @@ const boxShadowStyles: Record<BoxShadowType, BoxShadowStyle[]> = $computed(() =>
 <style lang="scss">
   $radius: 4px;
 
-  .spacing-tokens {
+  .box-shadow-tokens {
     border-radius: $radius;
     border: 1px solid rgb(44, 44, 44);
 
@@ -53,12 +53,10 @@ const boxShadowStyles: Record<BoxShadowType, BoxShadowStyle[]> = $computed(() =>
       border-top-right-radius: $radius;
     }
     &__list {
-      display: grid;
-      grid-auto-flow: column;
-      grid-template-columns: max-content;
-      justify-content: left;
+      display: flex;
+      flex-wrap: wrap;
       gap: 5px;
-      padding: 5px 10px;
+      padding: 15px;
     }
   }
 </style>

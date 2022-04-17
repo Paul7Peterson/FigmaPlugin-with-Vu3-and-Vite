@@ -1,4 +1,4 @@
-import { ColorValues, ColorName, Color, RGB } from './color.types';
+import { ColorValues, ColorName, Color, RGB, SolidColor, ColorAlpha } from './color.types';
 import { rgb } from 'color-convert';
 
 /**
@@ -6,7 +6,7 @@ import { rgb } from 'color-convert';
  * @see https://css-tricks.com/converting-color-spaces-in-javascript/
  */
 
-export function fromRGB ({ r, g, b }: Color) {
+export function fromRGB ({ r, g, b, a }: ColorAlpha) {
   const RGB: RGB = [r, g, b];
 
   return {
@@ -15,8 +15,9 @@ export function fromRGB ({ r, g, b }: Color) {
       array: () => rgb.hex(RGB),
       text: () => {
         const result = rgb.hex(RGB);
-        return `#${result}`;
-      }
+        const alpha = a ? a.toString(16) : '';
+        return `#${result}${alpha}`;
+      },
     },
     toHSL: {
       array: () => rgb.hsl(RGB),
@@ -68,4 +69,34 @@ export function getColorName (color: Color): ColorName {
 
 export function getColorShadow (color: Color): number {
   return fromRGB(color).toLCH.array()[0];
+}
+
+export function paintToColor ({ r, g, b, a = 0 }: ColorAlpha): ColorAlpha {
+  return {
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255),
+    a: Math.round(a * 255),
+  };
+}
+
+export function colorToPaint ({ r, g, b, a }: ColorAlpha): SolidPaint {
+  return {
+    type: 'SOLID',
+    opacity: a || 1,
+    visible: true,
+    color: { r: r / 255, g: g / 255, b: b / 255 },
+  };
+}
+
+export function getColorSpaces (color: ColorAlpha): SolidColor['colorSpaces'] {
+  const API = fromRGB(color);
+  return {
+    RGB: API.text(),
+    HEX: API.toHEX.text(),
+    HSL: API.toHSL.text(),
+    Lab: API.toLab.text(),
+    LCH: API.toLCH.text(),
+    Grey: API.toGrey(),
+  };
 }

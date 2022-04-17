@@ -5,20 +5,15 @@ import { router } from './router';
 import App from './App.vue';
 import './ui.scss';
 
-import {
-  Button,
-  Select,
-  InputNumber,
-  Modal,
-  Details,
-} from '@/components';
+import * as Component from '@/components';
 
 createApp(App)
   .use(router)
   .use(createPinia())
-  .component('Button', Button)
-  .component('Select', Select)
-  .component('InputNumber', InputNumber)
-  .component('Modal', Modal)
-  .component('Details', Details)
+  .component('Button', Component.Button)
+  .component('Select', Component.Select)
+  .component('InputNumber', Component.InputNumber)
+  .component('Modal', Component.Modal)
+  .component('Details', Component.Details)
+  .component('ErrorsBadge', Component.ErrorsBadge)
   .mount('#app');

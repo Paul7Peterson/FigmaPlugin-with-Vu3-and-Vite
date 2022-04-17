@@ -6,3 +6,9 @@
 body {
   // background-color: #6B1F7A;
 }
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

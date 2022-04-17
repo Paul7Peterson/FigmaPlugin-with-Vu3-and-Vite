@@ -30,4 +30,6 @@ export type {
   BoxShadowStyle,
   BoxShadowType,
   BorderStyle,
+  ExtendedBoxShadowType,
+  Shadow,
 } from './effect.types';

@@ -21,13 +21,23 @@ export interface FontStyle extends BaseToken {
   /** */
   fontSize: number;
   /** */
-  fontFamily: FontName;
+  fontFamily: string;
+  /** */
+  isItalic: boolean;
+  /** */
+  fontWeight: string | number;
   /** */
   textDecoration: TextDecoration;
   /** */
+  textDecorationCSS: string;
+  /** */
   letterSpacing: LetterSpacing;
   /** */
+  letterSpacingCSS: string;
+  /** */
   lineHeight: LineHeight;
+  /** */
+  lineHeightCSS: string;
   /** */
   paragraphIndent: number;
   /** */

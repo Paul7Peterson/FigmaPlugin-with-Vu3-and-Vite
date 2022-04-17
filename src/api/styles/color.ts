@@ -10,7 +10,9 @@ import {
 import {
   getColorName,
   getColorShadow,
-  fromRGB,
+  getColorSpaces,
+  paintToColor,
+  colorToPaint,
 } from './color.helpers';
 
 /** */
@@ -34,7 +36,7 @@ export function getSolidColors (): SolidColor[] {
       const paint = color.paints[0];
       if (paint.type !== 'SOLID') throw new Error('A solid color must have a solid paint');
 
-      const RGBColor = getRGBColor(paint);
+      const RGBColor = paintToColor(paint.color);
 
       return {
         ...parseBaseToken(color),
@@ -58,7 +60,7 @@ export function createOrModifySolidColor (color: Color, id?: string) {
     parsedColor = figma.createPaintStyle();
   }
 
-  parsedColor.paints = [createSolidPaint(color)];
+  parsedColor.paints = [colorToPaint(color)];
   parsedColor.name = `${getColorName(color)}/${getColorShadow(color)}`;
 
   return {
@@ -83,23 +85,6 @@ export function deleteColor (id: string) {
   const color = figma.getStyleById(id);
   if (!color) throw new Error('Color not found.');
   color.remove();
-}
-
-function createSolidPaint ({ r, g, b }: Color): SolidPaint {
-  return {
-    type: 'SOLID',
-    opacity: 1,
-    visible: true,
-    color: { r: r / 255, g: g / 255, b: b / 255 },
-  };
-}
-
-function getRGBColor (paint: SolidPaint): Color {
-  return {
-    r: Math.round(paint.color.r * 255),
-    g: Math.round(paint.color.g * 255),
-    b: Math.round(paint.color.b * 255),
-  };
 }
 
 function getColorNameAndShadow (color: Color): { colorName: ColorName; colorShadow: number; } {
@@ -135,7 +120,7 @@ function getColorNameAndShadowFromName (paint: PaintStyle): ValidatedOutput {
   const color = paint.paints[0];
   if (!color || color.type !== 'SOLID') throw new Error('');
 
-  const real = getColorNameAndShadow(getRGBColor(color));
+  const real = getColorNameAndShadow(paintToColor(color.color));
 
   if (real.colorName !== colorName) {
     errors.push(`"${paint.name}" should have the name "${real.colorName}" and not "${colorName}"`);
@@ -146,16 +131,4 @@ function getColorNameAndShadowFromName (paint: PaintStyle): ValidatedOutput {
   const result: ValidatedOutput = { colorName, colorShadow, errors };
   if (alternativeText) result.alternativeText = alternativeText;
   return result;
-}
-
-function getColorSpaces (color: Color): SolidColor['colorSpaces'] {
-  const API = fromRGB(color);
-  return {
-    RGB: API.text(),
-    HEX: API.toHEX.text(),
-    HSL: API.toHSL.text(),
-    Lab: API.toLab.text(),
-    LCH: API.toLCH.text(),
-    Grey: API.toGrey(),
-  };
 }
