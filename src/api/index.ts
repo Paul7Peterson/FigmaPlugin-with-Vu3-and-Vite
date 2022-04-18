@@ -34,7 +34,7 @@ figma.ui.onmessage = (msg: UIMessage<UIMessageCode>) => {
   } catch (error) {
     console.trace(error);
     // console.error({ msg });
-    figma.notify((error as Error).message, { error: true });
+    figma.notify((error as Error).message, { error: true, timeout: 3 });
     PostBroker.throwError(error as any);
   }
 };
@@ -48,6 +48,5 @@ figma.on('currentpagechange', () => {
 });
 
 figma.on('close', () => {
-  figma.notify('Closing...', {});
   console.log('❌ Close');
 });

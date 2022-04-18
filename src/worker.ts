@@ -22,7 +22,7 @@ self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
     console.error(data.pluginMessage.payload.message);
   } else {
     const result = REGISTER.get(data.pluginMessage.id);
-    // console.log(['💌', data.pluginMessage.type, data.pluginMessage.payload]);
+    console.log(['💌', data.pluginMessage.type, data.pluginMessage.payload]);
     if (!result) throw new Error('No resolver');
     result.resolve(data.pluginMessage.payload || null);
     REGISTER.delete(data.pluginMessage.id);

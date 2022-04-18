@@ -6,7 +6,7 @@ import { ResizeCorner } from './components'
 
 const store = useStylesStore()
 
-onBeforeMount(() => store.fetchStyles())
+onBeforeMount(async() => await store.fetchStyles())
 </script>
 
 <template>

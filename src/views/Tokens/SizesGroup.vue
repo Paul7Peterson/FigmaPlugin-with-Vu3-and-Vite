@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, watch } from 'vue';
+import { onBeforeMount, reactive, watch } from 'vue';
 import { TokenSection } from '.';
 import { SliderMultiple, Slider } from '@/components';
 import { useStylesStore } from '@/store';
@@ -10,21 +10,21 @@ const store = useStylesStore()
 const rootSizes = $computed(() => store.rootSizes)
 
 const data = reactive({
-  values: rootSizes.map((s) => ({ value: s.size })),  
+  values: [{ value: 2 }],  
 })
 
 watch(() => [store.rootSizes], () => {
-  data.values = rootSizes.map((s) => ({ value: s.size }))
-  console.log(data.values);
+  data.values = rootSizes?.map((s) => ({ value: s.size })) || []
 })
 
 async function onCreate() {
+  
   const amount = data.values.length
   if (amount >= 5) return
 
-  if (amount % 2) {
+  if (!amount || amount % 2) {
     data.values.push({
-      value: (data.values.at(-1)!.value || 14) + 2,
+      value: (data.values.at(-1)?.value || 14) + 2,
       // name: (rootSizes.at(-1)?.name === 'Medium' ? 'Big' : 'Huge') as RootSizeName
     })
   } else {
@@ -33,9 +33,14 @@ async function onCreate() {
       // name: (rootSizes[0].name === 'Medium' ? 'Small' : 'Tiny') as RootSizeName
     })
   }
+  console.log(data.values);
 }
 
-const x = $ref(50)
+// const x = $ref(16)
+
+onBeforeMount(() => {
+  data.values = store.rootSizes.map((s) => ({ value: s.size }))
+})
 </script>
 
 <template>
@@ -49,21 +54,26 @@ const x = $ref(50)
       <summary>
         <span>Root sizes</span>
       </summary>
-      <div class="size-tokens__list">
+      <div 
+        v-if="data.values.length" 
+        class="size-tokens__list"
+      >
         <SliderMultiple 
           :values="data.values"
-          :range="[6, 30]"
-          label=""
+          :range="[6, 24]"
+          label="Root sizes"
+          showTicks
+          :ticksGap="3"
         />
-        <!-- <Slider :limit="[20, 60]" v-model="x" label=""/> -->
       </div>
+      <p v-else>No root sizes available</p>
+      <!-- <Slider :range="[6, 30]" v-model="x" label=""/> -->
     </details>
   </TokenSection>
 </template>
 
 <style lang="scss">
   $radius: 4px;
-  $padding-sides: 10px;
 
   .size-tokens {
     border-radius: $radius;
@@ -85,7 +95,7 @@ const x = $ref(50)
       position: relative;
       display: grid;
       gap: 5px;
-      padding: 30px $padding-sides 10px;
+      padding: 10px;
     }
   }
 </style>

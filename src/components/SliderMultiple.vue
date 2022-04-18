@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { onErrorCaptured } from 'vue'
 import { Slider } from '@/components';
 
 interface Props {
@@ -6,6 +7,8 @@ interface Props {
   values: {
     /** */
     value: number;
+    /** */
+    label?: string;
   }[];
   /** */
   label: string;
@@ -17,12 +20,20 @@ interface Props {
   step?: number;
   /** */
   limit?: [number | null, number | null];
+  /** */
+  unit?: string;
+  /** */
+  showTicks?: boolean;
+  /** */
+  ticksGap?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   range: () => [0, 100],
   disabled: false,
   step: 1,
+  showTicks: false,
+  ticksGap: 1,
 });
 
 function getLimit(index: number): [number, number] {
@@ -35,10 +46,13 @@ function getLimit(index: number): [number, number] {
     max ? max - 1 : props.range[1],
   ]
 }
+
+onErrorCaptured((e) => console.log(e))
 </script>
 
 <template>
   <div class="slider-multiple">
+    <label>{{ label }}</label>
     <div class="slider-multiple__container">
       <Slider 
         v-for="(value, i) in values"
@@ -47,7 +61,10 @@ function getLimit(index: number): [number, number] {
         :range="range"
         :limit="getLimit(i)"
         :step="step"
-        :label="''"
+        :label="value.label || ''"
+        :unit="unit"
+        :showTicks="showTicks"
+        :ticksGap="ticksGap"
       />
     </div>
   </div>
@@ -58,17 +75,30 @@ function getLimit(index: number): [number, number] {
   $track-color: #ccc;
 
   .slider-multiple {
-    height: $size;
+    display: grid;
+    grid-template-rows: max-content max-content;
     
     &__container {
       display: grid;
       position: relative;
-      grid-auto-rows: 0;
-      margin: calc($size / 2);
+      grid-template-rows: max-content;
+
+      > .slider__container:not(:first-child) {
+        position: absolute;
+        top: 0;
+
+        .slider {
+          &__reference {
+            background-color: transparent;
+          }
+        }
+        .ticks {
+          display: none;
+        }
+      }
     }
 
     .slider {
-      width: 100%;
       pointer-events: none;
 
       &::-webkit-slider-thumb {
@@ -82,21 +112,6 @@ function getLimit(index: number): [number, number] {
       }
       &::-moz-range-track {
         background: transparent;
-      }
-      &__label {
-        display: none;
-      }
-      &__reference {
-        bottom: auto;
-      }
-    }
-    > .slider__container:first-child .slider {
-      &::-webkit-slider-runnable-track {
-        background: $track-color;
-      }
-
-      &::-moz-range-track {
-        background: $track-color;
       }
     }
   }

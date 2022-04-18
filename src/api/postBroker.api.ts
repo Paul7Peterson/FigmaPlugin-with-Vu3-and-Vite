@@ -58,6 +58,10 @@ export const PostBroker: PostBrokerType = {
   throwError: (error) =>
     figma.ui.postMessage({ type: 'throwError', id: '', payload: { message: error.message } }),
   /** */
-  closePlugin: () =>
-    figma.closePlugin(),
+  closePlugin: async () => {
+    const notification = figma.notify('Closing...', { timeout: 1_000_000 });
+    await FigmaStore.getInstance.persistData();
+    notification.cancel();
+    figma.closePlugin();
+  }
 };

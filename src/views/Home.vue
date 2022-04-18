@@ -10,6 +10,10 @@ const data = reactive({
 const singleName = $computed(() => 
   data.user?.name.split(' ')[0] || '')
 
+function onClose () {
+  Broker.closePlugin()
+}
+
 onBeforeMount(async () => {
   data.user = await Broker.getUser()
 })
@@ -20,6 +24,7 @@ onBeforeMount(async () => {
     <img class="avatar" :src="data.user.photoUrl || ''" :alt="singleName">
     <h3>Hello, {{ singleName }}!</h3>
   </header>
+  <Button @click="onClose">Save and close</Button>
 </template>
 
 <style lang="scss">

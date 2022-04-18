@@ -22,7 +22,7 @@ import { hexToRgb } from './styles.store.helpers';
 export const useStylesStore = defineStore('styles', {
   state: () => {
     return {
-      rootSizes: [] as RootSize[],
+      rootSizes: [] as (RootSize & { value: number; })[],
       gutters: [] as Gutter[],
       colors: {} as Record<ColorNameExtended, SolidColor[]>,
       fontStyles: {} as Record<ExtendedFontStyleCategory, FontStyle[]>,
@@ -37,7 +37,9 @@ export const useStylesStore = defineStore('styles', {
   actions: {
     async fetchRootSizes (): Promise<void> {
       const rootSizes = await Broker.listRootSizes();
-      this.rootSizes = Object.values(rootSizes).sort((a, b) => Number(a.size > b.size));
+      this.rootSizes = Object.values(rootSizes)
+        .map((s) => ({ ...s, value: s.size }))
+        .sort((a, b) => Number(a.size > b.size));
     },
     async fetchGutters (): Promise<void> {
       this.gutters = await Broker.listGutters();
