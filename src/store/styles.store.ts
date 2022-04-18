@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 
 import type {
-  Gutter,
   FontStyle,
   GridStyle,
   BorderStyle,
@@ -11,7 +10,6 @@ import type {
   SolidColorInfo,
   ExtendedBoxShadowType,
   ExtendedFontStyleCategory,
-  RootSize,
 } from '@/api/styles/index.types';
 
 import { Broker } from '@/worker.api';
@@ -22,8 +20,6 @@ import { hexToRgb } from './styles.store.helpers';
 export const useStylesStore = defineStore('styles', {
   state: () => {
     return {
-      rootSizes: [] as (RootSize & { value: number; })[],
-      gutters: [] as Gutter[],
       colors: {} as Record<ColorNameExtended, SolidColor[]>,
       fontStyles: {} as Record<ExtendedFontStyleCategory, FontStyle[]>,
       boxShadows: {} as Record<ExtendedBoxShadowType, BoxShadowStyle[]>,
@@ -35,30 +31,28 @@ export const useStylesStore = defineStore('styles', {
 
   },
   actions: {
-    async fetchRootSizes (): Promise<void> {
-      const rootSizes = await Broker.listRootSizes();
-      this.rootSizes = Object.values(rootSizes)
-        .map((s) => ({ ...s, value: s.size }))
-        .sort((a, b) => Number(a.size > b.size));
-    },
-    async fetchGutters (): Promise<void> {
-      this.gutters = await Broker.listGutters();
-    },
     async fetchColorStyles (): Promise<void> {
       const colors = await Broker.listSolidColors();
-      this.colors = colors.reduce((t, color) => {
+      const colorsObject = colors.reduce((t, color) => {
         if (!t[color.colorName]) t[color.colorName] = [color];
         else t[color.colorName].push(color);
         return t;
       }, {} as Record<ColorNameExtended, SolidColor[]>);
+      Object.keys(colorsObject).forEach((k) => {
+        this.colors[k as ColorNameExtended] =
+          [...colorsObject[k as ColorNameExtended]].sort((a, b) => a.colorShadow - b.colorShadow);
+      });
     },
     async getColorInfo (hexColor: string): Promise<SolidColorInfo> {
       return Broker.getColorInfo(hexToRgb(hexColor));
     },
     async createOrModifyColor (hexColor: string, id?: string): Promise<SolidColor> {
       const color = hexToRgb(hexColor);
-      if (!id) return Broker.createSolidColor(color);
-      return Broker.modifySolidColor({ id, color });
+      const newColor = id
+        ? await Broker.modifySolidColor({ id, color })
+        : await Broker.createSolidColor(color);
+      await this.fetchColorStyles();
+      return newColor;
     },
     async fetchTextStyles (): Promise<void> {
       const fontStyles = await Broker.listFontStyles();
@@ -81,17 +75,6 @@ export const useStylesStore = defineStore('styles', {
     },
     async fetchBorderStyles (): Promise<void> {
       this.borderStyles = await Broker.listBorderStyles();
-    },
-    async fetchStyles (): Promise<void> {
-      Promise.all([
-        this.fetchRootSizes(),
-        this.fetchGutters(),
-        this.fetchColorStyles(),
-        this.fetchTextStyles(),
-        this.fetchBoxShadows(),
-        this.fetchGridStyles(),
-        this.fetchBorderStyles(),
-      ]);
     },
   }
 });

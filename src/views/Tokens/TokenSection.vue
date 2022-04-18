@@ -19,10 +19,12 @@ defineEmits<{
   <section class="token-section">
     <header>
       <h3>{{ title }}</h3>
-      <Button 
-        v-if="hasCreate" 
-        @click="$emit('create')"
-      >+</Button>
+      <slot name="header">
+        <Button 
+          v-if="hasCreate" 
+          @click="$emit('create')"
+        >Create new</Button>
+      </slot>
     </header>
     <p>{{ description }}</p>
     <div class="token-section__list">

@@ -1,0 +1,144 @@
+$thumb-size: 16px;
+$thumb-color: var(--color-dark);
+$thumb-color--disabled: #888;
+$track-color: #ccc;
+$track-color-limited: #888;
+$track-height: calc($thumb-size / 3);
+$thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
+
+@mixin thumb {
+  height: $thumb-size;
+  width: $thumb-size;   
+  border-radius: 50%; 
+  background-color: $thumb-color;
+  z-index: 100;
+  pointer-events: all;
+}
+
+@mixin thumb-focus {
+  border: 1px solid #1aaed3;
+  outline: 2px solid #1aaed3;
+  outline-offset: 0.1rem;
+}
+
+@mixin track {
+  background: $track-color;
+  height: $track-height;
+  border-radius: calc($track-height / 2);
+  z-index: 50;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  width: 100%;
+  cursor: pointer;
+  pointer-events: none;
+  height: $thumb-size;
+  margin: calc(-1 * ($track-height / 2)) 0 0 0;
+
+  &::-webkit-slider-runnable-track {
+    @include track();
+  }
+
+  &::-moz-range-track {
+    @include track();
+  }
+
+  &::-webkit-slider-thumb {
+    @include thumb();
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: calc($thumb-adjust * -1); /* Centers thumb on the track */
+  }
+
+  &::-moz-range-thumb {
+    @include thumb();
+    border: none; /* Removes extra border that FF applies */
+    border-radius: 0; /* Removes default border-radius that FF applies */
+  }
+
+  &:focus {
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      @include thumb-focus();
+    }
+    &::-moz-range-thumb {
+      @include thumb-focus();
+    }
+  }
+
+  &__inputs {
+    position: relative;
+    height: $thumb-size;
+  }
+
+  &__container {
+    display: grid;
+    width: 100%;
+    grid-auto-rows: max-content;
+    row-gap: calc($thumb-size * 0.254);
+
+    .ticks {
+      display: flex;
+
+      .o_txt {
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+        position: relative;
+
+        &::before {
+          content: "|";
+          position: absolute;
+          top: calc(-1 * ($thumb-size * 1.20));
+          left: calc(50% - 0.12em);
+        }
+        &.long::before {
+          font-size: 18px;
+          top: calc(-1 * ($thumb-size * 1.25));
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  &__reference {
+    width: 100%;
+    position: absolute;
+    top: $thumb-adjust;
+    background-color: $track-color;
+    height: $track-height;
+    border-radius: calc($track-height / 2);
+    z-index: 0;
+  }
+  &__clickable {
+    @include thumb();
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  &.limited {
+    &::-webkit-slider-runnable-track {
+      background: $track-color-limited;
+    }
+
+    &::-moz-range-track {
+      background: $track-color-limited;
+    }
+  }
+  &[disabled] {
+    &::-webkit-slider-thumb {
+      background-color: $thumb-color--disabled;
+    }
+
+    &::-moz-range-thumb {
+      background-color: $thumb-color--disabled;
+    }
+  }
+}

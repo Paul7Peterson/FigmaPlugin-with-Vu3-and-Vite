@@ -6,6 +6,10 @@ import { getUser } from '@/api/figma';
 
 /** */
 export const PostBroker: PostBrokerType = {
+  initApp: async (msg) => {
+    await FigmaStore.getInstance.retrieveData();
+    answer(msg, null);
+  },
   /** */
   getUser: (msg) =>
     answer(msg, getUser()),
@@ -45,12 +49,20 @@ export const PostBroker: PostBrokerType = {
     await Styles.deleteColor(msg.payload.id);
     answer(msg, null);
   },
+  deleteRootSize: async (msg) => {
+    await Styles.deleteRootSize(msg.payload);
+    answer(msg, null);
+  },
   /** */
   createSolidColor: (msg) =>
     answer(msg, Styles.createOrModifySolidColor(msg.payload)),
   /** */
-  createOrModifyRootSize: async (msg) =>
-    answer(msg, await Styles.createOrEditRootSize(msg.payload)),
+  createOrModifyRootSize: async (msg) => {
+    const result = msg.payload
+      ? await Styles.editRootSize(msg.payload)
+      : await Styles.createRootSize();
+    answer(msg, result);
+  },
   /** */
   modifySolidColor: (msg) =>
     answer(msg, Styles.createOrModifySolidColor(msg.payload.color, msg.payload.id)),

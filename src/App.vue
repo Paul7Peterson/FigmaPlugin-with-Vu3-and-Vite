@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { onBeforeMount } from 'vue';
-import { useStylesStore } from '@/store';
+import { useAppStore } from '@/store';
 
 import { ResizeCorner } from './components'
 
-const store = useStylesStore()
+const store = useAppStore()
 
 onBeforeMount(async() => await store.fetchStyles())
 </script>

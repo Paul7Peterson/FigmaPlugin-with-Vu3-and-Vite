@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { TokenSection } from '.';
-import { useStylesStore } from '@/store';
+import { useSizesStore } from '@/store';
 
-const store = useStylesStore()
+const store = useSizesStore()
 
 const gutters = $computed(() => store.gutters)
 </script>

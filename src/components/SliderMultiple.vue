@@ -9,13 +9,15 @@ interface Props {
     value: number;
     /** */
     label?: string;
+    /** */
+    locked?: boolean
   }[];
   /** */
   label: string;
   /** */
   range: [number, number];
   /** */
-  disabled?: boolean;
+  locked?: boolean;
   /** */
   step?: number;
   /** */
@@ -30,11 +32,18 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   range: () => [0, 100],
-  disabled: false,
+  locked: false,
   step: 1,
   showTicks: false,
   ticksGap: 1,
 });
+
+defineEmits<{
+  (e: 'select', index: number): void
+}>()
+
+const sortedValues = $computed(() => 
+  [...props.values].sort((a, b) => a.value - b.value))
 
 function getLimit(index: number): [number, number] {
   const [min, max] = [
@@ -55,7 +64,7 @@ onErrorCaptured((e) => console.log(e))
     <label>{{ label }}</label>
     <div class="slider-multiple__container">
       <Slider 
-        v-for="(value, i) in values"
+        v-for="(value, i) in sortedValues"
         v-model="value.value"
         :key="i"
         :range="range"
@@ -65,54 +74,10 @@ onErrorCaptured((e) => console.log(e))
         :unit="unit"
         :showTicks="showTicks"
         :ticksGap="ticksGap"
+        :lock="locked || value.locked"
+        clickable
+        @select="$emit('select', i)"
       />
     </div>
   </div>
 </template>
-
-<style lang="scss">
-  $size: 24px;
-  $track-color: #ccc;
-
-  .slider-multiple {
-    display: grid;
-    grid-template-rows: max-content max-content;
-    
-    &__container {
-      display: grid;
-      position: relative;
-      grid-template-rows: max-content;
-
-      > .slider__container:not(:first-child) {
-        position: absolute;
-        top: 0;
-
-        .slider {
-          &__reference {
-            background-color: transparent;
-          }
-        }
-        .ticks {
-          display: none;
-        }
-      }
-    }
-
-    .slider {
-      pointer-events: none;
-
-      &::-webkit-slider-thumb {
-        pointer-events: all;
-      }
-      &::-moz-range-thumb {
-        pointer-events: all;
-      }
-      &::-webkit-slider-runnable-track {
-        background: transparent;
-      }
-      &::-moz-range-track {
-        background: transparent;
-      }
-    }
-  }
-</style>

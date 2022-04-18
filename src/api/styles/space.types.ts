@@ -6,8 +6,16 @@ export enum RootSizeName {
   Huge = 'Huge',
 }
 
+export const rootSizeScale: RootSizeName[] = [
+  RootSizeName.Tiny,
+  RootSizeName.Small,
+  RootSizeName.Medium,
+  RootSizeName.Big,
+  RootSizeName.Huge,
+];
+
 export interface RootSize {
-  size: number;
+  value: number;
   name: RootSizeName;
 }
 

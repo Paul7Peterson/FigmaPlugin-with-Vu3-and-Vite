@@ -100,7 +100,7 @@ function getColorNameAndShadowFromName (paint: PaintStyle): ValidatedOutput {
 
   const [name, shadow, ..._] = paint.name.split('/');
 
-  if (!name) throw new Error('A solid color must be categorized in a color');
+  if (!name) throw new Error('A solid color must have a name');
   let colorName: ColorNameExtended = name as ColorName;
   if (![...Object.keys(ColorValues), 'Grey'].includes(name)) {
     errors.push('A solid color must have valid color name');
@@ -108,13 +108,17 @@ function getColorNameAndShadowFromName (paint: PaintStyle): ValidatedOutput {
   }
 
   let alternativeText: string = '';
-  let colorShadow = 0;
+  let colorShadow = 100;
   if (!shadow) {
     errors.push('A solid color must have a shadow value');
     alternativeText = name;
   } else {
-    if (isNaN(+shadow)) throw new Error('A solid color must have numeric shadow value');
-    colorShadow = +shadow;
+    if (isNaN(+shadow)) {
+      errors.push('A solid color must have numeric shadow value');
+      alternativeText = shadow;
+    } else {
+      colorShadow = +shadow;
+    }
   }
 
   const color = paint.paints[0];

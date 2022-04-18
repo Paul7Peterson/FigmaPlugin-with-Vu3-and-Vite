@@ -15,6 +15,7 @@ type VoidFunction = (arg: null) => null;
 
 export type UIMessagePayload = {
   getUser: (arg: null) => User;
+  initApp: (arg: null) => null;
   resize: (args: { width: number, height: number; }) => null;
   getColorInfo: (args: Color) => SolidColorInfo;
   listSolidColors: (args: null) => SolidColor[];
@@ -24,9 +25,10 @@ export type UIMessagePayload = {
   listGridStyles: (args: null) => GridStyle[];
   listGutters: (args: null) => Gutter[];
   listBorderStyles: (args: null) => BorderStyle[];
+  deleteRootSize: (args: RootSize) => null;
   deleteSolidColor: (args: { id: string; }) => null;
   createSolidColor: (args: Color) => SolidColor;
-  createOrModifyRootSize: (args: RootSize) => RootSize;
+  createOrModifyRootSize: (args?: RootSize) => RootSize;
   modifySolidColor: (args: { id: string, color: Color; }) => SolidColor;
   closePlugin: VoidFunction;
 };

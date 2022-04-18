@@ -7,13 +7,13 @@ interface Props {
   /** */
   options: { text: string, value: string }[]
   /** */
-  disabled?: boolean 
+  locked?: boolean 
   /** */
   disabledOptions?: string[]
 }
 
 withDefaults(defineProps<Props>(), {
-  disabled: false,
+  locked: false,
   disabledOptions: () => []
 })
 
@@ -27,7 +27,7 @@ defineEmits<{
     <label :for="label">{{ label }}</label>
     <select 
       :name="label"
-      :disabled="disabled"
+      :disabled="locked"
     >
       <option 
         v-for="(option, i) in options"

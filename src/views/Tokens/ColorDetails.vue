@@ -98,8 +98,15 @@ function onFinish() {
         >
       </div>
       <div class="color-info__actions">
-        <Button @click="onEdit()">{{ data.isEditing ? 'Confirm' : 'Edit' }}</Button>
-        <Button @click="onDelete()" v-if="!data.isEditing">Delete</Button>
+        <Button 
+          btnType="info"
+          @click="onEdit()"
+        >{{ data.isEditing ? 'Confirm' : 'Edit' }}</Button>
+        <Button 
+          v-if="!data.isEditing"
+          btnType="danger"
+          @click="onDelete()" 
+        >Delete</Button>
       </div>
     </template>
   </Modal>

@@ -13,29 +13,29 @@ type VoidFunc = (...args: any[]) => void;
 const REGISTER = new Map<string, { resolve: VoidFunc; reject: VoidFunc; }>();
 
 type FigmaMessage = {
-  pluginMessage: UIMessage<UIMessageCode> | ErrorMessage,
+  pluginMessage: string,
   pluginId: string;
 };
 
 self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
-  if (data.pluginMessage.type === 'error') {
-    console.error(data.pluginMessage.payload.message);
+  const pluginMessage: UIMessage<UIMessageCode> | ErrorMessage = JSON.parse(data.pluginMessage);
+  if (pluginMessage.type === 'error') {
+    console.error(pluginMessage.payload.message);
   } else {
-    const result = REGISTER.get(data.pluginMessage.id);
-    console.log(['💌', data.pluginMessage.type, data.pluginMessage.payload]);
+    const { id, type, payload } = pluginMessage;
+    const result = REGISTER.get(id);
+    console.log('💌', type, payload);
     if (!result) throw new Error('No resolver');
-    result.resolve(data.pluginMessage.payload || null);
-    REGISTER.delete(data.pluginMessage.id);
+    result.resolve(payload || null);
+    REGISTER.delete(id);
   }
 });
 
 /** */
-export function registerCall<T extends UIMessageCode> (name: T, payload: UIMessageArg<T>): Promise<UIMessageReturn<T>> {
+export function registerCall<T extends UIMessageCode> (type: T, payload: UIMessageArg<T>): Promise<UIMessageReturn<T>> {
   return new Promise((resolve, reject) => {
     const id = uuidv4();
-    parent.postMessage({
-      pluginMessage: { payload, type: name, id }
-    }, '*');
+    parent.postMessage({ pluginMessage: JSON.stringify({ payload, type, id }) }, '*');
     REGISTER.set(id, { resolve, reject });
   });
 }

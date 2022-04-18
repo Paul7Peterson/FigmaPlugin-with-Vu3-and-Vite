@@ -2,11 +2,15 @@ import { BrokerType, registerCall } from './worker';
 
 export const Broker: BrokerType = {
   /** */
+  initApp: () => registerCall('initApp', null),
+  /** */
   getUser: () => registerCall('getUser', null),
   /** */
   getColorInfo: (payload) => registerCall('getColorInfo', payload),
   /** */
   listSolidColors: () => registerCall('listSolidColors', null),
+  /** */
+  deleteRootSize: (payload) => registerCall('deleteRootSize', payload),
   /** */
   deleteSolidColor: (payload) => registerCall('deleteSolidColor', payload),
   /** */

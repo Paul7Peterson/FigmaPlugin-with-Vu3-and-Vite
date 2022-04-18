@@ -7,12 +7,12 @@ interface Props {
   /** */
   range?: [number, number];
   /** */
-  disabled?: boolean
+  locked?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
   range: () => [0, 100],
-  disabled: false
+  locked: false
 });
 
 const emits = defineEmits<{
@@ -33,7 +33,7 @@ function onInput (e: Event) {
       :name="label"
       :min="range[0]"
       :max="range[1]"
-      :disabled="disabled"
+      :disabled="locked"
       @input="onInput"
     />
   </div>

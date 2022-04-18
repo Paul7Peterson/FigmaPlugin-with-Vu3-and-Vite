@@ -8,11 +8,17 @@ export class FigmaStore {
   private constructor () {
     const localStorageRef = figma.root.children[0]
       .findChild((n) => n.name === 'LocalStorage');
-    if (!localStorageRef) throw new Error('');
-    if (localStorageRef.type !== 'TEXT') throw new Error('');
+
+    if (!localStorageRef)
+      throw new Error(`
+        The plugin needs a way of store in info in the app. 
+        Create a text named "LocalStorage" in the first page on the root level.`);
+    if (localStorageRef.type !== 'TEXT')
+      throw new Error('The "LocalStorage" must be a text element.');
+
     this.documentStore = localStorageRef;
     localStorageRef.locked = true;
-    // localStorageRef.visible = false;
+    localStorageRef.visible = false;
     this.documentStore.setPluginData('name', 'store');
   }
 
@@ -29,7 +35,8 @@ export class FigmaStore {
 
   /** */
   async setKey<T extends StoreKey> (key: T, value: Store[T]): Promise<void> {
-    return figma.clientStorage.setAsync(key, value);
+    await figma.clientStorage.setAsync(key, value);
+    return this.persistData();
   }
 
   /** */
@@ -39,7 +46,7 @@ export class FigmaStore {
 
   /** */
   async getKeyIfExists<T extends StoreKey> (key: T): Promise<Store[T]> {
-    const value = await figma.clientStorage.getAsync(key);
+    const value = await this.getKey(key);
     if (!value) throw new Error(`Key "${key}" not found in storage.`);
     return value;
   }
@@ -56,7 +63,13 @@ export class FigmaStore {
 
 
   async retrieveData (): Promise<void> {
-
+    const data = JSON.parse(this.documentStore.characters) as Partial<Store>;
+    const promises = Object.entries(data).map(([k, v]) => {
+      if (v) return this.setKey(k as any, v);
+      return Promise.resolve();
+    });
+    await Promise.all(promises);
+    console.log('DATA:', data);
   }
 
   /** */
