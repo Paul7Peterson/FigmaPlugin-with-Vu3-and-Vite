@@ -2,6 +2,7 @@
 import { TokenSection, FontToken } from '.';
 import { useStylesStore } from '@/store';
 import type { ExtendedFontStyleCategory, FontStyle } from '@/api/styles/text.types';
+import { Details } from '@/components';
 
 const store = useStylesStore()
 
@@ -14,22 +15,21 @@ const textStyles: Record<ExtendedFontStyleCategory, FontStyle[]> = $computed(() 
     description="..."
     hasCreate
   >
-    <details 
-      class="font-style-tokens" open
-      v-for="(categoryTexts, category) in textStyles"
-      :key="category"
-    >
-      <summary>
-        <span>{{ category }}</span>
-      </summary>
-      <div class="font-style-tokens__list">
-        <FontToken 
-          v-for="(fontStyle, i) in categoryTexts"
-          :key="i"
-          :fontStyle="fontStyle"
-        />
-      </div>
-    </details>
+    <section class="font-style-tokens">
+      <Details 
+        v-for="(categoryTexts, category) in textStyles"
+        :key="category"
+      >
+        <template #summary>{{ category }}</template>
+        <div class="font-style-tokens__list">
+          <FontToken 
+            v-for="(fontStyle, i) in categoryTexts"
+            :key="i"
+            :fontStyle="fontStyle"
+          />
+        </div>
+      </Details>
+    </section>
   </TokenSection>
 </template>
 
@@ -37,21 +37,16 @@ const textStyles: Record<ExtendedFontStyleCategory, FontStyle[]> = $computed(() 
   $radius: 4px;
 
   .font-style-tokens {
-    border-radius: $radius;
-    border: 1px solid rgb(44, 44, 44);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    gap: 10px;
 
-    summary {
-      display: grid;
-      grid-template-columns: 1fr;
-      padding: 5px 10px;
-      font-weight: bold;
-      align-items: center;
-      column-gap: 10px;
-      background-color: rgb(44, 44, 44);
-      color: white;
-      border-top-left-radius: $radius;
-      border-top-right-radius: $radius;
+    > * {
+      flex: 1;
+      min-width: 200px;
     }
+
     &__list {
       display: grid;
       grid-auto-flow: row;

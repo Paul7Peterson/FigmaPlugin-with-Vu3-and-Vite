@@ -4,10 +4,12 @@ import { reactive } from "vue";
 import type { SolidColor } from "@api/styles/index.types";
 import ColorDetails from "./ColorDetails.vue";
 
-const props = defineProps<{
+interface Props {
   /** */
   color: SolidColor;
-}>();
+}
+
+const props = defineProps<Props>();
 
 defineEmits<{
   (e: "rerender"): void;

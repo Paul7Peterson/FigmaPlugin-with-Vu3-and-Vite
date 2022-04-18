@@ -2,17 +2,19 @@
 import { reactive, watch } from 'vue';
 
 import { Broker } from '@/worker.api';
-import type { SolidColor, SolidColorInfo, Color } from '@api/styles/index.types';
+import type { SolidColor, SolidColorInfo } from '@api/styles/index.types';
 import { useStylesStore } from '@/store';
 
 const store = useStylesStore()
 
-const props = defineProps<{
+interface Props {
   /** */
   modelValue: boolean;
   /** */
   color: SolidColor;
-}>()
+}
+
+const props = defineProps<Props>()
 
 const emits = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void

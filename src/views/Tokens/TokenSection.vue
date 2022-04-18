@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-withDefaults(defineProps<{
+interface Props {
   /** */
   title: string;
   /** */
   description: string;
   /** */
   hasCreate?: boolean;
-}>(), {
+}
+
+withDefaults(defineProps<Props>(), {
   hasCreate: false
 })
 

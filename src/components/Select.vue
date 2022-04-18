@@ -9,7 +9,7 @@ interface Props {
   /** */
   locked?: boolean 
   /** */
-  disabledOptions?: string[]
+  lockedOptions?: string[]
 }
 
 withDefaults(defineProps<Props>(), {
@@ -33,7 +33,7 @@ defineEmits<{
         v-for="(option, i) in options"
         :key="i"
         :value="option.value"
-        :disabled="disabledOptions.includes(option.value)"
+        :disabled="lockedOptions.includes(option.value)"
       >{{ option.value }}</option>
     </select>
   </div>

@@ -74,10 +74,14 @@ onErrorCaptured((e) => console.log(e))
         :unit="unit"
         :showTicks="showTicks"
         :ticksGap="ticksGap"
-        :lock="locked || value.locked"
+        :locked="locked || value.locked"
         clickable
         @select="$emit('select', i)"
       />
     </div>
   </div>
 </template>
+
+<style lang="scss">
+  @import "./SliderMultiple.scss";
+</style>

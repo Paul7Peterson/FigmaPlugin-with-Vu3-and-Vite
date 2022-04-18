@@ -114,3 +114,7 @@ function onInput (e: Event) {
     </datalist>
   </div>
 </template>
+
+<style lang="scss">
+  @import "./Slider.scss";
+</style>

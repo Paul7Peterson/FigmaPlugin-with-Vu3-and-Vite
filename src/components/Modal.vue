@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-defineProps<{
+interface Props {
   /** */
   modelValue: boolean;
   /** */
   title?: string;
-}>()
+}
+
+defineProps<Props>()
 
 defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void

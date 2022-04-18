@@ -82,7 +82,7 @@ async function onCancelEdit () {
     <template v-if="data.isEditing">
       <Button 
         btnType="info"
-        :disable="data.selectedRootSize?.value === rootSizes.find((s) => !s.locked)?.value"
+        :locked="data.selectedRootSize?.value === rootSizes.find((s) => !s.locked)?.value"
         @click="onConfirmEdit"
       >Confirm</Button>
       <Button 
