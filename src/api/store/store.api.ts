@@ -1,8 +1,9 @@
-import { RootSize, RootSizeName } from '../styles/index.types';
+import { SizesMap, GuttersMap } from '../styles/index.types';
 
 export type Store = {
   windowSize: { width: number; height: number; };
-  sizes: Partial<Record<RootSizeName, RootSize>>;
+  sizes: SizesMap;
+  gutters: GuttersMap;
 };
 
 export type StoreKey = keyof Store;

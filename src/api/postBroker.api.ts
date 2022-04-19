@@ -57,11 +57,20 @@ export const PostBroker: PostBrokerType = {
   createSolidColor: (msg) =>
     answer(msg, Styles.createOrModifySolidColor(msg.payload)),
   /** */
-  createOrModifyRootSize: async (msg) => {
-    const result = msg.payload
-      ? await Styles.editRootSize(msg.payload)
-      : await Styles.createRootSize();
-    answer(msg, result);
+  createRootSize: async (msg) => {
+    answer(msg, await Styles.createRootSize());
+  },
+  /** */
+  createGutter: async (msg) => {
+    answer(msg, await Styles.createGutter());
+  },
+  modifyRootSizes: async (msg) => {
+    await Styles.editRootSizes(msg.payload);
+    answer(msg, null);
+  },
+  modifyGutters: async (msg) => {
+    await Styles.editGutters(msg.payload);
+    answer(msg, null);
   },
   /** */
   modifySolidColor: (msg) =>

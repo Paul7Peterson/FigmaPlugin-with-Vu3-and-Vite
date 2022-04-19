@@ -4,29 +4,18 @@ interface Props {
   title: string;
   /** */
   description: string;
-  /** */
-  hasCreate?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
-  hasCreate: false
-})
-
-defineEmits<{
-  (e: 'create'): void
-}>()
+defineProps<Props>()
 </script>
 
 <template>
   <section class="token-section">
     <header>
       <h3>{{ title }}</h3>
-      <slot name="header">
-        <Button 
-          v-if="hasCreate" 
-          @click="$emit('create')"
-        >Create new</Button>
-      </slot>
+      <div class="button-group">
+        <slot name="header"></slot>
+      </div>
     </header>
     <p>{{ description }}</p>
     <div class="token-section__list">

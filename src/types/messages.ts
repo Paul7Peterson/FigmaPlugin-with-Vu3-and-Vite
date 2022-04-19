@@ -7,8 +7,9 @@ import type {
   GridStyle,
   BoxShadowStyle,
   FontStyle,
-  Gutter,
   BorderStyle,
+  GuttersMap,
+  Gutter,
 } from '@/api/styles/index.types';
 
 type VoidFunction = (arg: null) => null;
@@ -23,12 +24,15 @@ export type UIMessagePayload = {
   listFontStyles: (args: null) => FontStyle[];
   listBoxShadowStyles: (args: null) => BoxShadowStyle[];
   listGridStyles: (args: null) => GridStyle[];
-  listGutters: (args: null) => Gutter[];
+  listGutters: (args: null) => GuttersMap;
   listBorderStyles: (args: null) => BorderStyle[];
   deleteRootSize: (args: RootSize) => null;
   deleteSolidColor: (args: { id: string; }) => null;
   createSolidColor: (args: Color) => SolidColor;
-  createOrModifyRootSize: (args?: RootSize) => RootSize;
+  createRootSize: (args: null) => RootSize;
+  createGutter: (args: null) => Gutter;
+  modifyRootSizes: (args: RootSize[]) => null;
+  modifyGutters: (args: Gutter[]) => null;
   modifySolidColor: (args: { id: string, color: Color; }) => SolidColor;
   closePlugin: VoidFunction;
 };

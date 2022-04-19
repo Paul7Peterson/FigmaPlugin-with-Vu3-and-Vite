@@ -21,20 +21,37 @@ export interface RootSize {
 
 export type SizesMap = Partial<Record<RootSizeName, RootSize>>;
 
-export type GutterName =
-  | '3XS'
-  | '2XS'
-  | 'XS'
-  | 'S'
-  | 'M'
-  | 'L'
-  | 'XL'
-  | '2XL'
-  | '3XL'
-  | '4XL'
-  | '5XL';
+export enum GutterName {
+  XS3 = '3XS',
+  XS2 = '2XS',
+  XS = 'XS',
+  S = 'S',
+  M = 'M',
+  L = 'L',
+  XL = 'XL',
+  XL2 = '2XL',
+  XL3 = '3XL',
+  XL4 = '4XL',
+  XL5 = '5XL',
+}
+
+export const gutterScale: GutterName[] = [
+  GutterName.XS3,
+  GutterName.XS2,
+  GutterName.XS,
+  GutterName.S,
+  GutterName.M,
+  GutterName.L,
+  GutterName.XL,
+  GutterName.XL2,
+  GutterName.XL3,
+  GutterName.XL4,
+  GutterName.XL5,
+];
 
 export interface Gutter {
   name: GutterName;
-  multiplier: number;
+  value: number;
 }
+
+export type GuttersMap = Partial<Record<GutterName, Gutter>>;

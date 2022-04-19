@@ -14,6 +14,7 @@ export type {
   SizesMap,
   Gutter,
   GutterName,
+  GuttersMap,
 } from './space.types';
 
 export type {

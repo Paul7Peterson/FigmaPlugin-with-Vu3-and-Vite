@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { Broker } from '@/worker.api';
+import { useGuttersStore } from './gutters.store';
 import { useSizesStore } from './sizes.store';
 import { useStylesStore } from './styles.store';
 
@@ -16,11 +17,11 @@ export const useAppStore = defineStore('app', {
   },
   actions: {
     async fetchStyles (): Promise<void> {
-      const [sizes, styles] = [useSizesStore(), useStylesStore()];
+      const styles = useStylesStore();
       await Broker.initApp();
       await Promise.all([
-        sizes.fetchRootSizes(),
-        sizes.fetchGutters(),
+        useSizesStore().fetchRootSizes(),
+        useGuttersStore().fetchGutters(),
         styles.fetchColorStyles(),
         styles.fetchTextStyles(),
         styles.fetchBoxShadows(),

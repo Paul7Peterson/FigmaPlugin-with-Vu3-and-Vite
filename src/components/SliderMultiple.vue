@@ -2,16 +2,20 @@
 import { onErrorCaptured } from 'vue'
 import { Slider } from '@/components';
 
+interface Value {
+  /** */
+  value: number;
+  /** */
+  label?: string;
+  /** */
+  locked?: boolean;
+  /** */
+  name?: string;
+}
+
 interface Props {
   /** */
-  values: {
-    /** */
-    value: number;
-    /** */
-    label?: string;
-    /** */
-    locked?: boolean
-  }[];
+  values: Value[];
   /** */
   label: string;
   /** */
@@ -28,6 +32,12 @@ interface Props {
   showTicks?: boolean;
   /** */
   ticksGap?: number;
+  /** */
+  titleBuilder?: (value: number, instance: Value) => string;
+  /** */
+  tickBuilder?: (value: number, instance: Value) => string;
+  /** */
+  verticalHeight?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -75,6 +85,9 @@ onErrorCaptured((e) => console.log(e))
         :showTicks="showTicks"
         :ticksGap="ticksGap"
         :locked="locked || value.locked"
+        :titleBuilder="titleBuilder && ((i) => titleBuilder(i, value))"
+        :tickBuilder="titleBuilder && ((i) => tickBuilder(i, value))"
+        :verticalHeight="verticalHeight"
         clickable
         @select="$emit('select', i)"
       />

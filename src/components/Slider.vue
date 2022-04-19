@@ -1,4 +1,5 @@
-<script lang="ts" setup>
+<script lang="ts" setup>import { StyleValue } from 'vue';
+
 interface Props {
   /** */
   modelValue: number;
@@ -19,9 +20,11 @@ interface Props {
   /** */
   clickable?: boolean;
   /** */
-  titleBuilder?: (value: number) => string;
+  titleBuilder?: (value: number, ...args: any[]) => string;
   /** */
-  tickBuilder?: (value: number) => string;
+  tickBuilder?: (value: number, ...args: any[]) => string;
+  /** */
+  verticalHeight?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,20 +43,38 @@ const emits = defineEmits<{
   (e: 'select'): void
 }>()
 
-const min = $computed(() => props.limit?.[0] || props.range[0])
-const max = $computed(() => props.limit?.[1] || props.range[1])
+const min = $computed(() => props.limit?.[0] ?? props.range[0])
+const max = $computed(() => props.limit?.[1] ?? props.range[1])
 const rangeValue = $computed(() => props.range[1] - props.range[0])
-const sideGap = $computed(() => `(${50 / (rangeValue + 1)}% - ${8}px)`)
-const minPadding = $computed(() => ((min - props.range[0]) * 100) / (rangeValue + 1))
-const maxPadding = $computed(() => ((props.range[1] - max) * 100) / (rangeValue + 1))
-
-const title = $computed(() => props.titleBuilder?.(props.modelValue) || props.modelValue.toString())
 
 const options = $computed(() => {
   return new Array((rangeValue / props.step) + 1)
     .fill(0)
     .map((_, i) => props.range[0] + (i * props.step))
 })
+
+const paddingLimits: StyleValue = $computed(() => {
+  if (!props.limit) return {}
+
+  const [pMin, pMax] = [min - props.range[0], props.range[1] - max]
+
+  if (props.verticalHeight) {
+    const gap = props.verticalHeight / rangeValue;
+    const correction = 1 - (16 / props.verticalHeight) 
+    const [pBottom, pTop] = [pMin, pMax]
+      .map((x) => x ? `${(x * gap * correction)}px` : '0')
+
+   
+    return { 'padding-bottom': pBottom, 'padding-top': pTop }
+  }
+
+  const [pLeft, pRight] = [pMin, pMax]
+    .map((x) =>  x ? `calc(${x * (100 / rangeValue) * 0.976}%)` : '0')
+  return { 'padding-left': pLeft, 'padding-right': pRight }
+})
+const title = $computed(() => 
+  props.titleBuilder?.(props.modelValue) || props.modelValue.toString())
+
 
 function onInput (e: Event) {
   emits('update:modelValue', (e.target as HTMLInputElement).valueAsNumber)
@@ -62,23 +83,41 @@ function onInput (e: Event) {
 
 <template>
   <div 
-    class="slider__container" 
+    class="slider" 
+    :class="{ vertical: !!verticalHeight }"
+    :style="{ '--height': `${verticalHeight || 0}px` }"
     :data-limit="[min, max]"
   >
     <label 
       class="slider__label" 
       :for="label"
+      style="grid-area: label"
     >{{ label }}</label>
-    <div class="slider__inputs" >
+     <div 
+      class="ticks" 
+      v-if="showTicks"
+      :style="{ 
+        'grid-area': 'ticks',
+        'margin': verticalHeight 
+          ? `-${(verticalHeight / (options.length * 2)) - 8}px 0` 
+          : `0 calc(-${50 / options.length}% + ${8}px)`}"
+    >
+      <span 
+        class="o_txt"
+        v-for="(option, i) in options"
+        :class="{ long: !(i % ticksGap) }"
+        :key="i"
+      >{{ i % ticksGap ? '' : (tickBuilder?.(option) || option) }}</span>
+    </div>
+    <div 
+      class="slider__inputs"
+      style="grid-area: inputs"
+    >
       <div class="slider__reference"/>
       <input 
         type="range" 
-        class="slider"
         :class="{ limited: !!limit }"
-        :style="{ 
-          'padding-left': `calc(${sideGap} + ${minPadding}%)`, 
-          'padding-right': `calc(${sideGap} + ${maxPadding}%)`, 
-        }"
+        :style="paddingLimits"
         :title="title"
         :name="label"
         :min="min" 
@@ -87,6 +126,7 @@ function onInput (e: Event) {
         :disabled="locked"
         :step="step"
         :list="id"
+        :orient="verticalHeight ? 'vertical' : 'horizontal'"
         @input="onInput"
         @dblclick="$emit('select')"
       >
@@ -94,23 +134,11 @@ function onInput (e: Event) {
         class="slider__clickable"
         v-if="locked && clickable" 
         :title="title"
-        :style="{ 
-          left: `calc(${sideGap} + ${((modelValue - props.range[0]) * 100) / (rangeValue + 1)}%)`, 
-        }"
+        :style="{ left: `${(100 * 0.976 * (modelValue - range[0])) / rangeValue}%` }"
         @dblclick="$emit('select')"/>
     </div>
-    <div class="ticks" v-if="showTicks">
-      <span 
-        class="o_txt"
-        v-for="(option, i) in options"
-        :class="{ long: !(i % ticksGap) }"
-        :key="i">{{ i % ticksGap ? '' : (tickBuilder?.(option) || option) }}</span>
-    </div>
     <datalist :id="id">
-      <option 
-        v-for="(option, i) in options"
-        :key="i"
-      >{{ option }}</option>
+      <option v-for="(_, i) in options" :key="i"/>
     </datalist>
   </div>
 </template>

@@ -10,7 +10,7 @@ const colors: Record<ColorNameExtended, SolidColor[]> = $computed(() => store.co
 </script>
 
 <template>
-  <TokenSection title="Colors" description="..." hasCreate>
+  <TokenSection title="Colors" description="...">
     <section class="color-tokens">
       <Details
         v-for="(colorGroup, name) in colors" 

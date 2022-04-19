@@ -16,9 +16,15 @@ export const Broker: BrokerType = {
   /** */
   createSolidColor: (payload) => registerCall('createSolidColor', payload),
   /** */
-  createOrModifyRootSize: (payload) => registerCall('createOrModifyRootSize', payload),
+  createRootSize: () => registerCall('createRootSize', null),
+  /** */
+  createGutter: () => registerCall('createGutter', null),
   /** */
   modifySolidColor: (payload) => registerCall('modifySolidColor', payload),
+  /** */
+  modifyRootSizes: (payload) => registerCall('modifyRootSizes', payload),
+  /** */
+  modifyGutters: (payload) => registerCall('modifyGutters', payload),
   /** */
   resize: (payload) => registerCall('resize', payload),
   /** */

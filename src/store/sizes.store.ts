@@ -1,9 +1,6 @@
 import { defineStore } from 'pinia';
 
-import type {
-  Gutter,
-  RootSize,
-} from '@/api/styles/index.types';
+import type { RootSize } from '@/api/styles/index.types';
 
 import { Broker } from '@/worker.api';
 
@@ -14,7 +11,6 @@ export const useSizesStore = defineStore('sizes', {
   state: () => {
     return {
       rootSizes: [] as ModifiedRootSize[],
-      gutters: [] as Gutter[],
     };
   },
   getters: {
@@ -27,17 +23,18 @@ export const useSizesStore = defineStore('sizes', {
         .sort((a, b) => a.value - b.value)
         .map((s) => ({ ...s, locked: true }));
     },
-    async createOrModifyRootSize (size?: RootSize): Promise<ModifiedRootSize> {
-      const rootSize = await Broker.createOrModifyRootSize(size);
+    async createRootSize (): Promise<ModifiedRootSize> {
+      const rootSize = await Broker.createRootSize();
       await this.fetchRootSizes();
       return { ...rootSize, locked: true };
+    },
+    async modifyRootSizes (sizes: RootSize[]): Promise<void> {
+      await Broker.modifyRootSizes(sizes);
+      await this.fetchRootSizes();
     },
     async deleteRootSize (size: RootSize): Promise<void> {
       await Broker.deleteRootSize(size);
       await this.fetchRootSizes();
-    },
-    async fetchGutters (): Promise<void> {
-      this.gutters = await Broker.listGutters();
     },
   }
 });

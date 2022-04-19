@@ -13,7 +13,6 @@ const textStyles: Record<ExtendedFontStyleCategory, FontStyle[]> = $computed(() 
   <TokenSection 
     title="Texts"
     description="..."
-    hasCreate
   >
     <section class="font-style-tokens">
       <Details 

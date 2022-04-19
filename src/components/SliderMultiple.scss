@@ -1,6 +1,3 @@
-$size: 24px;
-$track-color: #ccc;
-
 .slider-multiple {
   display: grid;
   grid-template-rows: max-content max-content;
@@ -10,14 +7,12 @@ $track-color: #ccc;
     position: relative;
     grid-template-rows: max-content;
 
-    > .slider__container:not(:first-child) {
+    > .slider:not(:last-child) {
       position: absolute;
       top: 0;
 
-      .slider {
-        &__reference {
-          background-color: transparent;
-        }
+      .slider__reference {
+        background-color: transparent;
       }
       .ticks {
         display: none;
@@ -25,15 +20,8 @@ $track-color: #ccc;
     }
   }
 
-  .slider {
-    pointer-events: none;
-
-    &::-webkit-slider-thumb {
-      pointer-events: all;
-    }
-    &::-moz-range-thumb {
-      pointer-events: all;
-    }
+  .slider input[type="range"],
+  .slider.vertical input[type="range"][orient="vertical"] {
     &::-webkit-slider-runnable-track {
       background: transparent;
     }

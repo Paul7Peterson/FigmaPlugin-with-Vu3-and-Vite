@@ -17,7 +17,7 @@ const rootSizes = $computed(() => store.rootSizes)
 
 async function onCreate() {
   if (confirm('Do you really want to create a new root size?')) {
-    await store.createOrModifyRootSize()
+    await store.createRootSize()
   }
 }
 
@@ -36,23 +36,17 @@ async function onDelete () {
 }
 
 function onEdit () {
-  data.showDetails = false;
-  if (!data.selectedRootSize) throw new Error('');
   store.rootSizes = store.rootSizes
-    .map((s) => ({...s, locked: s.name !== data.selectedRootSize?.name }))
+    .map((s) => ({...s, locked: false }))
   data.isEditing = true;
 }
 
 async function onConfirmEdit () {
-  const size = rootSizes.find((s) => !s.locked)
-  if (!size) throw new Error('');
-  await store.createOrModifyRootSize(size);
-  data.selectedRootSize = null;
+  await store.modifyRootSizes(store.rootSizes);
   data.isEditing = false;
 }
 
 async function onCancelEdit () {
-  data.selectedRootSize = null;
   data.isEditing = false;
   await store.fetchRootSizes();
 }
@@ -65,6 +59,24 @@ async function onCancelEdit () {
     hasCreate
     @create="onCreate"
   >
+    <template #header>
+      <template v-if="data.isEditing">
+        <Button 
+          btnType="danger"
+          hollow
+          @click="onCancelEdit"
+        >Cancel</Button> 
+        <Button 
+          btnType="info"
+          :locked="data.selectedRootSize?.value === rootSizes.find((s) => !s.locked)?.value"
+          @click="onConfirmEdit"
+        >Confirm</Button>
+      </template>
+      <template v-else>
+        <Button hollow @click="onEdit">Edit values</Button>
+        <Button @click="onCreate">Create new</Button>
+      </template>
+    </template>
     <div 
       v-if="rootSizes.length" 
       class="size-tokens__list"
@@ -75,22 +87,12 @@ async function onCancelEdit () {
         label="Root sizes"
         showTicks
         :ticksGap="3"
+        :tickBuilder="(i) => `${i}px`"
+        :titleBuilder="(i, l) => `${l.name}\n${i}px`"
         @select="(i) => onDetails(rootSizes[i])"
       />
     </div>
     <p v-else>No root sizes available</p>
-    <template v-if="data.isEditing">
-      <Button 
-        btnType="info"
-        :locked="data.selectedRootSize?.value === rootSizes.find((s) => !s.locked)?.value"
-        @click="onConfirmEdit"
-      >Confirm</Button>
-      <Button 
-        btnType="danger"
-        hollow
-        @click="onCancelEdit"
-      >Cancel</Button> 
-    </template>
   </TokenSection>
   <Modal v-model="data.showDetails">
     <dl>
@@ -101,7 +103,6 @@ async function onCancelEdit () {
       btnType="danger"
       @click="onDelete"
     >Delete</Button>
-    <Button @click="onEdit">Edit</Button>
   </Modal>
 </template>
 
