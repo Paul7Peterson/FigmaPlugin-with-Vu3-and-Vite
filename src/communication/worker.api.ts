@@ -62,6 +62,4 @@ export const Broker: BrokerGenericType<UIMessagePayload> = {
   getUser: () => registerCall('getUser', null),
   resize: (payload) => registerCall('resize', payload),
   closePlugin: () => registerCall('closePlugin', null),
-
-
 };

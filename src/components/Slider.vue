@@ -59,25 +59,13 @@ const options = $computed(() => {
 const paddingLimits: StyleValue = $computed(() => {
   if (!props.limit) return {}
 
-  const [pMin, pMax] = [min - props.range[0], props.range[1] - max]
-
-  if (props.verticalHeight) {
-    const gap = props.verticalHeight / rangeValue;
-    const correction = 1 - (16 / props.verticalHeight) 
-    const [pBottom, pTop] = [pMin, pMax]
-      .map((x) => x ? `${(x * gap * correction)}px` : '0')
-
-   
-    return { 'padding-bottom': pBottom, 'padding-top': pTop }
-  }
-
-  const [pLeft, pRight] = [pMin, pMax]
-    .map((x) =>  x ? `calc(${x * (100 / rangeValue) * 0.976}%)` : '0')
+  const [pLeft, pRight] = [min - props.range[0], props.range[1] - max]
+    .map((x) =>  x ? `calc(${x * (100 / rangeValue)}% - ${8}px)` : '0')
   return { 'padding-left': pLeft, 'padding-right': pRight }
 })
+
 const title = $computed(() => 
   props.titleBuilder?.(props.modelValue) || props.modelValue.toString())
-
 
 function onInput (e: Event) {
   emits('update:modelValue', (e.target as HTMLInputElement).valueAsNumber)
@@ -87,7 +75,10 @@ function onInput (e: Event) {
 <template>
   <div 
     class="slider" 
-    :class="{ vertical: !!verticalHeight }"
+    :class="{ 
+      vertical: !!verticalHeight,
+      reverse: reverse,
+    }"
     :style="{ '--height': `${verticalHeight || 0}px` }"
     :data-limit="[min, max]"
   >
@@ -116,7 +107,6 @@ function onInput (e: Event) {
       class="slider__inputs"
       style="grid-area: inputs"
     >
-      <div class="slider__reference"/>
       <input 
         type="range" 
         :class="{ limited: !!limit }"
@@ -137,7 +127,7 @@ function onInput (e: Event) {
         class="slider__clickable"
         v-if="locked && clickable" 
         :title="title"
-        :style="{ left: `${(100 * 0.976 * (modelValue - range[0])) / rangeValue}%` }"
+        :style="{ left: `${(100 * (modelValue - range[0])) / rangeValue}%` }"
         @dblclick="$emit('select')"/>
     </div>
     <datalist :id="id">

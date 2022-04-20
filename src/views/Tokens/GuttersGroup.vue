@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import { reactive } from 'vue';
 import { TokenSection } from '.';
 import { useGuttersStore, useSizesStore } from '@/store';
-import { Details, SliderMultiple } from '@/components';
-import { reactive } from 'vue';
-import type { Gutter } from '@/api/styles/index.types';
+import { SliderMultiple } from '@/components';
+import { Gutter, RootSizeName } from '@/api/styles/index.types';
 
 const store = useGuttersStore()
 const sizesStore = useSizesStore()
@@ -16,6 +16,11 @@ const data = reactive({
 
 const gutters = $computed(() => store.gutters)
 const allowCreateGutters = $computed(() => !!sizesStore.rootSizes.length)
+const baseSize = $computed(() => {
+  const reference: RootSizeName = 'Medium' as RootSizeName
+  const mediumSize = sizesStore.rootSizes.find((x) => x.name === reference)?.value
+  return mediumSize || 14
+})
 
 async function onCreate() {
   if (confirm('Do you really want to create a new root size?')) {
@@ -52,6 +57,8 @@ async function onCancelEdit () {
   data.isEditing = false;
   await store.fetchGutters();
 }
+const x = $ref([{ value: 5, name: 'XXX', locked: false },{ value: 7, name: 'XXX', locked: false }])
+const test = $ref(5)
 </script>
 
 <template>
@@ -96,7 +103,10 @@ async function onCancelEdit () {
               <span>{{ gutter.name }}</span>  
               <div 
                 class="gutter-tokens__sample"
-                :style="{ width: gutter.value, height: gutter.value, }"
+                :style="{ 
+                  width: gutter.value * baseSize, 
+                  height: gutter.value * baseSize, 
+                }"
               /> 
             </article>
           </div>
@@ -110,6 +120,7 @@ async function onCancelEdit () {
             :tickBuilder="(i) => `${i}px`"
             :titleBuilder="(i, l) => `${l.name}\n${i}px`"
             @select="(i) => onDetails(gutters[i])"
+            reverse
             showTicks
           />
         </template>

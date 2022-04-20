@@ -16,7 +16,7 @@ import {
 } from './color.helpers';
 
 /** */
-export function getSolidColors (): SolidColor[] {
+export function listSolidColors (): SolidColor[] {
   return figma.getLocalPaintStyles()
     .filter((color) => {
       const { paints } = color;

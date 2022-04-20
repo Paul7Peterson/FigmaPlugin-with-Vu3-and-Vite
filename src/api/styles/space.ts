@@ -17,7 +17,7 @@ export async function listRootSizes (): Promise<SizesMap> {
 /** */
 export async function createRootSize (): Promise<RootSize> {
   const sizes = Object.values(await listRootSizes())
-    .sort((a, b) => b.value - a.value);
+    .sort((a, b) => a.value - b.value);
 
   if (sizes.length >= Object.values(RootSizeName).length)
     throw new Error('Cannot create more sizes');
@@ -60,7 +60,7 @@ export async function listGutters (): Promise<GuttersMap> {
 
 export async function createGutter (): Promise<Gutter> {
   const gutters = Object.values(await listGutters())
-    .sort((a, b) => b.value - a.value);
+    .sort((a, b) => a.value - b.value);
 
   if (gutters.length >= Object.values(GutterName).length)
     throw new Error('Cannot create more sizes');
@@ -94,22 +94,22 @@ async function editGutter (gutter: Gutter, isNew: boolean = false): Promise<Gutt
   return gutter;
 }
 
-function getNextOrPrevious<T extends string> (enumeration: T[], ref: T, select: 'prev' | 'next'): T {
-  const modifier = select === 'prev' ? -1 : 1;
-  return enumeration[enumeration.findIndex(s => ref === s) + modifier];
-}
-
 function getAlternateValue<N extends string> (list: N[], values: { value: number, name: N; }[], gap: number): { value: number, name: N; } {
+  if (!values.length) throw new Error('To set an alternate value you need a reference.');
+
+  console.log(values.length % 2, values);
+
+
   if (values.length % 2) {
     const last = values[values.length - 1]!;
-    return {
-      value: last.value + gap,
-      name: getNextOrPrevious(list, last.name, 'next'),
-    };
-  } else {
-    return {
-      value: values[0].value - gap,
-      name: getNextOrPrevious(list, values[0].name, 'prev'),
-    };
+    const name = getNextOrPrevious(list, last.name, 'next');
+    return { value: last.value + gap, name };
   }
+  const name = getNextOrPrevious(list, values[0].name, 'prev');
+  return { value: values[0].value - gap, name };
+}
+
+function getNextOrPrevious<T extends string> (enumeration: T[], ref: T, select: 'prev' | 'next'): T {
+  const modifier = select === 'prev' ? -1 : 1;
+  return enumeration[modifier + enumeration.findIndex((s) => ref === s)];
 }

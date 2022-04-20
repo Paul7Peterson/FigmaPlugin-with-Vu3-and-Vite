@@ -29,6 +29,7 @@ withDefaults(defineProps<Props>(), {
   $btn-color--primary: var(--color-dark);
   $btn-color--danger: crimson;
   $btn-color--info: darkcyan;
+  $btn-color--locked: #888;
   $btn-border-width: 2px;
 
   button.btn {
@@ -49,7 +50,7 @@ withDefaults(defineProps<Props>(), {
       border-color: $btn-color--info;
     }
     &.hollow {
-      background-color: white;
+      background-color: transparent;
       color: $btn-color--primary;
 
       &.danger {
@@ -57,6 +58,15 @@ withDefaults(defineProps<Props>(), {
       }
       &.info {
         color: $btn-color--info;
+      }
+    }
+    &[disabled] {
+      background-color: $btn-color--locked;
+      border-color: $btn-color--locked;
+
+      &.hollow {
+        background-color: transparent;
+        color: $btn-color--locked;
       }
     }
   }

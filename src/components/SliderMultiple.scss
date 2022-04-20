@@ -7,26 +7,31 @@
     position: relative;
     grid-template-rows: max-content;
 
-    > .slider:not(:last-child) {
+    > .slider:not(:first-child) {
       position: absolute;
       top: 0;
 
-      .slider__reference {
-        background-color: transparent;
+      input[type="range"]::before {
+        background: transparent;
       }
       .ticks {
         display: none;
       }
     }
-  }
-
-  .slider input[type="range"],
-  .slider.vertical input[type="range"][orient="vertical"] {
-    &::-webkit-slider-runnable-track {
-      background: transparent;
-    }
-    &::-moz-range-track {
-      background: transparent;
+    .slider {
+      pointer-events: none;
+  
+      input[type="range"],
+      &.reverse input[type="range"],
+      &.vertical input[type="range"][orient="vertical"],
+      &.vertical.reverse input[type="range"][orient="vertical"] {
+        &::-webkit-slider-runnable-track {
+          background: transparent;
+        }
+        &::-moz-range-track {
+          background: transparent;
+        }
+      }
     }
   }
 }

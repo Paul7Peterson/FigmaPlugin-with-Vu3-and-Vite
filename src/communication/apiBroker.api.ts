@@ -48,7 +48,7 @@ const GuttersPostBroker: GenericPostBrokerType<GuttersUIMessages> = {
 
 const ColorsPostBroker: GenericPostBrokerType<ColorsUIMessages> = {
   listSolidColors: (msg) =>
-    answer(msg, Styles.getSolidColors()),
+    answer(msg, Styles.listSolidColors()),
   getColorInfo: (msg) =>
     answer(msg, Styles.getSolidColorInfo(msg.payload)),
   createSolidColor: (msg) =>

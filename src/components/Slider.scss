@@ -1,9 +1,13 @@
+$input-height: 22px;
+
 $thumb-size: 16px;
 $thumb-color: var(--color-dark);
 $thumb-color--disabled: #888;
+
 $track-color: #ccc;
 $track-color--limited: #888;
-$track-height: calc($thumb-size / 2);
+$track-height: calc($thumb-size / 4);
+
 $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
 
 @mixin thumb {
@@ -23,7 +27,7 @@ $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
 }
 
 @mixin track {
-  background: $track-color;
+  background: transparent;
   height: $track-height;
   border-radius: calc($track-height / 2);
   z-index: 50;
@@ -45,86 +49,12 @@ $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
       "ticks" max-content / 1fr;
 
   label {
-    margin-bottom: 5px;;
-  }
-
-  input[type="range"] {
-    accent-color: var(--color-dark);
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    pointer-events: none;
-    padding-left: 4px; 
-    margin: 0 2px 0 -2px;
-
-    &::-webkit-slider-runnable-track {
-      @include track();
-    }
-  
-    &::-moz-range-track {
-      @include track();
-    }
-  
-    &::-webkit-slider-thumb {
-      @include thumb();
-      -webkit-appearance: none; /* Override default look */
-      appearance: none;
-      margin-top: calc($thumb-adjust * -1); /* Centers thumb on the track */
-    }
-  
-    &::-moz-range-thumb {
-      @include thumb();
-      border: none; /* Removes extra border that FF applies */
-      border-radius: 0; /* Removes default border-radius that FF applies */
-    }
-  
-    &:focus {
-      outline: none;
-  
-      &::-webkit-slider-thumb {
-        @include thumb-focus();
-      }
-      &::-moz-range-thumb {
-        @include thumb-focus();
-      }
-    }
-    &.limited {
-      margin-left: 2px;
-      width: calc(100% - 4px);
-      
-      &::-webkit-slider-runnable-track {
-        background: $track-color--limited;
-      }
-  
-      &::-moz-range-track {
-        background: $track-color--limited;
-      }
-    }
-    &[disabled] {
-      &::-webkit-slider-thumb {
-        @include thumb();
-        background-color: $thumb-color--disabled;
-      }
-  
-      &::-moz-range-thumb {
-        @include thumb();
-        background-color: $thumb-color--disabled;
-      }
-    }
+    margin-bottom: 5px;
   }
 
   &__inputs {
     position: relative;
-  }
-
-  &__reference {
-    width: 100%;
-    position: absolute;
-    top: calc($thumb-adjust + ($track-height / 2));
-    background-color: $track-color;
-    height: $track-height;
-    border-radius: calc($track-height / 2);
-    z-index: 0;
+    pointer-events: none;
   }
 
   &__clickable {
@@ -136,6 +66,11 @@ $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
     z-index: 100;
     cursor: pointer;
   }
+  
+  &.reverse .slider__inputs {
+    transform: rotateY(180deg);
+  }
+  
   .ticks {
     display: flex;
     z-index: 90;
@@ -157,69 +92,83 @@ $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
         z-index: 90;
       }
       &.long::before {
-        font-size: 18px;
+        font-size: 1.2em;
         font-weight: bold;
       }
     }
   }
 
+  input[type="range"] {
+    height: $input-height;
+    accent-color: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    pointer-events: none;
+    margin: 0;
+    background: transparent;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      top: calc(($input-height / 2) -  ($track-height / 2));
+      right: 0;
+      left: 0;
+      background: $track-color;
+      height: $track-height;
+      border-radius: calc($track-height / 2);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    &::-webkit-slider-runnable-track {
+      @include track();
+    }
+  
+    &::-moz-range-track {
+      @include track();
+    }
+  
+    &::-webkit-slider-thumb {
+      @include thumb();
+      -webkit-appearance: none; /* Override default look */
+      appearance: none;
+      margin-top: calc($thumb-adjust * -1); /* Centers thumb on the track */
+    }
+  
+    &::-moz-range-thumb {
+      @include thumb();
+      border: none; /* Removes extra border that FF applies */
+      border-radius: 0; /* Removes default border-radius that FF applies */
+    }
+  }
+
   &.vertical {
     grid-template: 
-      "label  label" max-content
-      "inputs ticks" var(--height) / 22px max-content;
-    align-items: center;
+      "label  label" auto
+      "inputs ticks" var(--height) / $input-height max-content;
+    // align-items: center;
 
-    input[type="range"][orient="vertical"] {
-      -webkit-appearance: slider-vertical;
-      border: none;
-      accent-color: rgba(0,0,0,0.1);
-      height: 100%;
-      margin: 0;
-      padding-left: 0;
-
-      &::-webkit-slider-thumb {
-        @include thumb();
-        margin-right: calc($thumb-adjust * -1); /* Centers thumb on the track */
-      }
-      &::-webkit-slider-runnable-track {
-        @include track--vertical();
-      }
-    
-      &::-moz-range-track {
-        @include track--vertical();
-      }
-
-      &.limited {
-        &::-webkit-slider-runnable-track {
-          background: $track-color--limited;
-        }
-    
-        &::-moz-range-track {
-          background: $track-color--limited;
-        }
-      }
-      &[disabled] {
-        &::-webkit-slider-thumb {
-          background-color: $thumb-color--disabled;
-        }
-    
-        &::-moz-range-thumb {
-          background-color: $thumb-color--disabled;
-        }
-      }
-    }
     .slider {
-      &__reference {
-        height: 100%;
-        width: $track-height;
-        left: calc(40% - ($track-height / 2));
-        top: 0;
-      }
       &__clickable {
         left: $thumb-adjust;
         top: $thumb-adjust;
       }
+      &__inputs {
+        transform-origin: center center;
+        transform: rotate(270deg);
+        width: var(--height);
+      }
     }
+    &.reverse {
+      .slider__inputs {
+        transform: 
+          rotate(270deg)
+          rotateY(180deg);
+      }
+    }
+
     .ticks {
       flex-direction: column-reverse;
       align-self: stretch;
@@ -239,6 +188,48 @@ $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
             translateY($thumb-adjust + $thumb-size);
           padding-right: .15em;
         }
+      }
+    }
+  }
+
+  &.reverse {
+    .ticks {
+      flex-direction: row-reverse;
+    }
+    &.vertical .ticks {
+      flex-direction: column;
+    }
+  }
+
+  input[type="range"] {
+    &:focus {
+      outline: none;
+  
+      &::-webkit-slider-thumb {
+        @include thumb-focus();
+      }
+      &::-moz-range-thumb {
+        @include thumb-focus();
+      }
+    }
+    &.limited {     
+      &::-webkit-slider-runnable-track {
+        background: $track-color--limited;
+      }
+  
+      &::-moz-range-track {
+        background: $track-color--limited;
+      }
+    }
+    &[disabled] {
+      &::-webkit-slider-thumb {
+        @include thumb();
+        background-color: $thumb-color--disabled;
+      }
+  
+      &::-moz-range-thumb {
+        @include thumb();
+        background-color: $thumb-color--disabled;
       }
     }
   }

@@ -55,13 +55,14 @@ defineEmits<{
   (e: 'select', index: number): void
 }>()
 
-const sortedValues = $computed(() => 
-  [...props.values].sort((a, b) => a.value - b.value))
+const sortedValues = $computed(() => {
+  return [...props.values].sort((a, b) => a.value - b.value)
+})
 
 function getLimit(index: number): [number, number] {
   const [min, max] = [
-    props.values[index - 1]?.value || props.limit?.[0], 
-    props.values[index + 1]?.value || props.limit?.[1],
+    sortedValues[index - 1]?.value || props.limit?.[0], 
+    sortedValues[index + 1]?.value || props.limit?.[1],
   ]
   return [
     min ? min + props.step : props.range[0],
