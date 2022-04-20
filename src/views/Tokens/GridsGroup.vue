@@ -11,7 +11,6 @@ const gridStyles = $computed(() => store.gridStyles)
   <TokenSection 
     title="Grids"
     description="..."
-    hasCreate
   >
     <details 
       class="spacing-tokens" open

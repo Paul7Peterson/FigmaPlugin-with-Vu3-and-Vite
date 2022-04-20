@@ -52,6 +52,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       '@api': path.resolve(__dirname, 'src', 'api'),
       '@shared': path.resolve(__dirname, 'src', 'shared'),
+      '@comm': path.resolve(__dirname, 'src', 'communication'),
     },
   },
   define: {

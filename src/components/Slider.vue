@@ -20,6 +20,8 @@ interface Props {
   /** */
   clickable?: boolean;
   /** */
+  reverse?: boolean;
+  /** */
   titleBuilder?: (value: number, ...args: any[]) => string;
   /** */
   tickBuilder?: (value: number, ...args: any[]) => string;
@@ -34,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   showTicks: false,
   ticksGap: 1,
   clickable: false,
+  reverse: false,
 });
 
 const id = `slider-${Math.random() * 1_000_000}`

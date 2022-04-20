@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import type { RootSize } from '@/api/styles/index.types';
 
-import { Broker } from '@/worker.api';
+import { Broker } from '@comm/worker.api';
 
 type ModifiedRootSize = RootSize & { locked: boolean; };
 

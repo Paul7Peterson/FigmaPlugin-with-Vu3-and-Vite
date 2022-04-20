@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { Broker } from '@/worker.api';
+import { Broker } from '@comm/worker.api';
 import { useGuttersStore } from './gutters.store';
 import { useSizesStore } from './sizes.store';
 import { useStylesStore } from './styles.store';

@@ -39,8 +39,8 @@
       "@shared/*": [
         "src/shared/*"
       ],
-      "@messages/*": [
-        "stub/messages/*"
+      "@comm/*": [
+        "src/communication/*"
       ]
     },
   },

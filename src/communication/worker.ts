@@ -1,11 +1,9 @@
-import {
-  UIMessage,
-  UIMessageCode,
-  UIMessageReturn,
-  UIMessageArg,
+import type {
   ErrorMessage,
-} from '@/types';
+  AnyUIMessage,
+} from './messages.types';
 import { v4 as uuidv4 } from 'uuid';
+import { UIMessagePayload } from './messages';
 
 type VoidFunc = (...args: any[]) => void;
 
@@ -18,7 +16,7 @@ type FigmaMessage = {
 };
 
 self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
-  const pluginMessage: UIMessage<UIMessageCode> | ErrorMessage = JSON.parse(data.pluginMessage);
+  const pluginMessage: AnyUIMessage | ErrorMessage = JSON.parse(data.pluginMessage);
   if (pluginMessage.type === 'error') {
     console.error(pluginMessage.payload.message);
   } else {
@@ -32,7 +30,10 @@ self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
 });
 
 /** */
-export function registerCall<T extends UIMessageCode> (type: T, payload: UIMessageArg<T>): Promise<UIMessageReturn<T>> {
+export function registerCall<T extends keyof UIMessagePayload> (
+  type: T,
+  payload: Parameters<UIMessagePayload[T]>[0]
+): Promise<ReturnType<UIMessagePayload[T]>> {
   return new Promise((resolve, reject) => {
     const id = uuidv4();
     parent.postMessage({ pluginMessage: JSON.stringify({ payload, type, id }) }, '*');
@@ -40,10 +41,4 @@ export function registerCall<T extends UIMessageCode> (type: T, payload: UIMessa
   });
 }
 
-/** */
-export type BrokerType = {
-  [K in UIMessageCode]: UIMessageArg<K> extends null
-  ? (() => Promise<UIMessageReturn<K>>)
-  : ((arg: UIMessageArg<K>) => Promise<UIMessageReturn<K>>)
-};
 

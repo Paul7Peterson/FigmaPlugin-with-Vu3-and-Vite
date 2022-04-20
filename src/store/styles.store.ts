@@ -12,7 +12,7 @@ import type {
   ExtendedFontStyleCategory,
 } from '@/api/styles/index.types';
 
-import { Broker } from '@/worker.api';
+import { Broker } from '@comm/worker.api';
 
 import { hexToRgb } from './styles.store.helpers';
 
@@ -54,6 +54,9 @@ export const useStylesStore = defineStore('styles', {
       await this.fetchColorStyles();
       return newColor;
     },
+    async createFontStyle () {
+
+    },
     async fetchTextStyles (): Promise<void> {
       const fontStyles = await Broker.listFontStyles();
       this.fontStyles = fontStyles.reduce((t, font) => {
@@ -63,7 +66,7 @@ export const useStylesStore = defineStore('styles', {
       }, {} as Record<ExtendedFontStyleCategory, FontStyle[]>);
     },
     async fetchBoxShadows (): Promise<void> {
-      const boxShadows = await Broker.listBoxShadowStyles();
+      const boxShadows = await Broker.listBoxShadowsStyles();
       this.boxShadows = boxShadows.reduce((t, shadow) => {
         if (!t[shadow.type]) t[shadow.type] = [shadow];
         else t[shadow.type].push(shadow);
@@ -76,6 +79,9 @@ export const useStylesStore = defineStore('styles', {
     async fetchBorderStyles (): Promise<void> {
       this.borderStyles = await Broker.listBorderStyles();
     },
+    async deleteSolidColor ({ id }: SolidColor): Promise<void> {
+      await Broker.deleteSolidColor({ id });
+    }
   }
 });
 

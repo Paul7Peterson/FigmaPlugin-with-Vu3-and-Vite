@@ -7,6 +7,7 @@ import Details from './Details.vue';
 import ErrorsBadge from './ErrorsBadge.vue';
 import Slider from './Slider.vue';
 import SliderMultiple from './SliderMultiple.vue';
+import DataList from './DataList.vue';
 
 export {
   Button,
@@ -18,4 +19,5 @@ export {
   ErrorsBadge,
   Slider,
   SliderMultiple,
+  DataList,
 };

@@ -31,6 +31,8 @@ interface Props {
   /** */
   showTicks?: boolean;
   /** */
+  reverse?: boolean;
+  /** */
   ticksGap?: number;
   /** */
   titleBuilder?: (value: number, instance: Value) => string;
@@ -46,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   step: 1,
   showTicks: false,
   ticksGap: 1,
+  reverse: false,
 });
 
 defineEmits<{
@@ -61,8 +64,8 @@ function getLimit(index: number): [number, number] {
     props.values[index + 1]?.value || props.limit?.[1],
   ]
   return [
-    min ? min + 1 : props.range[0],
-    max ? max - 1 : props.range[1],
+    min ? min + props.step : props.range[0],
+    max ? max - props.step : props.range[1],
   ]
 }
 
@@ -88,6 +91,7 @@ onErrorCaptured((e) => console.log(e))
         :titleBuilder="titleBuilder && ((i) => titleBuilder(i, value))"
         :tickBuilder="titleBuilder && ((i) => tickBuilder(i, value))"
         :verticalHeight="verticalHeight"
+        :reverse="reverse"
         clickable
         @select="$emit('select', i)"
       />

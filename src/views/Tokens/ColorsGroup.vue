@@ -7,10 +7,22 @@ import { Details } from '@/components';
 const store = useStylesStore();
 
 const colors: Record<ColorNameExtended, SolidColor[]> = $computed(() => store.colors);
+
+async function onCreate () {
+  if (confirm('Are you sure?')) {
+    await store.createOrModifyColor('#000000')
+  }
+}
 </script>
 
 <template>
-  <TokenSection title="Colors" description="...">
+  <TokenSection 
+    title="Colors" 
+    description="..."
+  >
+    <template #header>
+      <Button @click="onCreate">Create new</Button>
+    </template>
     <section class="color-tokens">
       <Details
         v-for="(colorGroup, name) in colors" 

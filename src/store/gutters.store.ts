@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import type { Gutter } from '@/api/styles/index.types';
 
-import { Broker } from '@/worker.api';
+import { Broker } from '@comm/worker.api';
 
 type ModifiedGutter = Gutter & { locked: boolean; };
 
@@ -32,7 +32,7 @@ export const useGuttersStore = defineStore('gutters', {
       await Broker.modifyGutters(gutters);
       await this.fetchGutters();
     },
-    async deleteGutters (gutter: Gutter): Promise<void> {
+    async deleteGutter (gutter: Gutter): Promise<void> {
       // await Broker.deleteRootSize(size);
       await this.fetchGutters();
     },

@@ -7,6 +7,12 @@ import { Details } from '@/components';
 const store = useStylesStore()
 
 const textStyles: Record<ExtendedFontStyleCategory, FontStyle[]> = $computed(() => store.fontStyles)
+
+async function onCreate () {
+  if (confirm('Are you sure?')) {
+    await store.createFontStyle()
+  }
+}
 </script>
 
 <template>
@@ -14,6 +20,9 @@ const textStyles: Record<ExtendedFontStyleCategory, FontStyle[]> = $computed(() 
     title="Texts"
     description="..."
   >
+    <template #header>
+      <Button @click="onCreate">Create new</Button>
+    </template>
     <section class="font-style-tokens">
       <Details 
         v-for="(categoryTexts, category) in textStyles"

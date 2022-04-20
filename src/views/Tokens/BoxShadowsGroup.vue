@@ -13,7 +13,6 @@ const boxShadowStyles: Record<BoxShadowType, BoxShadowStyle[]> = $computed(() =>
   <TokenSection 
     title="Box shadows"
     description="..."
-    hasCreate
   >
     <section class="box-shadow-tokens">
       <Details 

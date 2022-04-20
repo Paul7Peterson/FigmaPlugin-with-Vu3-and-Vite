@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Broker } from '../worker.api';
+import { Broker } from '@comm/worker.api';
 
 const corner = $ref(null as SVGElement | null)
 

@@ -1,6 +1,6 @@
 import { FigmaStore } from './store/store';
-import { UIMessageCode, UIMessage } from '../types/messages';
-import { PostBroker } from './postBroker.api';
+import { AnyUIMessage } from '@comm/messages.types';
+import { PostBroker } from '@comm/apiBroker.api';
 
 const WIDTH = 400;
 const HEIGHT = 600;
@@ -19,7 +19,7 @@ FigmaStore.getInstance.getKey('windowSize').then((size) => {
 }).catch(err => { console.error(err); });
 
 figma.ui.onmessage = (message: string) => {
-  const msg: UIMessage<UIMessageCode> = JSON.parse(message);
+  const msg: AnyUIMessage = JSON.parse(message);
   console.log('📦', msg.type, msg.payload);
   try {
     PostBroker[msg.type]?.(msg as any);

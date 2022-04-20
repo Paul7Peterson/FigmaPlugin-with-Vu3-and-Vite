@@ -16,4 +16,5 @@ createApp(App)
   .component('Modal', Component.Modal)
   .component('Details', Component.Details)
   .component('ErrorsBadge', Component.ErrorsBadge)
+  .component('DataList', Component.DataList)
   .mount('#app');

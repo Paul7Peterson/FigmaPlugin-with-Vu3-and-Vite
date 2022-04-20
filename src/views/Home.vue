@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, reactive } from 'vue';
 
-import { Broker } from '../worker.api';
+import { Broker } from '@comm/worker.api';
 
 const data = reactive({
   user: null as User | null,

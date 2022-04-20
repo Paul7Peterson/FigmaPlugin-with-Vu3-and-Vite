@@ -11,7 +11,6 @@ const borderStyles = $computed(() => store.borderStyles)
   <TokenSection 
     title="Borders"
     description="..."
-    hasCreate
   >
     <details 
       class="spacing-tokens" open

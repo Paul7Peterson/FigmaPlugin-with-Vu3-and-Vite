@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { reactive, watch } from 'vue';
-
-import { Broker } from '@/worker.api';
 import type { SolidColor, SolidColorInfo } from '@api/styles/index.types';
 import { useStylesStore } from '@/store';
 
@@ -32,7 +30,7 @@ const colorPicked = $computed(() =>
 
 async function onDelete () {
   if (window.confirm('Are you sure?')) {
-    await Broker.deleteSolidColor({ id: props.color.id })
+    await store.deleteSolidColor(props.color)
     onFinish()
   }
 }
@@ -83,14 +81,7 @@ function onFinish() {
     <template #default>
       <code class="color-id">{{ color.id }}</code>
       <p>{{ color.description }}</p>
-      <dl class="color-info">
-        <div><dt>HEX:</dt><dd>{{ colorPicked.colorSpaces.HEX }}</dd></div>
-        <div><dt>RGB:</dt><dd>{{ colorPicked.colorSpaces.RGB }}</dd></div>
-        <div><dt>HSL:</dt><dd>{{ colorPicked.colorSpaces.HSL }}</dd></div>
-        <div><dt>LCH:</dt><dd>{{ colorPicked.colorSpaces.LCH }}</dd></div>
-        <div><dt>Lab:</dt><dd>{{ colorPicked.colorSpaces.Lab }}</dd></div>
-        <div><dt>Grey:</dt><dd>{{ colorPicked.colorSpaces.Grey }}</dd></div>
-      </dl>
+      <DataList :data="colorPicked.colorSpaces"/>
       <div v-if="data.isEditing">
         <input 
           class="color-picker" 

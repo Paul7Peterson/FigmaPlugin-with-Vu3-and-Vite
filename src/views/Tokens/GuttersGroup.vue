@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { TokenSection } from '.';
-import { useGuttersStore } from '@/store';
-import { Details, Slider, SliderMultiple } from '@/components';
+import { useGuttersStore, useSizesStore } from '@/store';
+import { Details, SliderMultiple } from '@/components';
 import { reactive } from 'vue';
 import type { Gutter } from '@/api/styles/index.types';
 
 const store = useGuttersStore()
+const sizesStore = useSizesStore()
 
 const data = reactive({
   showDetails: false,
@@ -14,6 +15,7 @@ const data = reactive({
 })
 
 const gutters = $computed(() => store.gutters)
+const allowCreateGutters = $computed(() => !!sizesStore.rootSizes.length)
 
 async function onCreate() {
   if (confirm('Do you really want to create a new root size?')) {
@@ -26,14 +28,14 @@ function onDetails (size: Gutter) {
   data.showDetails = true;
 }
 
-// async function onDelete () {
-//   if (!data.selectedGutter) throw new Error('');
-//   if (confirm('Are you sure?')) {
-//     await store.deleteGutter(data.selectedGutter);
-//     data.selectedGutter = null;
-//     data.showDetails = false;
-//   }
-// }
+async function onDelete () {
+  if (!data.selectedGutter) throw new Error('');
+  if (confirm('Are you sure?')) {
+    await store.deleteGutter(data.selectedGutter);
+    data.selectedGutter = null;
+    data.showDetails = false;
+  }
+}
 
 function onEdit () {
   store.gutters = gutters
@@ -70,13 +72,34 @@ async function onCancelEdit () {
         >Confirm</Button>
       </template>
       <template v-else>
-        <Button hollow @click="onEdit">Edit values</Button>
-        <Button @click="onCreate">Create new</Button>
+        <Button 
+          hollow 
+          :locked="!gutters.length"
+          @click="onEdit"
+        >Edit values</Button>
+        <Button 
+          :locked="!allowCreateGutters"
+          :title="!allowCreateGutters ? 'Please, create a root size before continuing with gutters.' : ''"
+          @click="onCreate"
+        >Create new</Button>
       </template>
     </template>
     <section class="gutter-tokens">
-      <div class="gutter-tokens__list">
+      <div class="gutter-tokens__content">
         <template v-if="gutters.length">
+          <div class="gutter-tokens__list">
+            <article 
+              class="gutter-tokens__token"
+              v-for="(gutter, i) in gutters"
+              :key="i"
+            >
+              <span>{{ gutter.name }}</span>  
+              <div 
+                class="gutter-tokens__sample"
+                :style="{ width: gutter.value, height: gutter.value, }"
+              /> 
+            </article>
+          </div>
           <SliderMultiple
             label="Gutters"
             :values="gutters"
@@ -90,7 +113,7 @@ async function onCancelEdit () {
             showTicks
           />
         </template>
-        <p>No gutters available</p>
+        <p v-else>No gutters available</p>
       </div>
     </section>
   </TokenSection>
@@ -101,9 +124,23 @@ async function onCancelEdit () {
 
   .gutter-tokens {
 
+    &__content {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
+    }
     &__list {
-      height: max-content;
-      margin-bottom: 30px;
+      display: grid;
+      row-gap: 10px;
+    }
+    &__token {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 1fr 3fr;
+    }
+    &__sample {
+      background-color: var(--color-dark);
     }
   }
 </style>

@@ -56,8 +56,6 @@ async function onCancelEdit () {
   <TokenSection 
     title="Sizes"
     description="..."
-    hasCreate
-    @create="onCreate"
   >
     <template #header>
       <template v-if="data.isEditing">
@@ -73,8 +71,14 @@ async function onCancelEdit () {
         >Confirm</Button>
       </template>
       <template v-else>
-        <Button hollow @click="onEdit">Edit values</Button>
-        <Button @click="onCreate">Create new</Button>
+        <Button 
+          hollow 
+          :locked="!rootSizes.length"
+          @click="onEdit"
+        >Edit values</Button>
+        <Button 
+          @click="onCreate"
+        >Create new</Button>
       </template>
     </template>
     <div 
@@ -94,11 +98,16 @@ async function onCancelEdit () {
     </div>
     <p v-else>No root sizes available</p>
   </TokenSection>
-  <Modal v-model="data.showDetails">
-    <dl>
-      <dt>Name:</dt><dd>{{ data.selectedRootSize?.name }}</dd>
-      <dt>Size:</dt><dd>{{ data.selectedRootSize?.value }}px</dd>
-    </dl>
+  <Modal 
+    v-if="data.selectedRootSize" 
+    v-model="data.showDetails"
+  >
+    <Datalist 
+      :data="{ 
+        name: data.selectedRootSize.name, 
+        size: data.selectedRootSize.name
+      }"
+    />
     <Button 
       btnType="danger"
       @click="onDelete"
