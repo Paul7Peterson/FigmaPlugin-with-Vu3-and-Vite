@@ -91,8 +91,8 @@ async function onCancelEdit () {
         label="Root sizes"
         showTicks
         :ticksGap="3"
-        :tickBuilder="(i) => `${i}px`"
-        :titleBuilder="(i, l) => `${l.name}\n${i}px`"
+        :tickBuilder="(i) => `${i} px`"
+        :titleBuilder="(i, l) => `${l.name}\n${i} px`"
         @select="(i) => onDetails(rootSizes[i])"
       />
     </div>

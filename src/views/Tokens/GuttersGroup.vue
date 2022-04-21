@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 import { TokenSection } from '.';
 import { useGuttersStore, useSizesStore } from '@/store';
 import { SliderMultiple } from '@/components';
-import { Gutter, RootSizeName } from '@/api/styles/index.types';
+import { Gutter, RootSizeName, RootSize } from '@/api/styles/index.types';
 
 const store = useGuttersStore()
 const sizesStore = useSizesStore()
@@ -15,7 +15,9 @@ const data = reactive({
 })
 
 const gutters = $computed(() => store.gutters)
-const allowCreateGutters = $computed(() => !!sizesStore.rootSizes.length)
+const rootSizes = $computed(() => sizesStore.rootSizes)
+const allowCreateGutters = $computed(() => !!rootSizes.length)
+
 const baseSize = $computed(() => {
   const reference: RootSizeName = 'Medium' as RootSizeName
   const mediumSize = sizesStore.rootSizes.find((x) => x.name === reference)?.value
@@ -57,8 +59,6 @@ async function onCancelEdit () {
   data.isEditing = false;
   await store.fetchGutters();
 }
-const x = $ref([{ value: 5, name: 'XXX', locked: false },{ value: 7, name: 'XXX', locked: false }])
-const test = $ref(5)
 </script>
 
 <template>
@@ -94,37 +94,50 @@ const test = $ref(5)
     <section class="gutter-tokens">
       <div class="gutter-tokens__content">
         <template v-if="gutters.length">
-          <div class="gutter-tokens__list">
-            <article 
-              class="gutter-tokens__token"
-              v-for="(gutter, i) in gutters"
-              :key="i"
-            >
-              <span>{{ gutter.name }}</span>  
-              <div 
-                class="gutter-tokens__sample"
-                :style="{ 
-                  width: gutter.value * baseSize, 
-                  height: gutter.value * baseSize, 
-                }"
-              /> 
-            </article>
-          </div>
+          <Table 
+            :rows="gutters" 
+            :columns="rootSizes"
+            @rowSelected="onDetails($event)"
+          >
+            <template #header="{ column }: { column: RootSize }">
+              {{ column.name }}<br/><small>[{{ column.value }}px]</small>
+            </template>
+            <template #rowHeader="{ row: gutter }: { row: Gutter }">{{ gutter.name }}</template>  
+            <template #default="{ row: gutter }: { row: Gutter }">
+              <td
+                v-for="(size, i) in rootSizes"
+                :key="i"
+              >
+                <div class="gutter-tokens__sample">
+                  <span class="gutter-tokens__sample__value">{{ gutter.value * size.value }}</span>
+                  <div 
+                    class="gutter-tokens__sample__gutter"
+                    :title="`${size.name} - ${gutter.name}\n${gutter.value * size.value} px`"
+                    :style="{ 
+                      width: gutter.value * size.value, 
+                      height: gutter.value * size.value, 
+                    }"
+                  /> 
+                </div>
+              </td>
+            </template>  
+          </Table>
           <SliderMultiple
             label="Gutters"
             :values="gutters"
             :range="[0, 10]"
             :ticksGap="4"
             :step="0.25"
-            :verticalHeight="450"
-            :tickBuilder="(i) => `${i}px`"
-            :titleBuilder="(i, l) => `${l.name}\n${i}px`"
+            :verticalHeight="600"
+            :tickBuilder="(i) => `${i} rem`"
+            :titleBuilder="(i, l) => `${l.name}\n${i} rem`"
             @select="(i) => onDetails(gutters[i])"
             reverse
             showTicks
           />
         </template>
-        <p v-else>No gutters available</p>
+        <p v-else>No gutters available.</p>
+        <p v-if="!allowCreateGutters">Gutters need to have at least one root size.</p>
       </div>
     </section>
   </TokenSection>
@@ -140,18 +153,30 @@ const test = $ref(5)
       grid-template-columns: 1fr;
       grid-auto-flow: column;
       grid-auto-columns: max-content;
+      column-gap: 30px;
     }
-    &__list {
-      display: grid;
-      row-gap: 10px;
+
+    table.table {
+      tr th {
+        cursor: pointer;
+      }
     }
-    &__token {
-      display: grid;
-      align-items: center;
-      grid-template-columns: 1fr 3fr;
-    }
+
     &__sample {
-      background-color: var(--color-dark);
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      column-gap: 5px;
+      align-items: center;
+
+      &__value {
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+      }
+      &__gutter {
+        background-color: var(--color-dark);
+        cursor: pointer;
+      }
     }
   }
 </style>

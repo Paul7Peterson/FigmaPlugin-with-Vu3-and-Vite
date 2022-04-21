@@ -9,6 +9,7 @@ import Slider from './Slider.vue';
 import SliderMultiple from './SliderMultiple.vue';
 import DataList from './DataList.vue';
 import Spinner from './Spinner.vue';
+import Table from './Table.vue';
 
 export {
   Button,
@@ -22,4 +23,5 @@ export {
   SliderMultiple,
   DataList,
   Spinner,
+  Table,
 };

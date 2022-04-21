@@ -80,7 +80,7 @@ export function getColorShadow (color: Color): number {
   return fromRGB(color).toLCH.array()[0];
 }
 
-export function paintToColor ({ r, g, b, a = 0 }: ColorAlpha): ColorAlpha & { a: number; } {
+export function paintToColor ({ r, g, b, a = 0 }: ColorAlpha): ColorAlpha {
   return {
     r: Math.round(r * 255),
     g: Math.round(g * 255),

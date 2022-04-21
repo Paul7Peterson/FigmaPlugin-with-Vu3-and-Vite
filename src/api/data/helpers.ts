@@ -1,3 +1,5 @@
+import { Frame } from '../nodes';
+
 const TABLE_PREFIX = '🆔';
 const COMPONENT_PREFIX = '🟪';
 
@@ -118,20 +120,20 @@ export async function loadFonts (): Promise<void> {
 }
 
 function createHeaderFromComponent (table: FrameNode, component: ComponentNode, props: string[], fieldsToHide?: string[]) {
-  const headerWrapper = figma.createFrame();
-  headerWrapper.primaryAxisSizingMode = 'AUTO';
-  headerWrapper.counterAxisSizingMode = 'AUTO';
-  headerWrapper.layoutMode = 'VERTICAL';
-  headerWrapper.layoutAlign = 'STRETCH';
-  headerWrapper.fills = [
-    { type: 'SOLID', color: { r: 0, g: 0, b: 0 } }
-  ];
-  headerWrapper.paddingTop = 10;
-  headerWrapper.paddingBottom = 10;
-  table.appendChild(headerWrapper);
+  const headerWrapper = new Frame({
+    autoLayout: {
+      direction: 'vertical',
+      padding: [10, 0, 10, 0],
+    },
+    resizing: {
+      width: 'fill container',
+      height: 'hug contents'
+    },
+    fills: ['Black'],
+  }, 'Header').setParent(table);
 
   const header = component.createInstance();
-  headerWrapper.appendChild(header);
+  headerWrapper.node.appendChild(header);
 
   header.primaryAxisSizingMode = 'FIXED';
   header.counterAxisSizingMode = 'AUTO';
