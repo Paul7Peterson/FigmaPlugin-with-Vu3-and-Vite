@@ -64,5 +64,6 @@ export type UIMessagePayload =
     getUser: (arg: null) => User;
     initApp: (arg: null) => null;
     resize: (args: { width: number, height: number; }) => null;
+    updateDocumentation: VoidFunction;
     closePlugin: VoidFunction;
   };

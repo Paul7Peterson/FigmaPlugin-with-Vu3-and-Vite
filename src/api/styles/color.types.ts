@@ -77,6 +77,7 @@ export interface ColorSpaces {
   Lab: string;
   LCH: string;
   Grey: number;
+  alpha: number;
 };
 
 export interface SolidColorInfo {

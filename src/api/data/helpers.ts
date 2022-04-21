@@ -34,7 +34,7 @@ export function getTokenTable<T extends Page> (page: T, tokenType: TokenTree[T])
   return table;
 }
 
-export function getComponents (): Record<TokenType, ComponentNode> {
+export function getComponents (): Partial<Record<TokenType, ComponentNode>> {
   const reference = `${COMPONENT_PREFIX} Reference/`;
   const components = figma.root.findAll(({ type, name }) =>
     type === 'COMPONENT' && name.startsWith(reference)) as ComponentNode[];
@@ -42,12 +42,17 @@ export function getComponents (): Record<TokenType, ComponentNode> {
     const name = c.name.split('/')[1];
     t[name as TokenType] = c;
     return t;
-  }, {} as Record<TokenType, ComponentNode>);
+  }, {} as Partial<Record<TokenType, ComponentNode>>);
 }
 
 export function shortByNumericValue<T extends { value: number; }> (values: T[]) {
   return [...values].sort((a, b) => a.value - b.value);
 }
+
+type TableConfig<S extends string> = Partial<{
+  fieldsToHide: S[];
+  rowGap: number;
+}>;
 
 export async function documentInTable<T extends object, S extends string> (
   table: FrameNode,
@@ -55,20 +60,19 @@ export async function documentInTable<T extends object, S extends string> (
   values: T[],
   docs: (asset: T) => Record<S, string>,
   extraOperations?: (instance: InstanceNode, asset: T) => Promise<void> | void,
-  fieldsToHide?: S[]
+  config?: TableConfig<S>,
 ) {
   if (!component) throw new Error(`Missing component for the table "${table.name}"`);
-  await figma.loadFontAsync({ family: "Fabriga", style: "Regular" });
+  const { rowGap, fieldsToHide } = config || {};
 
   table.children.forEach((c) => { c.remove(); });
   table.layoutMode = 'VERTICAL';
   table.primaryAxisSizingMode = 'AUTO';
   table.counterAxisSizingMode = 'FIXED';
-  table.itemSpacing = 5;
+  table.itemSpacing = rowGap || 10;
 
-  let headerKeys = Object.keys(docs(values[0]));
-  if (fieldsToHide) headerKeys = headerKeys.filter((f) => !fieldsToHide.includes(f as S));
-  createHeader(table, headerKeys);
+  const headerKeys = Object.keys(docs(values[0]));
+  createHeaderFromComponent(table, component, headerKeys, fieldsToHide);
 
   values.forEach((value) => {
     const instance = component.createInstance();
@@ -104,34 +108,81 @@ export function getWritableFields<T extends string> (node: InstanceNode, names: 
   }, {} as Record<T, TextNode>);
 }
 
-function createHeader (table: FrameNode, keys: string[]): void {
-  const header = figma.createFrame();
-  header.name = 'Header';
+export async function loadFonts (): Promise<void> {
+  await Promise.all([
+    figma.loadFontAsync({ family: "Fabriga", style: "Regular" }),
+    figma.loadFontAsync({ family: "Fabriga", style: "Medium" }),
+    figma.loadFontAsync({ family: "MT Extra", style: "Regular" }),
+    figma.loadFontAsync({ family: "Consolas", style: "Regular" }),
+  ]);
+}
+
+function createHeaderFromComponent (table: FrameNode, component: ComponentNode, props: string[], fieldsToHide?: string[]) {
+  const headerWrapper = figma.createFrame();
+  headerWrapper.primaryAxisSizingMode = 'AUTO';
+  headerWrapper.counterAxisSizingMode = 'AUTO';
+  headerWrapper.layoutMode = 'VERTICAL';
+  headerWrapper.layoutAlign = 'STRETCH';
+  headerWrapper.fills = [
+    { type: 'SOLID', color: { r: 0, g: 0, b: 0 } }
+  ];
+  headerWrapper.paddingTop = 10;
+  headerWrapper.paddingBottom = 10;
+  table.appendChild(headerWrapper);
+
+  const header = component.createInstance();
+  headerWrapper.appendChild(header);
+
+  header.primaryAxisSizingMode = 'FIXED';
+  header.counterAxisSizingMode = 'AUTO';
+  header.layoutAlign = 'STRETCH';
+  header.locked = true;
   header.fills = [
     { type: 'SOLID', color: { r: 0, g: 0, b: 0 } }
   ];
-  header.primaryAxisSizingMode = 'FIXED';
-  header.counterAxisSizingMode = 'AUTO';
-  header.layoutMode = 'HORIZONTAL';
-  header.layoutAlign = 'STRETCH';
-  table.appendChild(header);
 
-
-  keys.forEach((key) => {
-    const text = figma.createText();
-    header.appendChild(text);
-    text.fontName = {
-      family: 'Fabriga',
-      style: 'Regular'
-    };
-    text.characters = capitalize(key);
-    text.fills = [
-      { type: 'SOLID', color: { r: 1, g: 1, b: 1 } }
-    ];
-    text.layoutAlign = 'INHERIT';
-    text.textAutoResize = 'HEIGHT';
-    text.layoutAlign = 'STRETCH';
-    text.layoutGrow = 1;
-    text.textAlignHorizontal = 'CENTER';
-  });
+  Object.entries(getWritableFields(header, props.map((k) => `#${k}`)))
+    .forEach(([name, text]) => {
+      text.fills = [
+        { type: 'SOLID', color: { r: 1, g: 1, b: 1 } }
+      ];
+      text.fontName = {
+        family: 'Fabriga',
+        style: 'Medium'
+      };
+      text.textAlignHorizontal = 'CENTER';
+      const parsedName = name.substring(1);
+      if (fieldsToHide?.includes(parsedName)) text.visible = false;
+    });
 }
+
+// function createHeader (table: FrameNode, keys: string[]): void {
+//   const header = figma.createFrame();
+//   header.name = 'Header';
+//   header.fills = [
+//     { type: 'SOLID', color: { r: 0, g: 0, b: 0 } }
+//   ];
+//   header.primaryAxisSizingMode = 'FIXED';
+//   header.counterAxisSizingMode = 'AUTO';
+//   header.layoutMode = 'HORIZONTAL';
+//   header.layoutAlign = 'STRETCH';
+//   table.appendChild(header);
+
+
+//   keys.forEach((key) => {
+//     const text = figma.createText();
+//     header.appendChild(text);
+//     text.fontName = {
+//       family: 'Fabriga',
+//       style: 'Regular'
+//     };
+//     text.characters = capitalize(key);
+//     text.fills = [
+//       { type: 'SOLID', color: { r: 1, g: 1, b: 1 } }
+//     ];
+//     text.textAutoResize = 'HEIGHT';
+//     text.layoutAlign = 'STRETCH';
+//     text.layoutGrow = 1;
+//     text.textAlignHorizontal = 'CENTER';
+//   });
+// }

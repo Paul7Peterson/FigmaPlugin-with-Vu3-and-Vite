@@ -1,7 +1,6 @@
 import { FigmaStore } from './store/store';
 import { AnyUIMessage } from '@comm/messages.types';
 import { PostBroker } from '@comm/apiBroker.api';
-import { writeDocs } from './data';
 
 const WIDTH = 400;
 const HEIGHT = 600;
@@ -46,7 +45,3 @@ figma.on('close', () => {
 console.info(`
   PluginId: ${figma.pluginId} 
 `);
-
-(async () => {
-  await writeDocs();
-})();

@@ -6,9 +6,8 @@ const { "Solid colors": SolidColors } = getComponents();
 
 export async function documentColors (colors: SolidColor[]): Promise<void> {
   const ColorsTable = getTokenTable(Page.Colors, 'Solid colors');
-  console.log(SolidColors);
 
-  documentInTable(ColorsTable, SolidColors, colors, (c) => ({
+  documentInTable(ColorsTable, SolidColors!, colors, (c) => ({
     name: c.name,
     color: c.colorName,
     shadow: c.colorShadow.toString(),
@@ -16,6 +15,7 @@ export async function documentColors (colors: SolidColor[]): Promise<void> {
     RGB: c.colorSpaces.RGB,
     HSL: c.colorSpaces.HSL,
     LCH: c.colorSpaces.LCH,
+    description: c.description,
   }),
     (c, { color }) => {
       const sample = c.findChild(({ name }) => name === '#sample');

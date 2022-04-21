@@ -6,12 +6,15 @@ interface Props {
   btnType?: 'primary' | 'info' | 'danger',
   /** */
   hollow?: boolean;
+  /** */
+  isLoading?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   locked: false,
   type: 'primary',
   hollow: false,
+  isLoading: false,
 })
 </script>
 
@@ -19,9 +22,10 @@ withDefaults(defineProps<Props>(), {
   <button 
     class="btn"
     :class="[btnType, hollow ? 'hollow' : '']"
-    :disabled="locked"
+    :disabled="locked || isLoading"
   >
-    <slot></slot>
+    <Spinner v-if="isLoading"/>
+    <slot v-else></slot>
   </button>
 </template>
 

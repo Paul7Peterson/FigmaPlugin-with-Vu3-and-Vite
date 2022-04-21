@@ -6,7 +6,7 @@ const { "Root sizes": RootSizes, Gutters } = getComponents();
 export async function documentRootSizes (sizes: SizesMap): Promise<void> {
   const RootSizesTable = getTokenTable(Page.Spacing, 'Root sizes');
   const values = shortByNumericValue(Object.values(sizes));
-  documentInTable(RootSizesTable, RootSizes, values, (rs) => ({
+  documentInTable(RootSizesTable, RootSizes!, values, (rs) => ({
     name: rs.name,
     value: `${rs.value} px`,
   }));
@@ -21,7 +21,7 @@ export async function documentGutters (gutters: GuttersMap, sizes: SizesMap): Pr
     .filter((f) => !sizesMap.includes(f))
     .map((f) => f.toLowerCase());
 
-  documentInTable(GuttersTable, Gutters, values, (gutter) => ({
+  documentInTable(GuttersTable, Gutters!, values, (gutter) => ({
     name: gutter.name,
     value: `${gutter.value} rem`,
     ...Object.values(RootSizeName).reduce((t, size) => {
@@ -30,6 +30,6 @@ export async function documentGutters (gutters: GuttersMap, sizes: SizesMap): Pr
     }, {} as Record<string, string>),
   }),
     undefined,
-    fieldsToHide
+    { fieldsToHide }
   );
 }

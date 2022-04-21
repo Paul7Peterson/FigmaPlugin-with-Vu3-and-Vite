@@ -5,6 +5,7 @@ import { Broker } from '@comm/worker.api';
 
 const data = reactive({
   user: null as User | null,
+  isGeneratingDocs: false,
 })
 
 const singleName = $computed(() => 
@@ -12,6 +13,12 @@ const singleName = $computed(() =>
 
 function onClose () {
   Broker.closePlugin()
+}
+
+async function onDocument () {
+  data.isGeneratingDocs = true;
+  await Broker.updateDocumentation()
+  data.isGeneratingDocs = false;
 }
 
 onBeforeMount(async () => {
@@ -24,7 +31,13 @@ onBeforeMount(async () => {
     <img class="avatar" :src="data.user.photoUrl || ''" :alt="singleName">
     <h3>Hello, {{ singleName }}!</h3>
   </header>
-  <Button @click="onClose">Save and close</Button>
+  <footer class="button-group">
+    <Button 
+      :isLoading="data.isGeneratingDocs" 
+      @click="onDocument"
+    >Update docs</Button>
+    <Button @click="onClose">Save and close</Button>
+  </footer>
 </template>
 
 <style lang="scss">
@@ -42,5 +55,12 @@ onBeforeMount(async () => {
       height: $avatar-size;
       border-radius: calc($avatar-size / 2);
     }
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 20px;
   }
 </style>

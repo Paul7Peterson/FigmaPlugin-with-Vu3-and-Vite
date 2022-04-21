@@ -8,6 +8,7 @@ import ErrorsBadge from './ErrorsBadge.vue';
 import Slider from './Slider.vue';
 import SliderMultiple from './SliderMultiple.vue';
 import DataList from './DataList.vue';
+import Spinner from './Spinner.vue';
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   Slider,
   SliderMultiple,
   DataList,
+  Spinner,
 };

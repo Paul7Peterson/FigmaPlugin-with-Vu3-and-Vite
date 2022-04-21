@@ -8,7 +8,7 @@ import {
 import { getColorSpaces, paintToColor } from './color.helpers';
 
 /** */
-export function listBoxShadows (): BoxShadowStyle[] {
+export async function listBoxShadows (): Promise<BoxShadowStyle[]> {
   return figma.getLocalEffectStyles()
     .filter((effect) => {
       let validBoxShadow = true;
@@ -31,32 +31,7 @@ export function listBoxShadows (): BoxShadowStyle[] {
         backgroundBlurs: [],
         layerBlurs: [],
       };
-      effect.effects.forEach((e) => {
-        switch (e.type) {
-          case 'BACKGROUND_BLUR':
-          case 'LAYER_BLUR':
-            result[e.type === 'LAYER_BLUR'
-              ? 'layerBlurs'
-              : 'backgroundBlurs'
-            ].push({ blur: e.radius });
-            break;
-          case 'DROP_SHADOW':
-          case 'INNER_SHADOW':
-            result[e.type === 'DROP_SHADOW'
-              ? 'dropShadows'
-              : 'innerShadows'
-            ].push({
-              blur: e.radius,
-              x: e.offset.x,
-              y: e.offset.y,
-              spread: e.spread || 0,
-              blendMode: e.blendMode,
-              color: getColorSpaces(paintToColor(e.color))
-            });
-            break;
-          default: throw new Error(`Unknown effect.`);
-        } e.type;
-      });
+      assignEffects(result, effect.effects);
 
       result.errors.push(...validateBoxShadow(result));
       return result;
@@ -68,6 +43,37 @@ interface ValidationExports {
   level: number;
   errors: string[];
   alternativeText?: string;
+}
+
+
+function assignEffects (boxShadow: BoxShadowStyle, effects: readonly Effect[]) {
+  effects.forEach((e) => {
+    switch (e.type) {
+      case 'BACKGROUND_BLUR':
+      case 'LAYER_BLUR':
+        boxShadow[e.type === 'LAYER_BLUR'
+          ? 'layerBlurs'
+          : 'backgroundBlurs'
+        ].push({ blur: e.radius });
+        break;
+      case 'DROP_SHADOW':
+      case 'INNER_SHADOW':
+        const color = paintToColor(e.color);
+        boxShadow[e.type === 'DROP_SHADOW'
+          ? 'dropShadows'
+          : 'innerShadows'
+        ].push({
+          blur: e.radius,
+          x: e.offset.x,
+          y: e.offset.y,
+          spread: e.spread || 0,
+          blendMode: e.blendMode,
+          color: getColorSpaces(color)
+        });
+        break;
+      default: throw new Error(`Unknown effect.`);
+    };
+  });
 }
 
 function getBoxShadowTypeAndElevation (effect: EffectStyle): ValidationExports {

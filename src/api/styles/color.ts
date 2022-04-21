@@ -16,7 +16,7 @@ import {
 } from './color.helpers';
 
 /** */
-export function listSolidColors (): SolidColor[] {
+export async function listSolidColors (): Promise<SolidColor[]> {
   return figma.getLocalPaintStyles()
     .filter((color) => {
       const { paints } = color;
@@ -42,13 +42,13 @@ export function listSolidColors (): SolidColor[] {
         ...parseBaseToken(color),
         ...getColorNameAndShadowFromName(color),
         color: RGBColor,
-        colorSpaces: getColorSpaces(RGBColor),
+        colorSpaces: getColorSpaces({ ...RGBColor, a: ~~((paint.opacity || 1) * 255) }),
       };
     });
 }
 
 /** */
-export function createOrModifySolidColor (color: Color, id?: string) {
+export async function createOrModifySolidColor (color: Color, id?: string): Promise<SolidColor> {
   let parsedColor: PaintStyle;
 
   if (id) {
@@ -67,7 +67,7 @@ export function createOrModifySolidColor (color: Color, id?: string) {
     ...parseBaseToken(parsedColor),
     ...getColorNameAndShadowFromName(parsedColor),
     color,
-    colorSpaces: getColorSpaces(color),
+    colorSpaces: getColorSpaces({ ...color, a: 255 }),
   };
 }
 
@@ -76,12 +76,12 @@ export function getSolidColorInfo (color: Color): SolidColorInfo {
   return {
     ...getColorNameAndShadow(color),
     color,
-    colorSpaces: getColorSpaces(color),
+    colorSpaces: getColorSpaces({ ...color, a: 255 }),
   };
 }
 
 /** */
-export function deleteColor (id: string) {
+export async function deleteColor (id: string): Promise<void> {
   const color = figma.getStyleById(id);
   if (!color) throw new Error('Color not found.');
   color.remove();

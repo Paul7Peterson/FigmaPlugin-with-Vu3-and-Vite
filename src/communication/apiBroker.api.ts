@@ -12,6 +12,7 @@ import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 import * as Styles from '../api/styles';
 import { FigmaStore } from '../api/store/store';
 import { getUser } from '../api/figma';
+import { writeDocs } from '../api/data';
 
 
 const RootSizesPostBroker: GenericPostBrokerType<RootSizesUIMessages> = {
@@ -47,14 +48,14 @@ const GuttersPostBroker: GenericPostBrokerType<GuttersUIMessages> = {
 };
 
 const ColorsPostBroker: GenericPostBrokerType<ColorsUIMessages> = {
-  listSolidColors: (msg) =>
-    answer(msg, Styles.listSolidColors()),
+  listSolidColors: async (msg) =>
+    answer(msg, await Styles.listSolidColors()),
   getColorInfo: (msg) =>
     answer(msg, Styles.getSolidColorInfo(msg.payload)),
-  createSolidColor: (msg) =>
-    answer(msg, Styles.createOrModifySolidColor(msg.payload)),
-  modifySolidColor: (msg) =>
-    answer(msg, Styles.createOrModifySolidColor(msg.payload.color, msg.payload.id)),
+  createSolidColor: async (msg) =>
+    answer(msg, await Styles.createOrModifySolidColor(msg.payload)),
+  modifySolidColor: async (msg) =>
+    answer(msg, await Styles.createOrModifySolidColor(msg.payload.color, msg.payload.id)),
   deleteSolidColor: async (msg) => {
     await Styles.deleteColor(msg.payload.id);
     answer(msg, null);
@@ -62,23 +63,23 @@ const ColorsPostBroker: GenericPostBrokerType<ColorsUIMessages> = {
 };
 
 const FontsPostBroker: GenericPostBrokerType<FontsUIMessages> = {
-  listFontStyles: (msg) =>
-    answer(msg, Styles.listFontStyles()),
+  listFontStyles: async (msg) =>
+    answer(msg, await Styles.listFontStyles()),
 };
 
 const BoxShadowsPostBroker: GenericPostBrokerType<BoxShadowsUIMessages> = {
-  listBoxShadowsStyles: (msg) =>
-    answer(msg, Styles.listBoxShadows()),
+  listBoxShadowsStyles: async (msg) =>
+    answer(msg, await Styles.listBoxShadows()),
 };
 
 const BordersPostBroker: GenericPostBrokerType<BordersUIMessages> = {
-  listBorderStyles: (msg) =>
-    answer(msg, Styles.listBorderStyles()),
+  listBorderStyles: async (msg) =>
+    answer(msg, await Styles.listBorderStyles()),
 };
 
 const GridsPostBroker: GenericPostBrokerType<GridsUIMessages> = {
-  listGridStyles: (msg) =>
-    answer(msg, Styles.listGridStyles()),
+  listGridStyles: async (msg) =>
+    answer(msg, await Styles.listGridStyles()),
 };
 
 /** */
@@ -100,6 +101,10 @@ export const PostBroker: PostBrokerType = {
     figma.ui.resize(msg.payload.width, msg.payload.height);
     FigmaStore.getInstance.setKey('windowSize', msg.payload)
       .catch((err) => { console.log(err); });
+    answer(msg, null);
+  },
+  updateDocumentation: async (msg) => {
+    await writeDocs();
     answer(msg, null);
   },
   throwError: ({ message }) =>

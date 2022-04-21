@@ -17,4 +17,5 @@ createApp(App)
   .component('Details', Component.Details)
   .component('ErrorsBadge', Component.ErrorsBadge)
   .component('DataList', Component.DataList)
+  .component('Spinner', Component.Spinner)
   .mount('#app');

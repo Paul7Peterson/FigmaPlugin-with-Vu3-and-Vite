@@ -1,12 +1,13 @@
 import { parseBaseToken } from './_shared';
 import { FontStyle, ExtendedFontStyleCategory, FontStyleCategory } from './text.types';
-import { RootSizeName } from './space.types';
+import { RootSize, RootSizeName, SizesMap } from './space.types';
 import { parseLineHeight, parseTextDecoration, parseLetterSpacing } from './text.helpers';
+import { listRootSizes } from './space';
 
 type ExtendedTextStyle = Omit<FontStyle & { size: RootSizeName; }, 'category' | 'sizes'>;
 
 /** */
-export function listFontStyles (): FontStyle[] {
+export async function listFontStyles (): Promise<FontStyle[]> {
   const groupedTexts = figma.getLocalTextStyles()
     .reduce((t, text) => {
       const errors: string[] = [];
@@ -66,13 +67,14 @@ export function listFontStyles (): FontStyle[] {
       return t;
     }, {} as Record<ExtendedFontStyleCategory, Record<string, ExtendedTextStyle[]>>);
 
+  const rootSizes = await listRootSizes();
+
   return Object.entries(groupedTexts)
     .flatMap(([category, texts]) =>
-      Object.values(texts).map((fonts) =>
-        parseFontStyle(category as ExtendedFontStyleCategory, fonts)));
+      Object.values(texts).map((fonts) => parseFontStyle(category as ExtendedFontStyleCategory, fonts, rootSizes)));
 }
 
-function parseFontStyle (category: ExtendedFontStyleCategory, texts: ExtendedTextStyle[]): FontStyle {
+function parseFontStyle (category: ExtendedFontStyleCategory, texts: ExtendedTextStyle[], rootSizes: SizesMap): FontStyle {
   const errors: string[] = [];
 
   const propsToCheck: (keyof ExtendedTextStyle)[] =
@@ -82,12 +84,20 @@ function parseFontStyle (category: ExtendedFontStyleCategory, texts: ExtendedTex
     if (!texts.every((t) => t[p] === texts[0][p]))
       errors.push(`Not all font styles have the same "${p}" value.`);
   });
+  const sizes = texts.map((t) => t.size);
+  const sizesSet = new Set([...sizes, ...Object.values(rootSizes).map(s => s.name)]);
+
+  sizesSet.forEach((s) => {
+    if (!rootSizes[s]) errors.push(`Extra "${s}" size.`);
+    if (!sizes.includes(s)) errors.push(`Missing "${s}" size.`);
+  });
+
   const text = texts[0];
 
   return {
     ...text,
     category,
-    sizes: texts.map((t) => t.size),
+    sizes,
     errors: [...errors, ...texts.flatMap((t) => t.errors)],
   };
 }
