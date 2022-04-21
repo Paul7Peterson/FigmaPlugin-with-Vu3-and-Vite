@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ColorToken, TokenSection } from ".";
 import { useStylesStore } from "@/store";
-import { ColorNameExtended, SolidColor } from "@/api/styles/color.types";
+import { ColorNameExtended, SolidColor } from "@/api/tokens/color.types";
 import { Details } from '@/components';
 
 const store = useStylesStore();

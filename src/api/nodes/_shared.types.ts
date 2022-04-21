@@ -1,5 +1,5 @@
-import { colorToPaint } from '../styles/color.helpers';
-import { ColorAlpha } from '../styles/color.types';
+import { colorToPaint } from '../tokens/color.helpers';
+import { ColorAlpha } from '../tokens/color.types';
 
 type ResizeOptions =
   | 'hug contents'

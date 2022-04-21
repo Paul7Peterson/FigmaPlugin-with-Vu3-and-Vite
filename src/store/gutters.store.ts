@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import type { Gutter } from '@/api/styles/index.types';
+import type { Gutter } from '@/api/tokens/index.types';
 
 import { Broker } from '@comm/worker.api';
 
@@ -19,12 +19,11 @@ export const useGuttersStore = defineStore('gutters', {
   actions: {
     async fetchGutters (): Promise<void> {
       const gutters = await Broker.listGutters();
-      this.gutters = Object.values(gutters)
-        .sort((a, b) => a.value - b.value)
+      this.gutters = gutters
         .map((s) => ({ ...s, locked: true }));
     },
-    async createGutter (): Promise<ModifiedGutter> {
-      const gutter = await Broker.createGutter();
+    async createGutter (size: 'smaller' | 'bigger'): Promise<ModifiedGutter> {
+      const gutter = await Broker.createGutter(size);
       await this.fetchGutters();
       return { ...gutter, locked: true };
     },
@@ -33,7 +32,7 @@ export const useGuttersStore = defineStore('gutters', {
       await this.fetchGutters();
     },
     async deleteGutter (gutter: Gutter): Promise<void> {
-      // await Broker.deleteRootSize(size);
+      await Broker.deleteGutter(gutter);
       await this.fetchGutters();
     },
   }

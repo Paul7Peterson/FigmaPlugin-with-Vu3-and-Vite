@@ -10,6 +10,8 @@ import { useStylesStore } from './styles.store';
 export const useAppStore = defineStore('app', {
   state: () => {
     return {
+      isReady: false,
+      hasFatalError: false,
     };
   },
   getters: {
@@ -17,6 +19,7 @@ export const useAppStore = defineStore('app', {
   },
   actions: {
     async fetchStyles (): Promise<void> {
+      this.isReady = false;
       const styles = useStylesStore();
       await Broker.initApp();
       await Promise.all([
@@ -27,7 +30,10 @@ export const useAppStore = defineStore('app', {
         styles.fetchBoxShadows(),
         styles.fetchGridStyles(),
         styles.fetchBorderStyles(),
-      ]);
+      ]).catch((e) => {
+        this.hasFatalError = true;
+      });
+      this.isReady = true;
     },
   }
 });

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { BorderStyle } from '@/api/styles/effect.types';
+import type { BorderStyle } from '@/api/tokens/effect.types';
 
 interface Props {
   border: BorderStyle;

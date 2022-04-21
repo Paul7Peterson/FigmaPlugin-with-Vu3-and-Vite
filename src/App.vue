@@ -6,20 +6,31 @@ import { ResizeCorner } from './components'
 
 const store = useAppStore()
 
+const isReady = $computed(() => store.isReady)
+const hasFatalError = $computed(() => store.hasFatalError)
+
 onBeforeMount(async() => await store.fetchStyles())
 </script>
 
 <template>
-  <nav id="nav">
-    <router-link to="/">Home</router-link>
-    <router-link to="/tokens">Tokens</router-link>
-    <router-link to="/semantic">Semantic</router-link>
-    <router-link to="/components">Components</router-link>
-  </nav>
-  <main id="app__main">
-    <KeepAlive>
-      <router-view></router-view>
-    </KeepAlive>
+  <template v-if="!hasFatalError">
+    <nav id="nav">
+      <router-link to="/">Home</router-link>
+      <router-link to="/tokens">Tokens</router-link>
+      <router-link to="/semantic">Semantic</router-link>
+      <router-link to="/components">Components</router-link>
+    </nav>
+    <main id="app__main" v-if="isReady">
+      <KeepAlive>
+        <router-view></router-view>
+      </KeepAlive>
+    </main>
+    <main v-else id="app_loading">
+      <Spinner/>
+    </main>
+  </template>
+  <main v-else id="app_loading">
+    <p>Ups!</p>
   </main>
   <ResizeCorner/>
 </template>
@@ -56,7 +67,15 @@ onBeforeMount(async() => await store.fetchStyles())
     cursor: help;
   }
 
-  #app__main {
-    padding: 10px;
+  #app{
+    &__main {
+       padding: 10px;
+    }
+    &__loading {
+      display: grid;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+    }
   }
 </style>

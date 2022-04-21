@@ -29,8 +29,11 @@ export class FigmaStore {
   }
 
   /** */
-  async getKeys (): Promise<string[]> {
-    return figma.clientStorage.keysAsync();
+  async getKeys (): Promise<(keyof Store)[]> {
+    const allKeys = await figma.clientStorage.keysAsync();
+    console.log({ allKeys }, figma.clientStorage);
+
+    return allKeys as (keyof Store)[];
   }
 
   /** */
@@ -63,24 +66,42 @@ export class FigmaStore {
 
 
   async retrieveData (): Promise<void> {
-    const data = JSON.parse(this.documentStore.characters) as Partial<Store>;
-    const promises = Object.entries(data).map(([k, v]) => {
-      if (v) return this.setKey(k as any, v);
-      return Promise.resolve();
-    });
-    await Promise.all(promises);
-    console.log('DATA:', data);
+    try {
+      const data = JSON.parse(this.documentStore.characters) as Partial<Store>;
+      console.log('DATA:', data);
+      let oldKeys = await this.getKeys();
+
+      console.log('KEYS', oldKeys);
+
+      const promises = Object.entries(data).map(([k, v]) => {
+        oldKeys = oldKeys.filter((key) => key !== k);
+        return v ? this.setKey(k as any, v) : Promise.resolve();
+      });
+
+      oldKeys.forEach((key) => {
+        promises.push(this.deleteKey(key as any));
+      });
+
+      await Promise.all(promises);
+    } catch (e) {
+      throw new Error('Error while retrieving data');
+    }
   }
 
   /** */
   async persistData (): Promise<void> {
-    const data: Record<string, any> = {};
-    const keys = await figma.clientStorage.keysAsync();
-    await Promise.all(keys.map((k) => new Promise<void>(async (resolve) => {
-      data[k] = await figma.clientStorage.getAsync(k);
-      resolve();
-    })));
+    const data = await this.getStorageContent();
     await figma.loadFontAsync({ family: "Consolas", style: "Regular" });
     this.documentStore.characters = JSON.stringify(data, undefined, 2);
+  }
+
+  private async getStorageContent (): Promise<Partial<Store>> {
+    const data: Partial<Store> = {};
+    const keys = await this.getKeys();
+    await Promise.all(keys.map((k) => new Promise(async (resolve) => {
+      data[k] = await figma.clientStorage.getAsync(k);
+      resolve(true);
+    })));
+    return data;
   }
 }

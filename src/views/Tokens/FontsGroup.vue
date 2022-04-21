@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { TokenSection, FontToken } from '.';
 import { useStylesStore } from '@/store';
-import type { ExtendedFontStyleCategory, FontStyle } from '@/api/styles/text.types';
+import type { ExtendedFontStyleCategory, FontStyle } from '@/api/tokens/text.types';
 import { Details } from '@/components';
 
 const store = useStylesStore()

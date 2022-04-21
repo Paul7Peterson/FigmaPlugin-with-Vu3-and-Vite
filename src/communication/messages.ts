@@ -2,29 +2,27 @@ import type {
   SolidColor,
   Color,
   SolidColorInfo,
-  SizesMap,
   RootSize,
   GridStyle,
   BoxShadowStyle,
   FontStyle,
   BorderStyle,
-  GuttersMap,
   Gutter,
-} from '@/api/styles/index.types';
+} from '@/api/tokens/index.types';
 
 type VoidFunction = (arg: null) => null;
 
 export type RootSizesUIMessages = {
-  listRootSizes: (args: null) => SizesMap;
+  listRootSizes: (args: null) => RootSize[];
   createRootSize: (args: null) => RootSize;
   modifyRootSizes: (args: RootSize[]) => null;
   deleteRootSize: (args: RootSize) => null;
 };
 
 export type GuttersUIMessages = {
-  listGutters: (args: null) => GuttersMap;
+  listGutters: (args: null) => Gutter[];
   modifyGutters: (args: Gutter[]) => null;
-  createGutter: (args: null) => Gutter;
+  createGutter: (args: 'smaller' | 'bigger') => Gutter;
   deleteGutter: (args: Gutter) => null;
 };
 

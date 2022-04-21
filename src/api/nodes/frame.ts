@@ -1,4 +1,4 @@
-import { colorToPaint } from '../styles/color.helpers';
+import { colorToPaint } from '../tokens/color.helpers';
 import { BaseNode } from './base';
 import { assignBorderRadius, setAutoLayout, setResizing } from './_shared';
 import { AutoLayoutDirection, AutoLayoutOptions, DefaultColor, DirectionalAssign, NodeFill, NodeSize, ResizingOptions } from './_shared.types';

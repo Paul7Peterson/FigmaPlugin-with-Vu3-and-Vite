@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 import { TokenSection } from '.';
 import { SliderMultiple } from '@/components';
 import { useSizesStore } from '@/store';
-import type { RootSize } from '@/api/styles/space.types';
+import type { RootSize } from '@/api/tokens/space.types';
 
 const store = useSizesStore()
 

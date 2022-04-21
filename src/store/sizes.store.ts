@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import type { RootSize } from '@/api/styles/index.types';
+import type { RootSize } from '@/api/tokens/index.types';
 
 import { Broker } from '@comm/worker.api';
 
@@ -19,8 +19,7 @@ export const useSizesStore = defineStore('sizes', {
   actions: {
     async fetchRootSizes (): Promise<void> {
       const rootSizes = await Broker.listRootSizes();
-      this.rootSizes = Object.values(rootSizes)
-        .sort((a, b) => a.value - b.value)
+      this.rootSizes = rootSizes
         .map((s) => ({ ...s, locked: true }));
     },
     async createRootSize (): Promise<ModifiedRootSize> {

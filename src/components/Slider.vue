@@ -1,4 +1,4 @@
-<script lang="ts" setup>import { StyleValue } from 'vue';
+<script lang="ts" setup>import { onBeforeMount, StyleValue } from 'vue';
 
 interface Props {
   /** */
@@ -64,12 +64,25 @@ const paddingLimits: StyleValue = $computed(() => {
   return { 'padding-left': pLeft, 'padding-right': pRight }
 })
 
+const ticksStyle: StyleValue = $computed(() => ({
+  'margin': props.verticalHeight 
+    ? `${8 - (props.verticalHeight / (options.length * 2))}px 0` 
+    : `0px calc(-${50 / options.length}% + ${8}px)`,
+  'grid-area': 'ticks',
+}))
+
 const title = $computed(() => 
   props.titleBuilder?.(props.modelValue) || props.modelValue.toString())
 
 function onInput (e: Event) {
   emits('update:modelValue', (e.target as HTMLInputElement).valueAsNumber)
 }
+
+onBeforeMount(() => {
+  console.log(props.verticalHeight)
+
+  console.log(ticksStyle)
+})
 </script>
 
 <template>
@@ -90,11 +103,7 @@ function onInput (e: Event) {
      <div 
       class="ticks" 
       v-if="showTicks"
-      :style="{ 
-        'grid-area': 'ticks',
-        'margin': verticalHeight 
-          ? `-${(verticalHeight / (options.length * 2)) - 8}px 0` 
-          : `0 calc(-${50 / options.length}% + ${8}px)`}"
+      :style="ticksStyle"
     >
       <span 
         class="o_txt"

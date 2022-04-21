@@ -1,6 +1,7 @@
 import { FigmaStore } from './store/store';
 import { AnyUIMessage } from '@comm/messages.types';
 import { PostBroker } from '@comm/apiBroker.api';
+import { answer } from '../communication/apiBroker';
 
 const WIDTH = 400;
 const HEIGHT = 600;
@@ -23,10 +24,11 @@ figma.ui.onmessage = (message: string) => {
   console.log('📦', msg.type, msg.payload);
   try {
     PostBroker[msg.type]?.(msg as any);
-  } catch (error) {
-    console.trace(error);
-    figma.notify((error as Error).message, { error: true, timeout: 3 });
-    PostBroker.throwError(error as Error);
+  } catch (error: any) {
+    console.error('❌', error.message);
+    const errorMessage = { type: 'error', id: msg.id, payload: { message } };
+    figma.ui.postMessage(JSON.stringify(errorMessage));
+    figma.notify(error.message, { error: true, timeout: 3 });
   }
 };
 

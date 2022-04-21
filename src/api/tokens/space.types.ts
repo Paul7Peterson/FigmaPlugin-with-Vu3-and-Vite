@@ -19,8 +19,6 @@ export interface RootSize {
   name: RootSizeName;
 }
 
-export type SizesMap = Partial<Record<RootSizeName, RootSize>>;
-
 export enum GutterName {
   XS3 = '3XS',
   XS2 = '2XS',
@@ -53,5 +51,3 @@ export interface Gutter {
   name: GutterName;
   value: number;
 }
-
-export type GuttersMap = Partial<Record<GutterName, Gutter>>;

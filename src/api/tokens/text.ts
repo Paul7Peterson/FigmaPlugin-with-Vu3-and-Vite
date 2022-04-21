@@ -1,8 +1,8 @@
 import { parseBaseToken } from './_shared';
 import { FontStyle, ExtendedFontStyleCategory, FontStyleCategory } from './text.types';
-import { RootSize, RootSizeName, SizesMap } from './space.types';
+import { RootSize, RootSizeName } from './space.types';
 import { parseLineHeight, parseTextDecoration, parseLetterSpacing } from './text.helpers';
-import { listRootSizes } from './space';
+import { listRootSizes } from './space.rootSizes';
 
 type ExtendedTextStyle = Omit<FontStyle & { size: RootSizeName; }, 'category' | 'sizes'>;
 
@@ -74,7 +74,7 @@ export async function listFontStyles (): Promise<FontStyle[]> {
       Object.values(texts).map((fonts) => parseFontStyle(category as ExtendedFontStyleCategory, fonts, rootSizes)));
 }
 
-function parseFontStyle (category: ExtendedFontStyleCategory, texts: ExtendedTextStyle[], rootSizes: SizesMap): FontStyle {
+function parseFontStyle (category: ExtendedFontStyleCategory, texts: ExtendedTextStyle[], rootSizes: RootSize[]): FontStyle {
   const errors: string[] = [];
 
   const propsToCheck: (keyof ExtendedTextStyle)[] =
@@ -85,10 +85,11 @@ function parseFontStyle (category: ExtendedFontStyleCategory, texts: ExtendedTex
       errors.push(`Not all font styles have the same "${p}" value.`);
   });
   const sizes = texts.map((t) => t.size);
-  const sizesSet = new Set([...sizes, ...Object.values(rootSizes).map(s => s.name)]);
+  const rootNames = rootSizes.map(s => s.name);
+  const sizesSet = new Set([...sizes, ...rootNames]);
 
   sizesSet.forEach((s) => {
-    if (!rootSizes[s]) errors.push(`Extra "${s}" size.`);
+    if (!rootNames.includes(s)) errors.push(`Extra "${s}" size.`);
     if (!sizes.includes(s)) errors.push(`Missing "${s}" size.`);
   });
 

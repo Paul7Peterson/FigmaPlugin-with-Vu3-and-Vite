@@ -60,13 +60,17 @@ const sortedValues = $computed(() => {
 })
 
 function getLimit(index: number): [number, number] {
-  const [min, max] = [
-    sortedValues[index - 1]?.value || props.limit?.[0], 
-    sortedValues[index + 1]?.value || props.limit?.[1],
+  const [lMin, lMax] = [
+    props.limit?.[0] || props.range[0],
+    props.limit?.[1] || props.range[1],
+  ]
+  const [prev, next] = [
+    sortedValues[index - 1]?.value, 
+    sortedValues[index + 1]?.value,
   ]
   return [
-    min ? min + props.step : props.range[0],
-    max ? max - props.step : props.range[1],
+    prev ? (prev - props.step) : lMin,
+    next ? (next + props.step) : lMax,
   ]
 }
 

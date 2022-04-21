@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { TokenSection, BoxShadowToken } from '.';
 import { useStylesStore } from '@/store';
-import { BoxShadowStyle, BoxShadowType } from '@/api/styles/index.types';
+import { BoxShadowStyle, BoxShadowType } from '@/api/tokens/index.types';
 import { Details } from '@/components';
 
 const store = useStylesStore()

@@ -21,7 +21,7 @@ const RootSizesBroker: BrokerGenericType<RootSizesUIMessages> = {
 
 const GuttersBroker: BrokerGenericType<GuttersUIMessages> = {
   listGutters: () => registerCall('listGutters', null),
-  createGutter: () => registerCall('createGutter', null),
+  createGutter: (payload) => registerCall('createGutter', payload),
   modifyGutters: (payload) => registerCall('modifyGutters', payload),
   deleteGutter: (payload) => registerCall('deleteGutter', payload),
 };

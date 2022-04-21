@@ -1,4 +1,4 @@
-import { SizesMap, GuttersMap, RootSizeName } from '../styles/space.types';
+import { SizesMap, GuttersMap, RootSizeName } from '../tokens/space.types';
 import { getComponents, getTokenTable, shortByNumericValue, Page, documentInTable } from './helpers';
 
 const { "Root sizes": RootSizes, Gutters } = getComponents();

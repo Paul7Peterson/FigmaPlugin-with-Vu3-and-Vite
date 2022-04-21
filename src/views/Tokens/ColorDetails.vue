@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { reactive, watch } from 'vue';
-import type { SolidColor, SolidColorInfo } from '@api/styles/index.types';
+import type { SolidColor, SolidColorInfo } from '@api/tokens/index.types';
 import { useStylesStore } from '@/store';
 
 const store = useStylesStore()

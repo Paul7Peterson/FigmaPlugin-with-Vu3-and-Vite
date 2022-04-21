@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { FontStyle } from '@/api/styles/text.types';
+import type { FontStyle } from '@/api/tokens/text.types';
 
 interface Props {
   /** */

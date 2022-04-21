@@ -1,5 +1,5 @@
 import { FigmaStore } from '../store';
-import { listBoxShadows, listSolidColors } from '../styles';
+import { listBoxShadows, listSolidColors } from '../tokens';
 import { documentColors } from './color';
 import { documentBoxShadows } from './effect';
 import { loadFonts } from './helpers';

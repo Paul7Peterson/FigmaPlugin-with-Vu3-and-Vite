@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 import { TokenSection } from '.';
 import { useGuttersStore, useSizesStore } from '@/store';
 import { SliderMultiple } from '@/components';
-import { Gutter, RootSizeName, RootSize } from '@/api/styles/index.types';
+import { Gutter, RootSizeName, RootSize } from '@/api/tokens/index.types';
 
 const store = useGuttersStore()
 const sizesStore = useSizesStore()
@@ -18,15 +18,9 @@ const gutters = $computed(() => store.gutters)
 const rootSizes = $computed(() => sizesStore.rootSizes)
 const allowCreateGutters = $computed(() => !!rootSizes.length)
 
-const baseSize = $computed(() => {
-  const reference: RootSizeName = 'Medium' as RootSizeName
-  const mediumSize = sizesStore.rootSizes.find((x) => x.name === reference)?.value
-  return mediumSize || 14
-})
-
-async function onCreate() {
-  if (confirm('Do you really want to create a new root size?')) {
-    await store.createGutter()
+async function onCreate(size: 'smaller' | 'bigger') {
+  if (confirm('Do you really want to create a new gutter?')) {
+    await store.createGutter(size)
   }
 }
 
@@ -85,10 +79,16 @@ async function onCancelEdit () {
           @click="onEdit"
         >Edit values</Button>
         <Button 
+          v-if="gutters.length"
           :locked="!allowCreateGutters"
           :title="!allowCreateGutters ? 'Please, create a root size before continuing with gutters.' : ''"
-          @click="onCreate"
-        >Create new</Button>
+          @click="onCreate('smaller')"
+        >Create smaller</Button>
+        <Button 
+          :locked="!allowCreateGutters"
+          :title="!allowCreateGutters ? 'Please, create a root size before continuing with gutters.' : ''"
+          @click="onCreate('bigger')"
+        >Create {{ gutters.length ? 'bigger' : 'new' }}</Button>
       </template>
     </template>
     <section class="gutter-tokens">
@@ -102,30 +102,26 @@ async function onCancelEdit () {
             <template #header="{ column }: { column: RootSize }">
               {{ column.name }}<br/><small>[{{ column.value }}px]</small>
             </template>
-            <template #rowHeader="{ row: gutter }: { row: Gutter }">{{ gutter.name }}</template>  
-            <template #default="{ row: gutter }: { row: Gutter }">
-              <td
-                v-for="(size, i) in rootSizes"
-                :key="i"
-              >
-                <div class="gutter-tokens__sample">
-                  <span class="gutter-tokens__sample__value">{{ gutter.value * size.value }}</span>
-                  <div 
-                    class="gutter-tokens__sample__gutter"
-                    :title="`${size.name} - ${gutter.name}\n${gutter.value * size.value} px`"
-                    :style="{ 
-                      width: gutter.value * size.value, 
-                      height: gutter.value * size.value, 
-                    }"
-                  /> 
-                </div>
-              </td>
-            </template>  
+            <template #row-header="{ row: gutter }: { row: Gutter }">{{ gutter.name }}</template> 
+            <template #cell="{ row: gutter, column: size }: { row: Gutter, column: RootSize }">
+              <div class="gutter-tokens__sample">
+                <span class="gutter-tokens__sample__value">{{ gutter.value * size.value }}</span>
+                <div 
+                  class="gutter-tokens__sample__gutter"
+                  :title="`${size.name} - ${gutter.name}\n${gutter.value * size.value} px`"
+                  :style="{ 
+                    width: gutter.value * size.value, 
+                    height: gutter.value * size.value, 
+                  }"
+                /> 
+              </div>
+            </template>
           </Table>
           <SliderMultiple
             label="Gutters"
             :values="gutters"
             :range="[0, 10]"
+            :limit="[0.25, 10]"
             :ticksGap="4"
             :step="0.25"
             :verticalHeight="600"
@@ -141,6 +137,15 @@ async function onCancelEdit () {
       </div>
     </section>
   </TokenSection>
+  <Modal v-model="data.selectedGutter">
+    {{ data.selectedGutter }}
+    <div class="button-group">
+      <Button
+        btnType="danger"
+        @click="onDelete"
+      >Delete</Button>
+    </div>
+  </Modal>
 </template>
 
 <style lang="scss">

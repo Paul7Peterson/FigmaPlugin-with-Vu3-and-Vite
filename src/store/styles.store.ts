@@ -10,7 +10,7 @@ import type {
   SolidColorInfo,
   ExtendedBoxShadowType,
   ExtendedFontStyleCategory,
-} from '@/api/styles/index.types';
+} from '@/api/tokens/index.types';
 
 import { Broker } from '@comm/worker.api';
 
