@@ -1,5 +1,6 @@
 import { hex } from 'color-convert';
-import { colorToPaint } from './color.helpers';
+
+import { colorToPaint } from '../color/color.helpers';
 import { BoxShadowStyle, Shadow } from './effect.types';
 
 export function parseEffectFromShadow (shadow: Shadow, type: `${'INNER' | 'DROP'}_SHADOW`): Effect {

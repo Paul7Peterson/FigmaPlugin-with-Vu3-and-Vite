@@ -1,19 +1,19 @@
-import { SizesMap, GuttersMap, RootSizeName } from '../tokens/space.types';
+import { RootSize, RootSizeName, Gutter } from '../tokens/space/space.types';
 import { getComponents, getTokenTable, shortByNumericValue, Page, documentInTable } from './helpers';
 
 const { "Root sizes": RootSizes, Gutters } = getComponents();
 
-export async function documentRootSizes (sizes: SizesMap): Promise<void> {
+export async function documentRootSizes (sizes: RootSize[]): Promise<void> {
   const RootSizesTable = getTokenTable(Page.Spacing, 'Root sizes');
-  const values = shortByNumericValue(Object.values(sizes));
+  const values = shortByNumericValue(sizes);
   documentInTable(RootSizesTable, RootSizes!, values, (rs) => ({
     name: rs.name,
     value: `${rs.value} px`,
   }));
 }
 
-export async function documentGutters (gutters: GuttersMap, sizes: SizesMap): Promise<void> {
-  const values = shortByNumericValue(Object.values(gutters));
+export async function documentGutters (gutters: Gutter[], sizes: RootSize[]): Promise<void> {
+  const values = shortByNumericValue(gutters);
   const GuttersTable = getTokenTable(Page.Spacing, 'Gutters');
 
   const sizesMap = Object.values(sizes).map((s) => s.name);
@@ -25,7 +25,8 @@ export async function documentGutters (gutters: GuttersMap, sizes: SizesMap): Pr
     name: gutter.name,
     value: `${gutter.value} rem`,
     ...Object.values(RootSizeName).reduce((t, size) => {
-      t[size.toLowerCase()] = `${gutter.value * (sizes[size]?.value || 0)} px`;
+      const target = sizes.find((s) => s.name === size);
+      t[size.toLowerCase()] = `${gutter.value * (target?.value || 0)} px`;
       return t;
     }, {} as Record<string, string>),
   }),

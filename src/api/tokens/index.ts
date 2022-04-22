@@ -1,6 +1,5 @@
 export * from './color';
-export * from './space.rootSizes';
-export * from './space.gutters';
+export * from './space';
 export * from './text';
 export * from './grid';
 export * from './effect';

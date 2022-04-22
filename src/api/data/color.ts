@@ -1,5 +1,5 @@
-import { colorToPaint } from '../tokens/color.helpers';
-import { SolidColor } from '../tokens/color.types';
+import { colorToPaint } from '../tokens/color/color.helpers';
+import { SolidColor } from '../tokens/color/color.types';
 import { getComponents, getTokenTable, Page, documentInTable } from './helpers';
 
 const { "Solid colors": SolidColors } = getComponents();

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { TokenSection } from '.';
+import { TokenSection } from '..';
 import { useGuttersStore, useSizesStore } from '@/store';
 import { SliderMultiple } from '@/components';
 import { Gutter, RootSizeName, RootSize } from '@/api/tokens/index.types';

@@ -1,4 +1,4 @@
-import { parseBaseToken } from './_shared';
+import { parseBaseToken } from '../_shared';
 import { GridStyle } from './grid.types';
 
 /** */

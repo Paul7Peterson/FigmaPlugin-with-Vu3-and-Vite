@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { BoxShadowStyle, Shadow } from '@/api/tokens/effect.types';
+import type { BoxShadowStyle, Shadow } from '@/api/tokens/index.types';
 
 interface Props {
   boxShadow: BoxShadowStyle;

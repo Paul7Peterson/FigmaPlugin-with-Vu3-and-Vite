@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { TokenSection, FontToken } from '.';
+import { TokenSection } from '..';
+import FontToken from './Token.vue';
 import { useStylesStore } from '@/store';
-import type { ExtendedFontStyleCategory, FontStyle } from '@/api/tokens/text.types';
+import type { ExtendedFontStyleCategory, FontStyle } from '@/api/tokens/index.types';
 import { Details } from '@/components';
 
 const store = useStylesStore()

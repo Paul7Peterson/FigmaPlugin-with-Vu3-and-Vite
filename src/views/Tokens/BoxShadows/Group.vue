@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { TokenSection, BoxShadowToken } from '.';
+import { TokenSection } from '..';
+import BoxShadowToken from './Token.vue'
 import { useStylesStore } from '@/store';
 import { BoxShadowStyle, BoxShadowType } from '@/api/tokens/index.types';
 import { Details } from '@/components';

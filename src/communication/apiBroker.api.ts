@@ -9,7 +9,7 @@ import type {
 } from './messages';
 import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 
-import * as Styles from '../api/tokens';
+import * as Tokens from '../api/tokens';
 import { FigmaStore } from '../api/store/store';
 import { getUser } from '../api/figma';
 import { writeDocs } from '../api/data';
@@ -17,78 +17,78 @@ import { writeDocs } from '../api/data';
 
 const RootSizesPostBroker: GenericPostBrokerType<RootSizesUIMessages> = {
   listRootSizes: async (msg) => {
-    return answer(msg, await Styles.listRootSizes());
+    return answer(msg, await Tokens.listRootSizes());
   },
   createRootSize: async (msg) => {
-    return answer(msg, await Styles.createRootSize());
+    return answer(msg, await Tokens.createRootSize());
   },
   modifyRootSizes: async (msg) => {
-    await Styles.editRootSizes(msg.payload);
+    await Tokens.editRootSizes(msg.payload);
     return answer(msg, null);
   },
   deleteRootSize: async (msg) => {
-    await Styles.deleteRootSize(msg.payload);
+    await Tokens.deleteRootSize(msg.payload);
     return answer(msg, null);
   },
 };
 
 const GuttersPostBroker: GenericPostBrokerType<GuttersUIMessages> = {
   listGutters: async (msg) => {
-    return answer(msg, await Styles.listGutters());
+    return answer(msg, await Tokens.listGutters());
   },
   createGutter: async (msg) => {
-    return answer(msg, await Styles.createGutter(msg.payload));
+    return answer(msg, await Tokens.createGutter(msg.payload));
   },
   modifyGutters: async (msg) => {
-    await Styles.editGutters(msg.payload);
+    await Tokens.editGutters(msg.payload);
     return answer(msg, null);
   },
   deleteGutter: async (msg) => {
-    await Styles.deleteGutter(msg.payload);
+    await Tokens.deleteGutter(msg.payload);
     return answer(msg, null);
   },
 };
 
 const ColorsPostBroker: GenericPostBrokerType<ColorsUIMessages> = {
   listSolidColors: async (msg) => {
-    return answer(msg, await Styles.listSolidColors());
+    return answer(msg, await Tokens.listSolidColors());
   },
   getColorInfo: (msg) => {
-    return answer(msg, Styles.getSolidColorInfo(msg.payload));
+    return answer(msg, Tokens.getSolidColorInfo(msg.payload));
   },
   createSolidColor: async (msg) => {
-    return answer(msg, await Styles.createOrModifySolidColor(msg.payload));
+    return answer(msg, await Tokens.createOrModifySolidColor(msg.payload));
   },
   modifySolidColor: async (msg) => {
-    return answer(msg, await Styles.createOrModifySolidColor(msg.payload.color, msg.payload.id));
+    return answer(msg, await Tokens.createOrModifySolidColor(msg.payload.color, msg.payload.id));
   },
   deleteSolidColor: async (msg) => {
-    await Styles.deleteColor(msg.payload.id);
+    await Tokens.deleteColor(msg.payload.id);
     return answer(msg, null);
   },
 };
 
 const FontsPostBroker: GenericPostBrokerType<FontsUIMessages> = {
   listFontStyles: async (msg) => {
-    return answer(msg, await Styles.listFontStyles());
+    return answer(msg, await Tokens.listFontStyles());
   },
 };
 
 const BoxShadowsPostBroker: GenericPostBrokerType<BoxShadowsUIMessages> = {
   listBoxShadowsStyles: async (msg) => {
-    return answer(msg, await Styles.listBoxShadows());
+    return answer(msg, await Tokens.listBoxShadows());
   },
 };
 
 const BordersPostBroker: GenericPostBrokerType<BordersUIMessages> = {
   listBorderStyles: async (msg) => {
-    return answer(msg, await Styles.listBorderStyles());
+    return answer(msg, await Tokens.listBorderStyles());
   },
 };
 
 const GridsPostBroker: GenericPostBrokerType<GridsUIMessages> = {
   listGridStyles: async (msg) => {
-    return answer(msg, await Styles.listGridStyles());
+    return answer(msg, await Tokens.listGridStyles());
   },
 };
 

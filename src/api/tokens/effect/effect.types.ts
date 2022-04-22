@@ -1,5 +1,5 @@
-import { BaseToken } from './_shared';
-import { SolidColor, ColorSpaces } from './color.types';
+import { BaseToken } from '../_shared';
+import { SolidColor, ColorSpaces } from '../color/color.types';
 
 export enum BoxShadowType {
   Elevation = 'Elevation',

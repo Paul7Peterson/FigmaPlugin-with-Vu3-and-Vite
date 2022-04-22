@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { TokenSection } from '.';
+import { TokenSection } from '..';
 import { SliderMultiple } from '@/components';
 import { useSizesStore } from '@/store';
-import type { RootSize } from '@/api/tokens/space.types';
+import type { RootSize } from '@/api/tokens/index.types';
 
 const store = useSizesStore()
 

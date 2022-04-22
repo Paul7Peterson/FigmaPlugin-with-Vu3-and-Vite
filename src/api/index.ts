@@ -1,9 +1,8 @@
 import { FigmaStore } from './store/store';
 import { AnyUIMessage } from '@comm/messages.types';
 import { PostBroker } from '@comm/apiBroker.api';
-import { answer } from '../communication/apiBroker';
 
-const WIDTH = 400;
+const WIDTH = 500;
 const HEIGHT = 600;
 
 figma.showUI(__html__, {
@@ -23,7 +22,8 @@ figma.ui.onmessage = (message: string) => {
   const msg: AnyUIMessage = JSON.parse(message);
   console.log('📦', msg.type, msg.payload);
   try {
-    PostBroker[msg.type]?.(msg as any);
+    PostBroker[msg.type]?.(msg as any)
+      .catch((e) => console.error('❌❌', e.message));
   } catch (error: any) {
     console.error('❌', error.message);
     const errorMessage = { type: 'error', id: msg.id, payload: { message } };

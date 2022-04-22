@@ -1,4 +1,4 @@
-import { FigmaStore } from '../store';
+import { FigmaStore } from '../../store';
 import { deleteFromArray, getNextOrPrevious, modifyInArray } from './space.helpers';
 import {
   Gutter,

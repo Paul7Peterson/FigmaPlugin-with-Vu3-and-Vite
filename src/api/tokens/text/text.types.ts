@@ -1,5 +1,5 @@
-import { RootSizeName } from './space.types';
-import { BaseToken } from './_shared';
+import { RootSizeName } from '../space/space.types';
+import { BaseToken } from '../_shared';
 
 export enum FontStyleCategory {
   /** */

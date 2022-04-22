@@ -1,8 +1,8 @@
-import { parseBaseToken } from './_shared';
+import { parseBaseToken } from '../_shared';
 import { FontStyle, ExtendedFontStyleCategory, FontStyleCategory } from './text.types';
-import { RootSize, RootSizeName } from './space.types';
+import { RootSize, RootSizeName } from '../space/space.types';
 import { parseLineHeight, parseTextDecoration, parseLetterSpacing } from './text.helpers';
-import { listRootSizes } from './space.rootSizes';
+import { listRootSizes } from '../space/space.rootSizes';
 
 type ExtendedTextStyle = Omit<FontStyle & { size: RootSizeName; }, 'category' | 'sizes'>;
 

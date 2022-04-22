@@ -2,7 +2,7 @@
 import { reactive } from "vue";
 
 import type { SolidColor } from "@api/tokens/index.types";
-import ColorDetails from "./ColorDetails.vue";
+import ColorDetails from "./Details.vue";
 
 interface Props {
   /** */

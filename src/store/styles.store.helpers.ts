@@ -1,4 +1,4 @@
-import { Color } from '@/api/tokens/color.types';
+import { Color } from '@/api/tokens/index.types';
 
 /** */
 export function hexToRgb (hex: string): Color {

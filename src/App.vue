@@ -25,11 +25,11 @@ onBeforeMount(async() => await store.fetchStyles())
         <router-view></router-view>
       </KeepAlive>
     </main>
-    <main v-else id="app_loading">
+    <main v-else id="app__loading">
       <Spinner/>
     </main>
   </template>
-  <main v-else id="app_loading">
+  <main v-else id="app__loading">
     <p>Ups!</p>
   </main>
   <ResizeCorner/>
@@ -69,12 +69,13 @@ onBeforeMount(async() => await store.fetchStyles())
 
   #app{
     &__main {
-       padding: 10px;
+      padding: 10px;
     }
     &__loading {
       display: grid;
       align-items: center;
       justify-content: center;
+      height: 100%;
       font-size: 50px;
     }
   }

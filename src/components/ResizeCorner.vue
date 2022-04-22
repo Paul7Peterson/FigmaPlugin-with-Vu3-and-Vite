@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { Broker } from '@comm/worker.api';
 
+const MIN_WIDTH = 500
+const MIN_HEIGHT = 600
+
 const corner = $ref(null as SVGElement | null)
 
 function onPointerDown (e: PointerEvent) {
@@ -18,11 +21,10 @@ function onPointerUp (e: PointerEvent) {
 }
 
 function resizeWindow(e: PointerEvent) {
-  const size = {
-    width: Math.max(400, Math.floor(e.clientX + 5)),
-    height: Math.max(600, Math.floor(e.clientY + 5))
-  };
-  Broker.resize(size)
+  Broker.resize({
+    width: Math.max(MIN_WIDTH, Math.floor(e.clientX + 5)),
+    height: Math.max(MIN_HEIGHT, Math.floor(e.clientY + 5))
+  })
 }
 </script>
 

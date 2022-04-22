@@ -1,4 +1,4 @@
-import { FigmaStore } from '../store';
+import { FigmaStore } from '../../store';
 import { deleteFromArray, getNextOrPrevious, modifyInArray } from './space.helpers';
 import {
   RootSize,
@@ -48,9 +48,6 @@ async function editRootSize (size: RootSize): Promise<RootSize> {
 
 function getAlternateValue<N extends string> (list: N[], values: { value: number, name: N; }[], gap: number): { value: number, name: N; } {
   if (!values.length) throw new Error('To set an alternate value you need a reference.');
-
-  console.log(values.length % 2, values);
-
 
   if (values.length % 2) {
     const last = values[values.length - 1]!;
