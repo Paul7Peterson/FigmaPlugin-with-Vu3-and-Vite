@@ -4,16 +4,23 @@ import { TokenSection } from '..';
 import { SliderMultiple } from '@/components';
 import { useSizesStore } from '@/store';
 import type { RootSize } from '@/api/tokens/index.types';
+import RootSizeDetails from './Details.vue'
 
 const store = useSizesStore()
 
 const data = reactive({
-  showDetails: false,
-  selectedRootSize: null as RootSize | null,
   isEditing: false,
 })
 
 const rootSizes = $computed(() => store.rootSizes)
+
+const canConfirmChanges = $computed(() => {
+  if (!store.selectedRootSize) return false
+  const target = rootSizes.find((s) => s.name === store.selectedRootSize?.name)
+  if (!target) throw new Error('')
+  store.selectedRootSize.value !== target.value
+})
+
 
 async function onCreate() {
   if (confirm('Do you really want to create a new root size?')) {
@@ -21,18 +28,10 @@ async function onCreate() {
   }
 }
 
-function onDetails (size: RootSize) {
-  data.selectedRootSize = size;
-  data.showDetails = true;
-}
-
-async function onDelete () {
-  if (!data.selectedRootSize) throw new Error('');
-  if (confirm('Are you sure?')) {
-    await store.deleteRootSize(data.selectedRootSize);
-    data.selectedRootSize = null;
-    data.showDetails = false;
-  }
+function onDetails (size: RootSize) { 
+  console.log('💚', size);
+  
+  store.selectedRootSize = size;
 }
 
 function onEdit () {
@@ -66,7 +65,7 @@ async function onCancelEdit () {
         >Cancel</Button> 
         <Button 
           btnType="info"
-          :locked="data.selectedRootSize?.value === rootSizes.find((s) => !s.locked)?.value"
+          :locked="canConfirmChanges"
           @click="onConfirmEdit"
         >Confirm</Button>
       </template>
@@ -98,21 +97,7 @@ async function onCancelEdit () {
     </div>
     <p v-else>No root sizes available</p>
   </TokenSection>
-  <Modal 
-    v-if="data.selectedRootSize" 
-    v-model="data.showDetails"
-  >
-    <Datalist 
-      :data="{ 
-        name: data.selectedRootSize.name, 
-        size: data.selectedRootSize.name
-      }"
-    />
-    <Button 
-      btnType="danger"
-      @click="onDelete"
-    >Delete</Button>
-  </Modal>
+  <RootSizeDetails/>
 </template>
 
 <style lang="scss">

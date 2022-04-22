@@ -11,6 +11,7 @@ export const useGuttersStore = defineStore('gutters', {
   state: () => {
     return {
       gutters: [] as ModifiedGutter[],
+      selectedGutter: null as Gutter | null,
     };
   },
   getters: {

@@ -1,4 +1,5 @@
-<script lang="ts" setup>import { onBeforeMount, StyleValue } from 'vue';
+<script lang="ts" setup>
+import { StyleValue } from 'vue';
 
 interface Props {
   /** */
@@ -77,12 +78,6 @@ const title = $computed(() =>
 function onInput (e: Event) {
   emits('update:modelValue', (e.target as HTMLInputElement).valueAsNumber)
 }
-
-onBeforeMount(() => {
-  console.log(props.verticalHeight)
-
-  console.log(ticksStyle)
-})
 </script>
 
 <template>
@@ -136,7 +131,7 @@ onBeforeMount(() => {
         class="slider__clickable"
         v-if="locked && clickable" 
         :title="title"
-        :style="{ left: `${(100 * (modelValue - range[0])) / rangeValue}%` }"
+        :style="{ left: `calc(${(100 * (modelValue - range[0])) / rangeValue}% - ${8}px)` }"
         @dblclick="$emit('select')"/>
     </div>
     <datalist :id="id">

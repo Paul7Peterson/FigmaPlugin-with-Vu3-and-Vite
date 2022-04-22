@@ -1,7 +1,6 @@
-import { colorToPaint } from '../tokens/color/color.helpers';
 import { BaseNode } from './base';
-import { assignBorderRadius, setAutoLayout, setResizing } from './_shared';
-import { AutoLayoutDirection, AutoLayoutOptions, DefaultColor, DirectionalAssign, NodeFill, NodeSize, ResizingOptions } from './_shared.types';
+import { assignBorderRadius, assignFills, setAutoLayout, setResizing } from './_shared';
+import { AutoLayoutDirection, AutoLayoutOptions, DirectionalAssign, NodeFill, NodeSize, ResizingOptions } from './_shared.types';
 
 interface FrameOptions {
   props: {
@@ -14,19 +13,44 @@ interface FrameOptions {
 };
 
 export class Frame extends BaseNode<FrameNode> {
-  constructor (
-    public readonly options: Partial<FrameOptions>,
-    public readonly name: string = 'Frame',
-  ) {
-    super(() => figma.createFrame(), name);
+  constructor (frame: FrameNode, options?: Partial<FrameOptions>);
+  constructor (name: string, options?: Partial<FrameOptions>);
+  constructor (asset: FrameNode | string, options?: Partial<FrameOptions>) {
+    super(
+      () => typeof asset === 'string' ? figma.createFrame() : asset,
+      typeof asset === 'string' ? asset : asset.name,
+    );
 
+    if (options) this.modify(options);
+  }
+
+  static from (frame: FrameNode): Frame {
+    return new Frame(frame);
+  }
+
+  static fromComponentInstance (instance: InstanceNode): Frame {
+    return new Frame(instance as unknown as FrameNode);
+  }
+
+  modify (options: Partial<FrameOptions>): Frame {
     if (options.props) this.setProps(options.props);
     if (options.autoLayout) this.setAutoLayout(options.autoLayout);
     if (options.resizing) this.setResizing(options.resizing, options.autoLayout?.direction);
-    if (options.fills) this._node.fills = options.fills.map((c) => {
-      if (typeof c === 'object') return colorToPaint(c.color);
-      return DefaultColor[c];
-    });
+    if (options.fills) assignFills(this._node, options.fills);
+    return this;
+  }
+
+  removeChildren (): Frame {
+    this._node.children.forEach((c) => { c.remove(); });
+    return this;
+  }
+
+  setChild (node: BaseNode<SceneNode>) {
+    this._node.appendChild(node.node);
+  }
+
+  setChildren (node: SceneNode) {
+    this._node.appendChild(node);
   }
 
   private setProps ({ size, cornerRadius }: FrameOptions['props']) {

@@ -4,13 +4,12 @@ import { TokenSection } from '..';
 import { useGuttersStore, useSizesStore } from '@/store';
 import { SliderMultiple } from '@/components';
 import { Gutter, RootSizeName, RootSize } from '@/api/tokens/index.types';
+import GutterDetails from './Details.vue'
 
 const store = useGuttersStore()
 const sizesStore = useSizesStore()
 
 const data = reactive({
-  showDetails: false,
-  selectedGutter: null as Gutter | null,
   isEditing: false,
 })
 
@@ -25,17 +24,7 @@ async function onCreate(size: 'smaller' | 'bigger') {
 }
 
 function onDetails (size: Gutter) {
-  data.selectedGutter = size;
-  data.showDetails = true;
-}
-
-async function onDelete () {
-  if (!data.selectedGutter) throw new Error('');
-  if (confirm('Are you sure?')) {
-    await store.deleteGutter(data.selectedGutter);
-    data.selectedGutter = null;
-    data.showDetails = false;
-  }
+  store.selectedGutter = size;
 }
 
 function onEdit () {
@@ -137,15 +126,7 @@ async function onCancelEdit () {
       </div>
     </section>
   </TokenSection>
-  <Modal v-model="data.selectedGutter">
-    {{ data.selectedGutter }}
-    <div class="button-group">
-      <Button
-        btnType="danger"
-        @click="onDelete"
-      >Delete</Button>
-    </div>
-  </Modal>
+  <GutterDetails />
 </template>
 
 <style lang="scss">

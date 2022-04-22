@@ -6,16 +6,27 @@ export class BaseNode<T extends SceneNode> {
     this._node.name = name;
   }
 
-  setParent (parent: ChildrenMixin, position?: number): this {
+  setParent (parent: BaseNode<ChildrenMixin & SceneNode>, position?: number): this;
+  setParent (parent: ChildrenMixin, position?: number): this;
+  setParent (parent: ChildrenMixin | BaseNode<SceneNode>, position?: number): this {
+    const target: ChildrenMixin = 'appendChild' in parent
+      ? parent : parent.node as ChildrenMixin;
     if (position) {
-      parent.insertChild(position, this._node);
+      target.insertChild(position, this._node);
     } else {
-      parent.appendChild(this._node);
+      target.appendChild(this._node);
     };
     return this;
   }
 
-  get node (): T {
-    return this._node;
-  }
+  get name () { return this._node.name; }
+  set name (name: string) { this._node.name = name; }
+
+  get visible () { return this._node.visible; }
+  set visible (visible: boolean) { this._node.visible = visible; }
+
+  get locked () { return this._node.locked; }
+  set locked (locked: boolean) { this._node.locked = locked; }
+
+  get node (): T { return this._node; }
 }

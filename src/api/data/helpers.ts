@@ -1,4 +1,4 @@
-import { Frame } from '../nodes';
+import { Frame, Text } from '../nodes';
 
 const TABLE_PREFIX = '🆔';
 const COMPONENT_PREFIX = '🟪';
@@ -57,42 +57,55 @@ type TableConfig<S extends string> = Partial<{
 }>;
 
 export async function documentInTable<T extends object, S extends string> (
-  table: FrameNode,
+  frame: FrameNode,
   component: ComponentNode,
   values: T[],
   docs: (asset: T) => Record<S, string>,
   extraOperations?: (instance: InstanceNode, asset: T) => Promise<void> | void,
   config?: TableConfig<S>,
 ) {
-  if (!component) throw new Error(`Missing component for the table "${table.name}"`);
+  if (!component) throw new Error(`Missing component for the table "${frame.name}"`);
   const { rowGap, fieldsToHide } = config || {};
 
-  table.children.forEach((c) => { c.remove(); });
-  table.layoutMode = 'VERTICAL';
-  table.primaryAxisSizingMode = 'AUTO';
-  table.counterAxisSizingMode = 'FIXED';
-  table.itemSpacing = rowGap || 10;
+  const table = Frame.from(frame)
+    .removeChildren()
+    .modify({
+      autoLayout: {
+        direction: 'vertical',
+        gap: rowGap || 10
+      },
+      resizing: {
+        width: 'fill container',
+        height: 'hug contents',
+      }
+    });
+  // table.layoutMode = 'VERTICAL';
+  // table.primaryAxisSizingMode = 'AUTO';
+  // table.counterAxisSizingMode = 'FIXED';
+  // table.itemSpacing = rowGap || 10;
 
   const headerKeys = Object.keys(docs(values[0]));
   createHeaderFromComponent(table, component, headerKeys, fieldsToHide);
 
   values.forEach((value) => {
     const instance = component.createInstance();
+    const instanceFrame = Frame.fromComponentInstance(instance);
     const propsToDoc = docs(value);
 
     const props = Object.keys(propsToDoc).map((k) => `#${k}`);
-    Object.entries(getWritableFields(instance, props))
+    Object.entries(getWritableFields(instanceFrame, props))
       .forEach(([name, field]) => {
         const parsedName = name.substring(1) as keyof typeof propsToDoc;
-        field.characters = propsToDoc[parsedName];
+        field.write(propsToDoc[parsedName]);
         if (fieldsToHide?.includes(parsedName)) field.visible = false;
       });
 
     extraOperations?.(instance, value);
 
-    instance.layoutAlign = 'STRETCH';
-    instance.locked = true;
-    table.appendChild(instance);
+    instanceFrame.modify({ resizing: { width: 'fill container' } });
+    instanceFrame.locked = true;
+
+    table.setChild(instanceFrame);
   });
 }
 
@@ -100,14 +113,14 @@ export function capitalize (word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-export function getWritableFields<T extends string> (node: InstanceNode, names: T[]): Record<T, TextNode> {
-  const texts = node.findAll(({ type, name }) =>
+export function getWritableFields<T extends string> (frame: Frame, names: T[]): Record<T, Text> {
+  const texts = frame.node.findAll(({ type, name }) =>
     type === 'TEXT' && name.startsWith('#') && names.includes(name as T)) as TextNode[];
   return texts.reduce((t, c) => {
     const name = c.name as T;
-    t[name] = c;
+    t[name] = Text.from(c);
     return t;
-  }, {} as Record<T, TextNode>);
+  }, {} as Record<T, Text>);
 }
 
 export async function loadFonts (): Promise<void> {
@@ -119,8 +132,8 @@ export async function loadFonts (): Promise<void> {
   ]);
 }
 
-function createHeaderFromComponent (table: FrameNode, component: ComponentNode, props: string[], fieldsToHide?: string[]) {
-  const headerWrapper = new Frame({
+function createHeaderFromComponent (table: Frame, component: ComponentNode, props: string[], fieldsToHide?: string[]) {
+  const headerWrapper = new Frame('Header', {
     autoLayout: {
       direction: 'vertical',
       padding: [10, 0, 10, 0],
@@ -130,29 +143,31 @@ function createHeaderFromComponent (table: FrameNode, component: ComponentNode, 
       height: 'hug contents'
     },
     fills: ['Black'],
-  }, 'Header').setParent(table);
+  })
+    .setParent(table);
 
-  const header = component.createInstance();
-  headerWrapper.node.appendChild(header);
+  const header = Frame.fromComponentInstance(component.createInstance())
+    .modify({
+      resizing: {
+        width: 'fill container',
+        height: 'hug contents',
+      },
+      fills: ['Black']
+    })
+    .setParent(headerWrapper);
 
-  header.primaryAxisSizingMode = 'FIXED';
-  header.counterAxisSizingMode = 'AUTO';
-  header.layoutAlign = 'STRETCH';
   header.locked = true;
-  header.fills = [
-    { type: 'SOLID', color: { r: 0, g: 0, b: 0 } }
-  ];
 
   Object.entries(getWritableFields(header, props.map((k) => `#${k}`)))
     .forEach(([name, text]) => {
-      text.fills = [
-        { type: 'SOLID', color: { r: 1, g: 1, b: 1 } }
-      ];
-      text.fontName = {
-        family: 'Fabriga',
-        style: 'Medium'
-      };
-      text.textAlignHorizontal = 'CENTER';
+      text.modify({
+        font: {
+          family: 'Fabriga',
+          style: 'Medium',
+          justify: 'center',
+        },
+        fills: 'White'
+      });
       const parsedName = name.substring(1);
       if (fieldsToHide?.includes(parsedName)) text.visible = false;
     });

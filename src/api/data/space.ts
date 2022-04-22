@@ -1,4 +1,4 @@
-import { RootSize, RootSizeName, Gutter } from '../tokens/space/space.types';
+import { RootSize, RootSizeName, Gutter } from '../tokens';
 import { getComponents, getTokenTable, shortByNumericValue, Page, documentInTable } from './helpers';
 
 const { "Root sizes": RootSizes, Gutters } = getComponents();

@@ -31,8 +31,6 @@ export class FigmaStore {
   /** */
   async getKeys (): Promise<(keyof Store)[]> {
     const allKeys = await figma.clientStorage.keysAsync();
-    console.log({ allKeys }, figma.clientStorage);
-
     return allKeys as (keyof Store)[];
   }
 
@@ -68,16 +66,13 @@ export class FigmaStore {
   async retrieveData (): Promise<void> {
     try {
       const data = JSON.parse(this.documentStore.characters) as Partial<Store>;
-      console.log('DATA:', data);
+      // console.log('DATA:', data);
       let oldKeys = await this.getKeys();
-
-      console.log('KEYS', oldKeys);
 
       const promises = Object.entries(data).map(([k, v]) => {
         oldKeys = oldKeys.filter((key) => key !== k);
         return v ? this.setKey(k as any, v) : Promise.resolve();
       });
-
       oldKeys.forEach((key) => {
         promises.push(this.deleteKey(key as any));
       });

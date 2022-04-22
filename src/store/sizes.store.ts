@@ -11,6 +11,7 @@ export const useSizesStore = defineStore('sizes', {
   state: () => {
     return {
       rootSizes: [] as ModifiedRootSize[],
+      selectedRootSize: null as RootSize | null,
     };
   },
   getters: {

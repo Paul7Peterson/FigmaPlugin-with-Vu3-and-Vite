@@ -1,4 +1,5 @@
-import { AutoLayoutDirection, AutoLayoutOptions, ResizingOptions, DirectionalAssign } from './_shared.types';
+import { colorToPaint } from '../tokens';
+import { AutoLayoutDirection, AutoLayoutOptions, ResizingOptions, DirectionalAssign, NodeFill, DefaultColor } from './_shared.types';
 
 type AxisMode =
   | 'primaryAxisSizingMode'
@@ -67,4 +68,11 @@ export function assignBorderRadius (node: FigmaNode, cornerRadius: DirectionalAs
   } else {
     node.cornerRadius = cornerRadius;
   }
+}
+
+export function assignFills (node: MinimalFillsMixin, fills: NodeFill[]) {
+  node.fills = fills.map((c) => {
+    if (typeof c === 'object') return colorToPaint(c.color);
+    return DefaultColor[c];
+  });
 }

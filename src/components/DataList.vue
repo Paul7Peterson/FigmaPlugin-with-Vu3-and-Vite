@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import capitalize from 'just-capitalize';
+
 interface Props {
   /** */
   data: Record<string, string | number | boolean | null>;
@@ -14,7 +16,7 @@ defineProps<Props>();
       v-for="([key, value], i) in Object.entries(data)"
       :key="i"
     >
-      <dt>{{ key }}:</dt>
+      <dt>{{ capitalize(key) }}:</dt>
       <dd>{{ value }}</dd>
     </div>
   </dl>

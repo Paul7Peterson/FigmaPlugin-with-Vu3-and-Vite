@@ -78,29 +78,29 @@ function onFinish() {
         >⚠</span>
       </header>
     </template>
-    <template #default>
-      <code class="color-id">{{ color.id }}</code>
-      <p>{{ color.description }}</p>
-      <DataList :data="colorPicked.colorSpaces"/>
-      <div v-if="data.isEditing">
-        <input 
-          class="color-picker" 
-          type="color" 
-          v-model="data.newColor" 
-          @input="updateColorInfo()"
-        >
-      </div>
-      <div class="color-info__actions">
-        <Button 
-          btnType="info"
-          @click="onEdit()"
-        >{{ data.isEditing ? 'Confirm' : 'Edit' }}</Button>
-        <Button 
-          v-if="!data.isEditing"
-          btnType="danger"
-          @click="onDelete()" 
-        >Delete</Button>
-      </div>
+
+    <code class="color-id">{{ color.id }}</code>
+    <p>{{ color.description }}</p>
+    <DataList :data="colorPicked.colorSpaces"/>
+    <div v-if="data.isEditing">
+      <input 
+        class="color-picker" 
+        type="color" 
+        v-model="data.newColor" 
+        @input="updateColorInfo()"
+      >
+    </div>
+
+    <template #actions>
+      <Button 
+        btnType="info"
+        @click="onEdit()"
+      >{{ data.isEditing ? 'Confirm' : 'Edit' }}</Button>
+      <Button 
+        v-if="!data.isEditing"
+        btnType="danger"
+        @click="onDelete()" 
+      >Delete</Button>
     </template>
   </Modal>
 </template>

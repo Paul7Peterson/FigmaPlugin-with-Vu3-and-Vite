@@ -27,11 +27,11 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <header id="welcome" v-if="data.user">
+  <header id="home__welcome" v-if="data.user">
     <img class="avatar" :src="data.user.photoUrl || ''" :alt="singleName">
     <h3>Hello, {{ singleName }}!</h3>
   </header>
-  <footer class="button-group">
+  <footer id="home__footer" class="button-group">
     <Button 
       :isLoading="data.isGeneratingDocs" 
       @click="onDocument"
@@ -43,24 +43,26 @@ onBeforeMount(async () => {
 <style lang="scss">
   $avatar-size: 30px;
 
-  #welcome {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    column-gap: 20px;
-    justify-content: center;
-    align-items: center;
+  #home {
+    &__welcome {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      column-gap: 20px;
+      justify-content: center;
+      align-items: center;
 
-    .avatar {
-      width: $avatar-size;
-      height: $avatar-size;
-      border-radius: calc($avatar-size / 2);
+      .avatar {
+        width: $avatar-size;
+        height: $avatar-size;
+        border-radius: calc($avatar-size / 2);
+      }
     }
-  }
-  footer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    padding: 20px;
+    &__footer {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      padding: 20px;
+    }
   }
 </style>

@@ -1,6 +1,10 @@
 import { colorToPaint } from '../tokens/color/color.helpers';
 import { ColorAlpha } from '../tokens/color/color.types';
 
+
+export type HorizontalPosition = Lowercase<Exclude<TextNode['textAlignHorizontal'], 'JUSTIFIED'>>;
+export type VerticalPosition = Lowercase<TextNode['textAlignVertical']>;
+
 type ResizeOptions =
   | 'hug contents'
   | 'fill container';
@@ -36,6 +40,15 @@ export interface AutoLayoutOptions {
   direction?: AutoLayoutDirection;
   gap?: number;
   padding?: DirectionalAssign;
-  align?: ['top' | 'center' | 'bottom', 'left' | 'center' | 'right'];
+  align?: [VerticalPosition, HorizontalPosition];
   distribution?: 'packed' | 'space between';
 }
+
+export type FontFamily =
+  | 'Consolas'
+  | 'Fabriga';
+
+export type FontStyle =
+  | 'Regular'
+  | 'Medium'
+  | 'Bold';

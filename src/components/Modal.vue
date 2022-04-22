@@ -2,8 +2,6 @@
 interface Props {
   /** */
   modelValue: boolean;
-  /** */
-  title?: string;
 }
 
 defineProps<Props>()
@@ -14,19 +12,21 @@ defineEmits<{
 </script>
 
 <template>
-  <div id="modal__background" v-if="modelValue" title="">
+  <div id="modal__background" v-if="modelValue">
     <div id="modal__card">
       <header id="modal__header">
-        <slot name="header"></slot>
-        <span v-if="title">{{ title }}</span>
+        <slot name="header">&nbsp;</slot>
+        <Button 
+          hollow
+          @click="$emit('update:modelValue', !modelValue)"
+        >X</Button>
       </header>
-      <Button 
-        id="modal__close" 
-        @click="$emit('update:modelValue', !modelValue)"
-      >X</Button>
       <section id="modal__content">
         <slot name="default"></slot>
       </section>
+      <footer id="modal__actions" class="button-group">
+        <slot name="actions"></slot>
+      </footer>
     </div>
   </div>
 </template>
@@ -59,13 +59,15 @@ defineEmits<{
 
     }
     &__header {
+      display: grid;
+      font-weight: bold;
+      align-items: center;
       margin-bottom: 10px;
-      padding-right: 50px;
+      column-gap: 15px;
+      grid-template-columns: 1fr max-content;
     }
-    &__close {
-      position: absolute;
-      top: 15px;
-      right: 15;
+    &__actions {
+      justify-content: end;
     }
   }
 </style>

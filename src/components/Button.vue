@@ -44,6 +44,7 @@ withDefaults(defineProps<Props>(), {
     border: $btn-border-width solid $btn-color--primary;
     border-radius: 4px;
     cursor: pointer;
+    user-select: none;
 
     &.danger {
       background-color: $btn-color--danger;
