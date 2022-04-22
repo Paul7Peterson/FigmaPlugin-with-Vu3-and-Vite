@@ -1,20 +1,29 @@
+import { Text } from '../nodes';
+import { FontRef } from '../nodes/_shared.types';
 import { StoreKey, Store } from './store.api';
 
+
+const LOCAL_STORAGE_NAME = 'LocalStorage';
+const FONT: FontRef = { family: 'Consolas', style: 'Regular' };
 /** */
 export class FigmaStore {
   private static instance: FigmaStore;
   private documentStore: TextNode;
 
   private constructor () {
-    const localStorageRef = figma.root.children[0]
+    let localStorageRef = figma.root.children[0]
       .findChild((n) => n.name === 'LocalStorage');
 
-    if (!localStorageRef)
-      throw new Error(`
-        The plugin needs a way of store in info in the app. 
-        Create a text named "LocalStorage" in the first page on the root level.`);
-    if (localStorageRef.type !== 'TEXT')
-      throw new Error('The "LocalStorage" must be a text element.');
+    if (!localStorageRef) {
+      localStorageRef = new Text(LOCAL_STORAGE_NAME, {
+        font: { ...FONT, size: 12 }
+      })
+        .setParent(figma.root.children[0], 1)
+        .write('{}').node;
+    } else {
+      if (localStorageRef.type !== 'TEXT')
+        throw new Error('The "LocalStorage" must be a text element.');
+    }
 
     this.documentStore = localStorageRef;
     localStorageRef.locked = true;
@@ -63,18 +72,22 @@ export class FigmaStore {
   }
 
 
-  async retrieveData (): Promise<void> {
+  static async retrieveData (): Promise<void> {
+    console.log('Retrieving data...');
+
+    await figma.loadFontAsync(FONT);
+    const inst = FigmaStore.getInstance;
     try {
-      const data = JSON.parse(this.documentStore.characters) as Partial<Store>;
+      const data = JSON.parse(inst.documentStore.characters) as Partial<Store>;
       // console.log('DATA:', data);
-      let oldKeys = await this.getKeys();
+      let oldKeys = await inst.getKeys();
 
       const promises = Object.entries(data).map(([k, v]) => {
         oldKeys = oldKeys.filter((key) => key !== k);
-        return v ? this.setKey(k as any, v) : Promise.resolve();
+        return v ? inst.setKey(k as any, v) : Promise.resolve();
       });
       oldKeys.forEach((key) => {
-        promises.push(this.deleteKey(key as any));
+        promises.push(inst.deleteKey(key as any));
       });
 
       await Promise.all(promises);

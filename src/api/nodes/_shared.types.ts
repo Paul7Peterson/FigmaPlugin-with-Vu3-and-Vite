@@ -46,9 +46,15 @@ export interface AutoLayoutOptions {
 
 export type FontFamily =
   | 'Consolas'
+  | 'MT Extra'
   | 'Fabriga';
 
 export type FontStyle =
   | 'Regular'
   | 'Medium'
   | 'Bold';
+
+export type FontRef = {
+  family: FontFamily;
+  style: FontStyle;
+};

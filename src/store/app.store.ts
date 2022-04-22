@@ -21,7 +21,7 @@ export const useAppStore = defineStore('app', {
     async fetchStyles (): Promise<void> {
       this.isReady = false;
       const styles = useStylesStore();
-      await Broker.initApp();
+      const data = await Broker.initApp();
       await Promise.all([
         useSizesStore().fetchRootSizes(),
         useGuttersStore().fetchGutters(),

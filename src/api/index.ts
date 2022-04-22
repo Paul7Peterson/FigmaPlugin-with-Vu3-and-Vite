@@ -1,4 +1,3 @@
-import { FigmaStore } from './store/store';
 import { AnyUIMessage } from '@comm/messages.types';
 import { PostBroker } from '@comm/apiBroker.api';
 
@@ -14,9 +13,6 @@ figma.showUI(__html__, {
 });
 
 // For retrieving the previous size
-FigmaStore.getInstance.getKey('windowSize').then((size) => {
-  if (size) figma.ui.resize(size.width, size.height);
-}).catch(err => { console.error(err); });
 
 figma.ui.onmessage = (message: string) => {
   const msg: AnyUIMessage = JSON.parse(message);

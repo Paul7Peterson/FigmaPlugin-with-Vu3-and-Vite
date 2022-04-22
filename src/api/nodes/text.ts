@@ -8,6 +8,7 @@ interface TextOptions {
     family?: FontFamily;
     style?: FontStyle;
     align?: VerticalPosition;
+    size?: number;
     justify?: HorizontalPosition | 'justified';
   };
 }
@@ -34,15 +35,17 @@ export class Text extends BaseNode<TextNode> {
     return this;
   }
 
-  write (text: string) {
+  write (text: string): Text {
     this._node.characters = text;
+    return this;
   }
 
   private setFont (font: TextOptions['font']) {
-    this.node.fontName = {
+    this._node.fontName = {
       family: font.family || 'Fabriga',
       style: font.style || 'Regular'
     };
+    if (font.size) this._node.fontSize = font.size;
     if (font.justify) {
       const parsedValue = font.justify.toUpperCase() as Uppercase<NonNullable<TextOptions['font']['justify']>>;
       this.node.textAlignHorizontal = parsedValue;

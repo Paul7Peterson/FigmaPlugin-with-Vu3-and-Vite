@@ -13,6 +13,7 @@ import * as Tokens from '../api/tokens';
 import { FigmaStore } from '../api/store/store';
 import { getUser } from '../api/figma';
 import { writeDocs } from '../api/data';
+import { initApp } from '../api/tokens/init';
 
 
 const RootSizesPostBroker: GenericPostBrokerType<RootSizesUIMessages> = {
@@ -102,8 +103,7 @@ export const PostBroker: PostBrokerType = {
   ...BordersPostBroker,
   ...GridsPostBroker,
   initApp: async (msg) => {
-    await FigmaStore.getInstance.retrieveData();
-    return answer(msg, null);
+    return answer(msg, await initApp());
   },
   getUser: async (msg) => {
     return answer(msg, getUser());

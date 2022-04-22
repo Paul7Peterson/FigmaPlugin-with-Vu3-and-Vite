@@ -10,6 +10,8 @@ import type {
   Gutter,
 } from '@/api/tokens/index.types';
 
+import { AppData } from './appData.types';
+
 type VoidFunction = (arg: null) => null;
 
 export type RootSizesUIMessages = {
@@ -60,7 +62,7 @@ export type UIMessagePayload =
   & GridsUIMessages
   & {
     getUser: (arg: null) => User;
-    initApp: (arg: null) => null;
+    initApp: (arg: null) => AppData;
     resize: (args: { width: number, height: number; }) => null;
     updateDocumentation: VoidFunction;
     closePlugin: VoidFunction;

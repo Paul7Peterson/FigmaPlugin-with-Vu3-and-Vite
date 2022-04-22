@@ -123,15 +123,6 @@ export function getWritableFields<T extends string> (frame: Frame, names: T[]): 
   }, {} as Record<T, Text>);
 }
 
-export async function loadFonts (): Promise<void> {
-  await Promise.all([
-    figma.loadFontAsync({ family: "Fabriga", style: "Regular" }),
-    figma.loadFontAsync({ family: "Fabriga", style: "Medium" }),
-    figma.loadFontAsync({ family: "MT Extra", style: "Regular" }),
-    figma.loadFontAsync({ family: "Consolas", style: "Regular" }),
-  ]);
-}
-
 function createHeaderFromComponent (table: Frame, component: ComponentNode, props: string[], fieldsToHide?: string[]) {
   const headerWrapper = new Frame('Header', {
     autoLayout: {
