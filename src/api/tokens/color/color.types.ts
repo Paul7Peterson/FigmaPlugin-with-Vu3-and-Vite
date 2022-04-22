@@ -1,4 +1,4 @@
-import { BaseToken } from './_shared';
+import { BaseToken } from '../_shared';
 
 export interface Color {
   r: number;

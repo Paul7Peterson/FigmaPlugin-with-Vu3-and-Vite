@@ -11,9 +11,8 @@ import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 
 import * as Tokens from '../api/tokens';
 import { FigmaStore } from '../api/store/store';
-import { getUser } from '../api/figma';
 import { writeDocs } from '../api/data';
-import { initApp } from '../api/tokens/init';
+import { initApp } from '../api/init';
 
 
 const RootSizesPostBroker: GenericPostBrokerType<RootSizesUIMessages> = {
@@ -104,9 +103,6 @@ export const PostBroker: PostBrokerType = {
   ...GridsPostBroker,
   initApp: async (msg) => {
     return answer(msg, await initApp());
-  },
-  getUser: async (msg) => {
-    return answer(msg, getUser());
   },
   resize: async (msg) => {
     figma.ui.resize(msg.payload.width, msg.payload.height);

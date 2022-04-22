@@ -11,5 +11,6 @@
   "permissions": [
     "currentuser",
     "activeusers"
-  ]
+  ],
+  "enablePrivatePluginApi": true
 }

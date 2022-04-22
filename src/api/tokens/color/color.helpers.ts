@@ -1,5 +1,13 @@
-import { ColorValues, ColorName, Color, RGB, SolidColor, ColorAlpha } from './color.types';
 import { rgb } from 'color-convert';
+
+import {
+  ColorValues,
+  ColorName,
+  Color,
+  RGB,
+  SolidColor,
+  ColorAlpha
+} from './color.types';
 
 function format (number: number): string {
   return number.toString().padStart(3);

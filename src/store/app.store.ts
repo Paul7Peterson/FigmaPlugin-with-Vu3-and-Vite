@@ -1,9 +1,16 @@
 import { defineStore } from 'pinia';
 
 import { Broker } from '@comm/worker.api';
-import { useGuttersStore } from './gutters.store';
-import { useSizesStore } from './sizes.store';
-import { useStylesStore } from './styles.store';
+import {
+  useBordersStore,
+  useSizesStore,
+  useGuttersStore,
+  useBoxShadowsStore,
+  useGridsStore,
+  useFontStylesStore,
+  useColorsStore,
+} from '.';
+import { DocumentInfo } from '../communication/appData.types';
 
 
 /** */
@@ -12,24 +19,33 @@ export const useAppStore = defineStore('app', {
     return {
       isReady: false,
       hasFatalError: false,
+      user: null as User | null,
+      documentInfo: {} as DocumentInfo
     };
   },
   getters: {
-
+    allowTokenActions (state): boolean {
+      return state.documentInfo.isDesignTokensProject || state.documentInfo.isTestProject;
+    },
+    allowComponentActions (state): boolean {
+      return state.documentInfo.isDesignSystemProject || state.documentInfo.isTestProject;
+    }
   },
   actions: {
     async fetchStyles (): Promise<void> {
       this.isReady = false;
-      const styles = useStylesStore();
-      const data = await Broker.initApp();
+      const { user, document } = await Broker.initApp();
+      this.user = user;
+      this.documentInfo = document;
+
       await Promise.all([
         useSizesStore().fetchRootSizes(),
         useGuttersStore().fetchGutters(),
-        styles.fetchColorStyles(),
-        styles.fetchTextStyles(),
-        styles.fetchBoxShadows(),
-        styles.fetchGridStyles(),
-        styles.fetchBorderStyles(),
+        useColorsStore().fetchColorStyles(),
+        useFontStylesStore().fetchFontStyles(),
+        useBoxShadowsStore().fetchBoxShadows(),
+        useGridsStore().fetchGridStyles(),
+        useBordersStore().fetchBorderStyles(),
       ]).catch((e) => {
         this.hasFatalError = true;
       });

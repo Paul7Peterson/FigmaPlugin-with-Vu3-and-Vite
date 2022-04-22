@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { TokenSection } from '..';
 import BorderToken from './Token.vue'
-import { useStylesStore } from '@/store';
+import { useBordersStore } from '@/store';
 
-const store = useStylesStore()
+const store = useBordersStore()
 
 const borderStyles = $computed(() => store.borderStyles) 
 </script>

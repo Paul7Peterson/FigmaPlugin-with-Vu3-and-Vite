@@ -1,7 +1,7 @@
 import { ENV } from '@/envVariables';
-import { AppData, ProjectFlags } from '@comm/appData.types';
-import { FontRef } from '../nodes/_shared.types';
-import { FigmaStore } from '../store';
+import { AppData, DocumentInfo, ProjectFlags } from '@comm/appData.types';
+import { FontRef } from './nodes/_shared.types';
+import { FigmaStore } from './store';
 
 export async function initApp (): Promise<AppData> {
   await loadFonts();
@@ -9,9 +9,13 @@ export async function initApp (): Promise<AppData> {
   await FigmaStore.retrieveData();
 
   return {
-    ...getProjectsFlags()
+    user: getUser(),
+    document: getDocumentInfo(),
   };
 }
+
+console.log(figma.fileKey, getProjectsFlags());
+
 
 function adjustWindowSize () {
   FigmaStore.getInstance.getKey('windowSize').then((size) => {
@@ -32,8 +36,22 @@ async function loadFonts (): Promise<void> {
 
 function getProjectsFlags (): ProjectFlags {
   return {
-    isDesignSystemProject: ENV.DESIGN_TOKENS_FIGMA_PROJECT_ID === figma.root.id,
-    isDesignTokensProject: ENV.DESIGN_SYSTEM_FIGMA_PROJECT_ID === figma.root.id,
-    isTestProject: ENV.TEST_FIGMA_PROJECT_ID === figma.root.id,
+    isDesignSystemProject: ENV.DESIGN_TOKENS_FIGMA_PROJECT_ID === figma.fileKey,
+    isDesignTokensProject: ENV.DESIGN_SYSTEM_FIGMA_PROJECT_ID === figma.fileKey,
+    isTestProject: ENV.TEST_FIGMA_PROJECT_ID === figma.fileKey,
+  };
+}
+
+function getUser (): User {
+  const user = figma.currentUser;
+  if (!user) throw new Error('No user');
+  return user;
+}
+
+export function getDocumentInfo (): DocumentInfo {
+  return {
+    id: figma.root.id,
+    name: figma.root.name,
+    ...getProjectsFlags(),
   };
 }

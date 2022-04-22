@@ -19,8 +19,15 @@ export async function createRootSize (): Promise<RootSize> {
     throw new Error('Cannot create more sizes');
 
   const size: RootSize = sizes.length
-    ? getAlternateValue(rootSizeScale, sizes, 2)
-    : { value: 14, name: RootSizeName.Medium };
+    ? {
+      ...getAlternateValue(rootSizeScale, sizes, 2),
+      errors: [],
+    }
+    : {
+      value: 14,
+      name: RootSizeName.Medium,
+      errors: []
+    };
 
   const newSizes = [...sizes, size].sort((a, b) => a.value - b.value);
   await FigmaStore.getInstance.setKey('sizes', newSizes);

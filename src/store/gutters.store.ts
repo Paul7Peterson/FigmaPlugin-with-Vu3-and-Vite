@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import type { Gutter } from '@/api/tokens/index.types';
 
 import { Broker } from '@comm/worker.api';
+import { ItemError } from './store.types';
 
 type ModifiedGutter = Gutter & { locked: boolean; };
 
@@ -15,7 +16,11 @@ export const useGuttersStore = defineStore('gutters', {
     };
   },
   getters: {
-
+    allErrors (state): ItemError[] {
+      return state.gutters
+        .filter((n) => n.errors.length)
+        .map((g) => ({ itemType: 'Gutter', itemName: g.name, errors: [] }));
+    }
   },
   actions: {
     async fetchGutters (): Promise<void> {

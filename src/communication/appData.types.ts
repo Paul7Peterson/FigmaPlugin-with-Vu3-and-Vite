@@ -4,5 +4,12 @@ export interface ProjectFlags {
   isDesignSystemProject: boolean;
 }
 
-export type AppData =
-  & ProjectFlags;
+export interface DocumentInfo extends ProjectFlags {
+  id: string;
+  name: string;
+}
+
+export interface AppData {
+  user: User;
+  document: DocumentInfo;
+};

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { reactive, watch } from 'vue';
 import type { SolidColor, SolidColorInfo } from '@api/tokens/index.types';
-import { useStylesStore } from '@/store';
+import { useColorsStore } from '@/store';
 
-const store = useStylesStore()
+const store = useColorsStore()
 
 interface Props {
   /** */

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import type { RootSize } from '@/api/tokens/index.types';
 
 import { Broker } from '@comm/worker.api';
+import { ItemError } from './store.types';
 
 type ModifiedRootSize = RootSize & { locked: boolean; };
 
@@ -15,7 +16,11 @@ export const useSizesStore = defineStore('sizes', {
     };
   },
   getters: {
-
+    allErrors (state): ItemError[] {
+      return state.rootSizes
+        .filter((n) => n.errors.length)
+        .map((g) => ({ itemType: 'Root size', itemName: g.name, errors: [] }));
+    }
   },
   actions: {
     async fetchRootSizes (): Promise<void> {

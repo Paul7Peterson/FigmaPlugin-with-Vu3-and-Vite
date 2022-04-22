@@ -1,15 +1,19 @@
 <script lang="ts" setup>
-import { onBeforeMount, reactive } from 'vue';
+import { reactive } from 'vue';
 
 import { Broker } from '@comm/worker.api';
+import { useAppStore } from '../store';
+
+const store = useAppStore()
 
 const data = reactive({
-  user: null as User | null,
   isGeneratingDocs: false,
 })
 
+const user = $computed(() => store.user)
+
 const singleName = $computed(() => 
-  data.user?.name.split(' ')[0] || '')
+  user?.name.split(' ')[0] || '')
 
 function onClose () {
   Broker.closePlugin()
@@ -20,15 +24,11 @@ async function onDocument () {
   await Broker.updateDocumentation()
   data.isGeneratingDocs = false;
 }
-
-onBeforeMount(async () => {
-  data.user = await Broker.getUser()
-})
 </script>
 
 <template>
-  <header id="home__welcome" v-if="data.user">
-    <img class="avatar" :src="data.user.photoUrl || ''" :alt="singleName">
+  <header id="home__welcome" v-if="user">
+    <img class="avatar" :src="user.photoUrl || ''" :alt="singleName">
     <h3>Hello, {{ singleName }}!</h3>
   </header>
   <footer id="home__footer" class="button-group">

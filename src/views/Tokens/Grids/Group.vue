@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { TokenSection } from '..';
-import { useStylesStore } from '@/store';
+import { useGridsStore } from '@/store';
 
-const store = useStylesStore()
+const store = useGridsStore()
 
 const gridStyles = $computed(() => store.gridStyles)
 </script>

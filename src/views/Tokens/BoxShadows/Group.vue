@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { TokenSection } from '..';
 import BoxShadowToken from './Token.vue'
-import { useStylesStore } from '@/store';
+import { useBoxShadowsStore } from '@/store';
 import { BoxShadowStyle, BoxShadowType } from '@/api/tokens/index.types';
 import { Details } from '@/components';
 
-const store = useStylesStore()
+const store = useBoxShadowsStore()
 
 const boxShadowStyles: Record<BoxShadowType, BoxShadowStyle[]> = $computed(() => store.boxShadows)
 </script>

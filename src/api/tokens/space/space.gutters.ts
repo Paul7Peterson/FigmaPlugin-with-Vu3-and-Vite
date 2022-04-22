@@ -20,19 +20,21 @@ export async function createGutter (size: 'smaller' | 'bigger'): Promise<Gutter>
 
   let gutter: Gutter;
   if (!gutters.length) {
-    gutter = { value: 1, name: GutterName.M };
+    gutter = { value: 1, name: GutterName.M, errors: [] };
   } else {
     if (size === 'smaller') {
       const first = gutters[0];
       gutter = {
         name: getNextOrPrevious(gutterScale, first.name, 'prev'),
-        value: first.value - .25
+        value: first.value - .25,
+        errors: []
       };
     } else {
       const last = gutters[gutters.length - 1];
       gutter = {
         name: getNextOrPrevious(gutterScale, last.name, 'next'),
-        value: last.value + .25
+        value: last.value + .25,
+        errors: []
       };
     }
   }

@@ -59,7 +59,6 @@ export const Broker: BrokerGenericType<UIMessagePayload> = {
   ...BordersBroker,
   ...GridsBroker,
   initApp: () => registerCall('initApp', null),
-  getUser: () => registerCall('getUser', null),
   resize: (payload) => registerCall('resize', payload),
   updateDocumentation: () => registerCall('updateDocumentation', null),
   closePlugin: () => registerCall('closePlugin', null),

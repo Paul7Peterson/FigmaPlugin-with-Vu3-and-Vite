@@ -17,6 +17,7 @@ export const rootSizeScale: RootSizeName[] = [
 export interface RootSize {
   value: number;
   name: RootSizeName;
+  errors: string[];
 }
 
 export enum GutterName {
@@ -50,4 +51,5 @@ export const gutterScale: GutterName[] = [
 export interface Gutter {
   name: GutterName;
   value: number;
+  errors: string[];
 }

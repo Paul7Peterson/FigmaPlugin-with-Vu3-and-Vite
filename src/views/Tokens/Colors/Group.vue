@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useStylesStore } from "@/store";
+import { useColorsStore } from "@/store";
 import { TokenSection } from "..";
 import ColorToken from './Token.vue'
 import { ColorNameExtended, SolidColor } from "@/api/tokens/index.types";
 import { Details } from '@/components';
 
-const store = useStylesStore();
+const store = useColorsStore();
 
 const colors: Record<ColorNameExtended, SolidColor[]> = $computed(() => store.colors);
 

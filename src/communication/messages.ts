@@ -61,7 +61,6 @@ export type UIMessagePayload =
   & BordersUIMessages
   & GridsUIMessages
   & {
-    getUser: (arg: null) => User;
     initApp: (arg: null) => AppData;
     resize: (args: { width: number, height: number; }) => null;
     updateDocumentation: VoidFunction;

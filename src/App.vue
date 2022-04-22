@@ -17,8 +17,9 @@ onBeforeMount(async() => await store.fetchStyles())
     <nav id="nav">
       <router-link to="/">Home</router-link>
       <router-link to="/tokens">Tokens</router-link>
-      <router-link to="/semantic">Semantic</router-link>
+      <router-link to="/semantic">Semantic tokens</router-link>
       <router-link to="/components">Components</router-link>
+      <router-link to="/debug">Debug</router-link>
     </nav>
     <main id="app__main" v-if="isReady">
       <KeepAlive>

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { TokenSection } from '..';
 import FontToken from './Token.vue';
-import { useStylesStore } from '@/store';
+import { useFontStylesStore } from '@/store';
 import type { ExtendedFontStyleCategory, FontStyle } from '@/api/tokens/index.types';
 import { Details } from '@/components';
 
-const store = useStylesStore()
+const store = useFontStylesStore()
 
 const textStyles: Record<ExtendedFontStyleCategory, FontStyle[]> = $computed(() => store.fontStyles)
 

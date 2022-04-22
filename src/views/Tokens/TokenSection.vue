@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { useAppStore } from '@/store';
+
+const store = useAppStore()
+
 interface Props {
   /** */
   title: string;
@@ -7,6 +11,9 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const allowTokenActions = $computed(() => 
+  store.allowTokenActions)
 </script>
 
 <template>
@@ -14,7 +21,7 @@ defineProps<Props>()
     <header>
       <h3>{{ title }}</h3>
       <div class="button-group">
-        <slot name="header"></slot>
+        <slot name="header" v-if="allowTokenActions"></slot>
       </div>
     </header>
     <p>{{ description }}</p>

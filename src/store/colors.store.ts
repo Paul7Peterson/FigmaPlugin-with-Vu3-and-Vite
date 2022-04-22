@@ -1,34 +1,31 @@
 import { defineStore } from 'pinia';
 
 import type {
-  FontStyle,
-  GridStyle,
-  BorderStyle,
   SolidColor,
   ColorNameExtended,
-  BoxShadowStyle,
   SolidColorInfo,
-  ExtendedBoxShadowType,
-  ExtendedFontStyleCategory,
 } from '@/api/tokens/index.types';
 
 import { Broker } from '@comm/worker.api';
 
-import { hexToRgb } from './styles.store.helpers';
+import { hexToRgb } from './colors.store.helpers';
+import { ItemError } from './store.types';
 
 /** */
-export const useStylesStore = defineStore('styles', {
+export const useColorsStore = defineStore('colors', {
   state: () => {
     return {
       colors: {} as Record<ColorNameExtended, SolidColor[]>,
-      fontStyles: {} as Record<ExtendedFontStyleCategory, FontStyle[]>,
-      boxShadows: {} as Record<ExtendedBoxShadowType, BoxShadowStyle[]>,
-      gridStyles: [] as GridStyle[],
-      borderStyles: [] as BorderStyle[],
     };
   },
   getters: {
-
+    allErrors (state): ItemError[] {
+      return Object.values(state.colors)
+        .flatMap((group) =>
+          group
+            .filter((n) => n.errors.length)
+            .map((c) => ({ itemType: 'Solid color', itemName: c.name, errors: c.errors })));
+    }
   },
   actions: {
     async fetchColorStyles (): Promise<void> {
@@ -53,31 +50,6 @@ export const useStylesStore = defineStore('styles', {
         : await Broker.createSolidColor(color);
       await this.fetchColorStyles();
       return newColor;
-    },
-    async createFontStyle () {
-
-    },
-    async fetchTextStyles (): Promise<void> {
-      const fontStyles = await Broker.listFontStyles();
-      this.fontStyles = fontStyles.reduce((t, font) => {
-        if (!t[font.category]) t[font.category] = [font];
-        else t[font.category].push(font);
-        return t;
-      }, {} as Record<ExtendedFontStyleCategory, FontStyle[]>);
-    },
-    async fetchBoxShadows (): Promise<void> {
-      const boxShadows = await Broker.listBoxShadowsStyles();
-      this.boxShadows = boxShadows.reduce((t, shadow) => {
-        if (!t[shadow.type]) t[shadow.type] = [shadow];
-        else t[shadow.type].push(shadow);
-        return t;
-      }, {} as Record<ExtendedBoxShadowType, BoxShadowStyle[]>);
-    },
-    async fetchGridStyles (): Promise<void> {
-      this.gridStyles = await Broker.listGridStyles();
-    },
-    async fetchBorderStyles (): Promise<void> {
-      this.borderStyles = await Broker.listBorderStyles();
     },
     async deleteSolidColor ({ id }: SolidColor): Promise<void> {
       await Broker.deleteSolidColor({ id });
