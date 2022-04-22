@@ -19,4 +19,5 @@ createApp(App)
   .component('DataList', Component.DataList)
   .component('Spinner', Component.Spinner)
   .component('Table', Component.Table)
+  .component('TextInput', Component.TextInput)
   .mount('#app');

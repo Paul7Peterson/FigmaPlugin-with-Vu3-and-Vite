@@ -9,6 +9,7 @@ import {
   useGridsStore,
   useFontStylesStore,
   useColorsStore,
+  useComponentsStore,
 } from '.';
 import { DocumentInfo } from '../communication/appData.types';
 
@@ -46,6 +47,9 @@ export const useAppStore = defineStore('app', {
         useBoxShadowsStore().fetchBoxShadows(),
         useGridsStore().fetchGridStyles(),
         useBordersStore().fetchBorderStyles(),
+        this.allowComponentActions
+          ? useComponentsStore().fetchComponents()
+          : Promise.resolve()
       ]).catch((e) => {
         this.hasFatalError = true;
       });

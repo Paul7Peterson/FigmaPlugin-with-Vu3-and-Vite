@@ -10,6 +10,7 @@ import SliderMultiple from './SliderMultiple.vue';
 import DataList from './DataList.vue';
 import Spinner from './Spinner.vue';
 import Table from './Table.vue';
+import TextInput from './TextInput.vue';
 
 export {
   Button,
@@ -24,4 +25,5 @@ export {
   DataList,
   Spinner,
   Table,
+  TextInput,
 };

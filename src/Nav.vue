@@ -33,18 +33,24 @@ const allowComponentActions = $computed(() => store.allowComponentActions)
     grid-auto-flow: column;
     grid-auto-columns: max-content;
     background-color: #b4b4b4;
-    padding: 5px 15px 0 15px;
+    padding: 5px 20px 0 20px;
+    gap: 5px;
+    height: 40px;
+    align-items: end;
 
     a {
       color: #828282;
       text-decoration: none;
-      padding: 3px 10px;
+      padding: 3px 10px 2px 10px;
+      background-color: #d3d3d3;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      transition: padding-bottom .1s ease-in-out;
 
-      &.router-link-active {
+      &.router-link-exact-active {
         background-color: white;
         color: black;
-        border-top-right-radius: 5px;
-        border-top-left-radius: 5px;
+        padding-bottom: 12px;
       }
     }
   }

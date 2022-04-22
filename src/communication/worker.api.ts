@@ -7,6 +7,7 @@ import {
   BoxShadowsUIMessages,
   BordersUIMessages,
   GridsUIMessages,
+  ComponentsUIMessages,
 } from './messages';
 import { BrokerGenericType } from './messages.types';
 import { registerCall } from './worker';
@@ -50,6 +51,10 @@ const GridsBroker: BrokerGenericType<GridsUIMessages> = {
   listGridStyles: () => registerCall('listGridStyles', null),
 };
 
+const ComponentsBroker: BrokerGenericType<ComponentsUIMessages> = {
+  listComponents: () => registerCall('listComponents', null),
+};
+
 export const Broker: BrokerGenericType<UIMessagePayload> = {
   ...RootSizesBroker,
   ...GuttersBroker,
@@ -58,6 +63,7 @@ export const Broker: BrokerGenericType<UIMessagePayload> = {
   ...BoxShadowsBroker,
   ...BordersBroker,
   ...GridsBroker,
+  ...ComponentsBroker,
   initApp: () => registerCall('initApp', null),
   resize: (payload) => registerCall('resize', payload),
   updateDocumentation: () => registerCall('updateDocumentation', null),

@@ -10,6 +10,10 @@ import type {
   Gutter,
 } from '@/api/tokens/index.types';
 
+import {
+  FigmaComponent,
+} from '@/api/components/index.types';
+
 import { AppData } from './appData.types';
 
 type VoidFunction = (arg: null) => null;
@@ -52,6 +56,10 @@ export type GridsUIMessages = {
   listGridStyles: (args: null) => GridStyle[];
 };
 
+export type ComponentsUIMessages = {
+  listComponents: (args: null) => FigmaComponent[];
+};
+
 export type UIMessagePayload =
   & RootSizesUIMessages
   & GuttersUIMessages
@@ -60,6 +68,7 @@ export type UIMessagePayload =
   & BoxShadowsUIMessages
   & BordersUIMessages
   & GridsUIMessages
+  & ComponentsUIMessages
   & {
     initApp: (arg: null) => AppData;
     resize: (args: { width: number, height: number; }) => null;

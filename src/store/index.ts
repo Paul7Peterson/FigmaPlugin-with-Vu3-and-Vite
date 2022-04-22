@@ -8,3 +8,4 @@ export * from './boxShadows.store';
 export * from './fontStyles.store';
 export * from './grids.store';
 export * from './borders.store';
+export * from './components.store';

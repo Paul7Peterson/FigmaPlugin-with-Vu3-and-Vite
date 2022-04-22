@@ -2,6 +2,7 @@ import type {
   BordersUIMessages,
   BoxShadowsUIMessages,
   ColorsUIMessages,
+  ComponentsUIMessages,
   FontsUIMessages,
   GridsUIMessages,
   GuttersUIMessages,
@@ -10,6 +11,7 @@ import type {
 import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 
 import * as Tokens from '../api/tokens';
+import * as Components from '../api/components';
 import { FigmaStore } from '../api/store/store';
 import { initApp } from '../api/init';
 
@@ -91,6 +93,12 @@ const GridsPostBroker: GenericPostBrokerType<GridsUIMessages> = {
   },
 };
 
+const ComponentsPostBroker: GenericPostBrokerType<ComponentsUIMessages> = {
+  listComponents: async (msg) => {
+    return answer(msg, await Components.listAllComponents());
+  },
+};
+
 /** */
 export const PostBroker: PostBrokerType = {
   ...RootSizesPostBroker,
@@ -100,6 +108,7 @@ export const PostBroker: PostBrokerType = {
   ...BoxShadowsPostBroker,
   ...BordersPostBroker,
   ...GridsPostBroker,
+  ...ComponentsPostBroker,
   initApp: async (msg) => {
     return answer(msg, await initApp());
   },
