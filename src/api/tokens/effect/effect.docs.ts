@@ -1,5 +1,5 @@
-import { BoxShadowStyle, parseCSSBoxShadow, parseEffectFromShadow } from '../tokens';
-import { getComponents, getTokenTable, Page, documentInTable } from './helpers';
+import { BoxShadowStyle, parseCSSBoxShadow, parseEffectFromShadow } from '..';
+import { getComponents, getTokenTable, Page, documentInTable } from '../helpers.docs';
 
 const { "Box shadows": BoxShadows } = getComponents();
 

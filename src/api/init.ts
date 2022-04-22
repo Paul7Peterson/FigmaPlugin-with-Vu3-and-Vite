@@ -5,8 +5,9 @@ import { FigmaStore } from './store';
 
 export async function initApp (): Promise<AppData> {
   await loadFonts();
-  await adjustWindowSize();
   await FigmaStore.retrieveData();
+
+  await adjustWindowSize();
 
   return {
     user: getUser(),

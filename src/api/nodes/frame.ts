@@ -2,7 +2,7 @@ import { BaseNode } from './base';
 import { assignBorderRadius, assignFills, setAutoLayout, setResizing } from './_shared';
 import { AutoLayoutDirection, AutoLayoutOptions, DirectionalAssign, NodeFill, NodeSize, ResizingOptions } from './_shared.types';
 
-interface FrameOptions {
+export interface FrameOptions {
   props: {
     size?: NodeSize,
     cornerRadius?: DirectionalAssign;

@@ -11,7 +11,6 @@ import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 
 import * as Tokens from '../api/tokens';
 import { FigmaStore } from '../api/store/store';
-import { writeDocs } from '../api/data';
 import { initApp } from '../api/init';
 
 
@@ -111,12 +110,12 @@ export const PostBroker: PostBrokerType = {
     return answer(msg, null);
   },
   updateDocumentation: async (msg) => {
-    await writeDocs();
+    await Tokens.writeDocs();
     return answer(msg, null);
   },
   closePlugin: async () => {
     const notification = figma.notify('Closing...', { timeout: 1_000_000 });
-    await FigmaStore.getInstance.persistData();
+    // await FigmaStore.getInstance.persistData();
     notification.cancel();
     figma.closePlugin();
     return false;

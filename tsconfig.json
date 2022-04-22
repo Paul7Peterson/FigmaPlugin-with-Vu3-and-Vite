@@ -33,6 +33,18 @@
       "@/*": [
         "src/*"
       ],
+      "@typescript": [
+        "src/api/typescript"
+      ],
+      "@typescript/*": [
+        "src/api/typescript/*"
+      ],
+      "@zeplin": [
+        "src/api/zeplin"
+      ],
+      "@zeplin/*": [
+        "src/api/zeplin/*"
+      ],
       "@api/*": [
         "src/api/*"
       ],

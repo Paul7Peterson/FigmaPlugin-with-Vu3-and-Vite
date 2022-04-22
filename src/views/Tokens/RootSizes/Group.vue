@@ -53,7 +53,7 @@ async function onCancelEdit () {
 
 <template>
   <TokenSection 
-    title="Sizes"
+    title="Root sizes"
     description="..."
   >
     <template #header>

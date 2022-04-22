@@ -1,5 +1,5 @@
-import { RootSize, RootSizeName, Gutter } from '../tokens';
-import { getComponents, getTokenTable, shortByNumericValue, Page, documentInTable } from './helpers';
+import { RootSize, RootSizeName, Gutter } from '..';
+import { getComponents, getTokenTable, shortByNumericValue, Page, documentInTable } from '../helpers.docs';
 
 const { "Root sizes": RootSizes, Gutters } = getComponents();
 

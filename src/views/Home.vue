@@ -62,7 +62,7 @@ async function onDocument () {
       bottom: 0;
       right: 0;
       left: 0;
-      padding: 20px;
+      padding: 15px;
     }
   }
 </style>

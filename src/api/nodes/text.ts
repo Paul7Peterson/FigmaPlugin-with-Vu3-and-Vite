@@ -2,7 +2,7 @@ import { BaseNode } from './base';
 import { assignFills } from './_shared';
 import { FontFamily, FontStyle, NodeFill, VerticalPosition, HorizontalPosition } from './_shared.types';
 
-interface TextOptions {
+export interface TextOptions {
   fills: NodeFill;
   font: {
     family?: FontFamily;

@@ -26,14 +26,14 @@ const allowTokenActions = $computed(() =>
     </header>
     <p>{{ description }}</p>
     <div class="token-section__list">
-      <slot></slot>
+      <slot name="default"></slot>
     </div>
   </section>
 </template>
 
 <style lang="scss">
   .token-section {
-    margin: 20px 0;
+    margin-bottom: 20px;
 
     header {
       display: grid;
@@ -41,7 +41,6 @@ const allowTokenActions = $computed(() =>
       align-items: center;
       font-size: 20px;
       font-weight: bold;
-      padding: 5px 0;
     }
 
     &__list {
