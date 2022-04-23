@@ -25,7 +25,7 @@ function onClose () {
   >
     <template #header>{{ selectedGutter.name }}</template>
     <div>
-      <DataList 
+      <DescriptionList 
         :data="{ 
           name: selectedGutter.name, 
           size: `${selectedGutter.value} rem`,

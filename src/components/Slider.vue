@@ -40,8 +40,6 @@ const props = withDefaults(defineProps<Props>(), {
   reverse: false,
 });
 
-const id = `slider-${Math.random() * 1_000_000}`
-
 const emits = defineEmits<{
   (e: 'update:modelValue', modelValue: number): void
   (e: 'select'): void
@@ -122,7 +120,6 @@ function onInput (e: Event) {
         :value="modelValue" 
         :disabled="locked"
         :step="step"
-        :list="id"
         :orient="verticalHeight ? 'vertical' : 'horizontal'"
         @input="onInput"
         @dblclick="$emit('select')"
@@ -134,9 +131,6 @@ function onInput (e: Event) {
         :style="{ left: `calc(${(100 * (modelValue - range[0])) / rangeValue}% - ${8}px)` }"
         @dblclick="$emit('select')"/>
     </div>
-    <datalist :id="id">
-      <option v-for="(_, i) in options" :key="i"/>
-    </datalist>
   </div>
 </template>
 

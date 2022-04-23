@@ -26,7 +26,7 @@ function onClose () {
   >
     <template #header>{{ selectedRootSize.name }}</template>
     <div>
-      <DataList 
+      <DescriptionList 
         :data="{ 
           name: selectedRootSize.name, 
           size: `${selectedRootSize.value} px`,

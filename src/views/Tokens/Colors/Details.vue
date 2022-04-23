@@ -81,7 +81,7 @@ function onFinish() {
 
     <code class="color-id">{{ color.id }}</code>
     <p>{{ color.description }}</p>
-    <DataList :data="colorPicked.colorSpaces"/>
+    <DescriptionList :data="colorPicked.colorSpaces"/>
     <div v-if="data.isEditing">
       <input 
         class="color-picker" 

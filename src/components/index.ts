@@ -7,10 +7,11 @@ import Details from './Details.vue';
 import ErrorsBadge from './ErrorsBadge.vue';
 import Slider from './Slider.vue';
 import SliderMultiple from './SliderMultiple.vue';
-import DataList from './DataList.vue';
+import DescriptionList from './DescriptionList.vue';
 import Spinner from './Spinner.vue';
 import Table from './Table.vue';
-import TextInput from './TextInput.vue';
+
+import TextInput from './Inputs/TextInput.vue';
 
 export {
   Button,
@@ -22,7 +23,7 @@ export {
   ErrorsBadge,
   Slider,
   SliderMultiple,
-  DataList,
+  DescriptionList,
   Spinner,
   Table,
   TextInput,
