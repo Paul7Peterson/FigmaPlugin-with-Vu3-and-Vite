@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useSizesStore } from '~/store';
+import { useSizesStore } from '~ui/store';
 
 const store = useSizesStore()
 

@@ -1,11 +1,10 @@
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
-import * as Component from '~/components';
+//
+import * as Component from '~ui/components';
 import App from './App.vue';
 import { router } from './router';
 import './ui.scss';
-
-
 
 createApp(App)
   .use(router)

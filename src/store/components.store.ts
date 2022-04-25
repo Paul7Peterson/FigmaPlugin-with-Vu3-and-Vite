@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Broker } from '~comm/worker.api';
+import { Broker } from '~comm/ui.broker';
 import type { FigmaComponent } from '../../api/components/index.types';
 
 

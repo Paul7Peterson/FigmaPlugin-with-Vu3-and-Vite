@@ -79,10 +79,6 @@ export async function documentInTable<T extends object, S extends string> (
         height: 'hug contents',
       }
     });
-  // table.layoutMode = 'VERTICAL';
-  // table.primaryAxisSizingMode = 'AUTO';
-  // table.counterAxisSizingMode = 'FIXED';
-  // table.itemSpacing = rowGap || 10;
 
   const headerKeys = Object.keys(docs(values[0]));
   createHeaderFromComponent(table, component, headerKeys, fieldsToHide);

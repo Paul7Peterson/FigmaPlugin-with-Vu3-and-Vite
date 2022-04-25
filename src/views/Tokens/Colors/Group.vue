@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { Details } from '~/components';
-import { useColorsStore } from "~/store";
 import { ColorNameExtended, SolidColor } from "~api/tokens/index.types";
+import { Details } from '~ui/components';
+import { useColorsStore } from "~ui/store";
 import { TokenSection } from "..";
 import ColorToken from './Token.vue';
 

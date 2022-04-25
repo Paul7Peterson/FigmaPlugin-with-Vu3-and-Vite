@@ -2,7 +2,7 @@ import type {
   ColorNameExtended, SolidColor, SolidColorInfo
 } from 'api/tokens/index.types';
 import { defineStore } from 'pinia';
-import { Broker } from '~comm/worker.api';
+import { Broker } from '~comm/ui.broker';
 import { hexToRgb } from './colors.store.helpers';
 import { ItemError } from './store.types';
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useGridsStore } from '~/store';
+import { useGridsStore } from '~ui/store';
 import { TokenSection } from '..';
 
 const store = useGridsStore()

@@ -29,19 +29,20 @@ export default defineConfig({
             path.resolve(__dirname, 'api', 'index.ts'),
           ],
           html: [
-            path.resolve(__dirname, 'src', 'ui.html')
+            path.resolve(__dirname, 'src', 'ui.html'),
           ]
         },
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
-        assetFileNames: `[name].[ext]`
+        assetFileNames: `[name].[ext]`,
       },
       input: {
         code: path.resolve(__dirname, 'api', 'index.ts'),
         html: path.resolve(__dirname, 'src', 'ui.html'),
       },
       external: [
-        path.resolve(__dirname, 'communication')
+        path.resolve(__dirname, 'communication'),
+        path.resolve(__dirname, 'helpers'),
       ]
     },
   },
@@ -53,9 +54,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, 'src'),
+      '~ui': path.resolve(__dirname, 'src'),
       '~api': path.resolve(__dirname, 'api'),
-      '~shared': path.resolve(__dirname, 'src', 'shared'),
+      '~helpers': path.resolve(__dirname, 'helpers'),
       '~comm': path.resolve(__dirname, 'communication'),
     },
   },

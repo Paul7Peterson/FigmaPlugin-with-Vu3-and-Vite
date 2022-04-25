@@ -1,6 +1,6 @@
 import { Frame, Text, TextOptions } from '../nodes';
 import { FontRef } from '../nodes/_shared.types';
-import { StoreKey, Store } from './store.api';
+import { Store, StoreKey } from './store.api';
 
 
 const LOCAL_STORAGE_NAME = 'Storage';
@@ -56,7 +56,7 @@ export class FigmaStore {
 
   /** */
   async setKey<T extends StoreKey> (key: T, value: Store[T]): Promise<void> {
-    this.getStoreCollection(key).write(JSON.stringify(value));
+    this.getStoreCollection(key).write(JSON.stringify(value, null, 2));
   }
 
   /** */
@@ -92,11 +92,6 @@ export class FigmaStore {
       const collection = new Text(t, TEXT_STYLE);
       inst.storeMap.set(t.name as StoreKey, collection);
     });
-    try {
-
-    } catch (e) {
-      throw new Error('Error while retrieving data');
-    }
   }
 
   private getStoreCollection (key: StoreKey): Text {

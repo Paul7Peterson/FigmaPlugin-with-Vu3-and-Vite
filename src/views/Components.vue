@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useComponentsStore } from '~/store';
+import { useComponentsStore } from '~ui/store';
 import { FigmaComponent } from './Components';
 
 const store = useComponentsStore()

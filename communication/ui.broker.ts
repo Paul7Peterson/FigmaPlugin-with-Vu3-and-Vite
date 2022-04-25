@@ -1,16 +1,8 @@
 import {
-  RootSizesUIMessages,
-  GuttersUIMessages,
-  UIMessagePayload,
-  ColorsUIMessages,
-  FontsUIMessages,
-  BoxShadowsUIMessages,
-  BordersUIMessages,
-  GridsUIMessages,
-  ComponentsUIMessages,
+  BordersUIMessages, BoxShadowsUIMessages, ColorsUIMessages, ComponentsUIMessages, FontsUIMessages, GridsUIMessages, GuttersUIMessages, RootSizesUIMessages, UIMessagePayload
 } from './messages';
 import { BrokerGenericType } from './messages.types';
-import { registerCall } from './worker';
+import { registerCall } from './ui';
 
 
 const RootSizesBroker: BrokerGenericType<RootSizesUIMessages> = {

@@ -3,7 +3,7 @@ import type {
   ExtendedBoxShadowType
 } from 'api/tokens/index.types';
 import { defineStore } from 'pinia';
-import { Broker } from '~comm/worker.api';
+import { Broker } from '~comm/ui.broker';
 
 
 

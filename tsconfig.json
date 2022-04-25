@@ -30,26 +30,17 @@
       "./node_modules/@figma"
     ],
     "paths": {
-      "~/*": [
+      "~ui/*": [
         "src/*"
-      ],
-      "~typescript": [
-        "api/typescript"
-      ],
-      "~typescript/*": [
-        "api/typescript/*"
-      ],
-      "~zeplin": [
-        "api/zeplin"
-      ],
-      "~zeplin/*": [
-        "api/zeplin/*"
       ],
       "~api/*": [
         "api/*"
       ],
-      "~shared/*": [
-        "src/shared/*"
+      "~helpers": [
+        "helpers/index.ts"
+      ],
+      "~helpers/*": [
+        "helpers/*"
       ],
       "~comm/*": [
         "communication/*"

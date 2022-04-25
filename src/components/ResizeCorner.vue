@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Broker } from '~comm/worker.api';
+import { Broker } from '~comm/ui.broker';
 
 const MIN_WIDTH = 500
 const MIN_HEIGHT = 600

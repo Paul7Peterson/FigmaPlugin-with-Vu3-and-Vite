@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useBordersStore } from '~/store';
+import { useBordersStore } from '~ui/store';
 import { TokenSection } from '..';
 import BorderToken from './Token.vue';
 

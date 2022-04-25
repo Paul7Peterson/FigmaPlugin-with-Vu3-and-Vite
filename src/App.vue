@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onBeforeMount } from 'vue';
-import { useAppStore } from '~/store';
+import { useAppStore } from '~ui/store';
 import { ResizeCorner } from './components';
 import Nav from './Nav.vue';
 

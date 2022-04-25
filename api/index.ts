@@ -1,7 +1,6 @@
-import { PostBroker } from '~comm/apiBroker.api';
+import { PostBroker } from '~comm/api.broker';
 import { AnyUIMessage } from '~comm/messages.types';
 import { UI } from './config';
-
 
 figma.showUI(__html__, {
   height: UI.HEIGHT,
@@ -41,3 +40,4 @@ figma.on('close', () => {
 console.info(`
   PluginId: ${figma.pluginId} 
 `);
+
