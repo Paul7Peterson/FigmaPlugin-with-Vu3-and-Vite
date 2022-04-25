@@ -55,22 +55,17 @@ defineEmits<{
   (e: 'select', index: number): void
 }>()
 
-const sortedValues = $computed(() => {
-  return [...props.values].sort((a, b) => a.value - b.value)
-})
+const sortedValues = $computed(() => 
+  [...props.values].sort((a, b) => a.value - b.value))
 
 function getLimit(index: number): [number, number] {
-  const [lMin, lMax] = [
-    props.limit?.[0] || props.range[0],
-    props.limit?.[1] || props.range[1],
-  ]
   const [prev, next] = [
     sortedValues[index - 1]?.value, 
     sortedValues[index + 1]?.value,
   ]
   return [
-    prev ? (prev - props.step) : lMin,
-    next ? (next + props.step) : lMax,
+    prev ? (prev + props.step) : (props.limit?.[0] || props.range[0]),
+    next ? (next - props.step) : (props.limit?.[1] || props.range[1]),
   ]
 }
 
@@ -93,8 +88,8 @@ onErrorCaptured((e) => console.log(e))
         :showTicks="showTicks"
         :ticksGap="ticksGap"
         :locked="locked || value.locked"
-        :titleBuilder="titleBuilder && ((i) => titleBuilder(i, value))"
-        :tickBuilder="titleBuilder && ((i) => tickBuilder(i, value))"
+        :titleBuilder="titleBuilder && ((i) => titleBuilder!(i, value))"
+        :tickBuilder="titleBuilder && ((i) => tickBuilder!(i, value))"
         :verticalHeight="verticalHeight"
         :reverse="reverse"
         clickable

@@ -55,6 +55,7 @@ $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
   &__inputs {
     position: relative;
     pointer-events: none;
+    overflow: hidden;
   }
 
   &__clickable {
