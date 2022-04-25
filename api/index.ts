@@ -37,7 +37,7 @@ figma.on('close', () => {
   console.log('❌ Close');
 });
 
-console.info(`
-  PluginId: ${figma.pluginId} 
-`);
+// console.info(`
+//   PluginId: ${figma.pluginId} 
+// `);
 

@@ -4,11 +4,12 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { viteSingleFile } from 'vite-plugin-singlefile';
+import svgLoader from 'vite-svg-loader';
 
-// import svgLoader from 'vite-svg-loader';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  publicDir: path.resolve(__dirname, 'assets'),
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
@@ -18,9 +19,11 @@ export default defineConfig({
       include: [
         path.resolve(__dirname, 'src'),
         path.resolve(__dirname, 'api'),
+        path.resolve(__dirname, 'communication'),
         path.resolve(__dirname, 'assets'),
       ]
     },
+    assetsDir: path.resolve(__dirname, 'dist', 'assets'),
     rollupOptions: {
       inlineDynamicImports: true,
       output: {
@@ -34,7 +37,7 @@ export default defineConfig({
         },
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
-        assetFileNames: `[name].[ext]`,
+        assetFileNames: `src/[name].[ext]`,
       },
       input: {
         code: path.resolve(__dirname, 'api', 'index.ts'),
@@ -50,6 +53,7 @@ export default defineConfig({
     vue({
       reactivityTransform: true,
     }),
+    svgLoader(),
     viteSingleFile(),
   ],
   resolve: {
@@ -58,6 +62,7 @@ export default defineConfig({
       '~api': path.resolve(__dirname, 'api'),
       '~helpers': path.resolve(__dirname, 'helpers'),
       '~comm': path.resolve(__dirname, 'communication'),
+      '~assets': path.resolve(__dirname, 'assets'),
     },
   },
   define: {

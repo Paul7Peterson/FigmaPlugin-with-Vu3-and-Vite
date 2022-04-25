@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
+import ZeplinLogo from '~assets/zeplin.svg?component';
 import { Broker } from '~comm/ui.broker';
 import { useAppStore } from '../store';
+
 
 
 const store = useAppStore()
@@ -31,6 +33,10 @@ async function onDocument () {
     <img class="avatar" :src="user.photoUrl || ''" :alt="singleName">
     <h3>Hello, {{ singleName }}!</h3>
   </header>
+  <hr>
+  <section>
+    <ZeplinLogo :style="{ width: '50px'}"/>
+  </section>
   <footer id="home__footer" class="button-group">
     <Button 
       :isLoading="data.isGeneratingDocs" 

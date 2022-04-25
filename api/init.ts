@@ -1,5 +1,5 @@
 import { AppData, DocumentInfo, ProjectFlags } from '~comm/appData.types';
-import { ENV } from '~ui/envVariables';
+import { ENV } from './envVariables';
 import { FontRef } from './nodes/_shared.types';
 import { FigmaStore } from './store';
 
@@ -14,9 +14,6 @@ export async function initApp (): Promise<AppData> {
     document: getDocumentInfo(),
   };
 }
-
-console.log(figma.fileKey, getProjectsFlags());
-
 
 function adjustWindowSize () {
   FigmaStore.getInstance.getKey('windowSize').then((size) => {

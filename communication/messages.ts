@@ -6,8 +6,6 @@ import type {
 } from 'api/tokens/index.types';
 import { AppData } from './appData.types';
 
-
-
 type VoidFunction = (arg: null) => null;
 
 export type RootSizesUIMessages = {

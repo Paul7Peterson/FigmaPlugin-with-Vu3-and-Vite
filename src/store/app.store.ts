@@ -3,7 +3,7 @@ import { DocumentInfo } from '~comm/appData.types';
 import { Broker } from '~comm/ui.broker';
 import {
   useBordersStore, useBoxShadowsStore, useColorsStore,
-  useComponentsStore, useFontStylesStore, useGridsStore, useGuttersStore, useSizesStore
+  useComponentsStore, useFontStylesStore, useGridsStore, useGuttersStore, useSizesStore, useZeplinStore
 } from '.';
 
 
@@ -46,7 +46,8 @@ export const useAppStore = defineStore('app', {
           useBordersStore().fetchBorderStyles(),
           this.allowComponentActions
             ? useComponentsStore().fetchComponents()
-            : Promise.resolve()
+            : Promise.resolve(),
+          useZeplinStore().fetchZeplinData(),
         ]).catch((e) => {
           this.hasFatalError = true;
         });

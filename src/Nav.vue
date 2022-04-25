@@ -22,6 +22,9 @@ const allowComponentActions = $computed(() => store.allowComponentActions)
       to="/components"
     >Components</router-link>
     <router-link 
+      to="/zeplin"
+    >Zeplin</router-link>
+    <router-link 
       to="/debug"
     >Debug</router-link>
   </nav>
