@@ -1,19 +1,19 @@
+import { defineStore } from 'pinia';
 import type {
   ColorNameExtended, SolidColor, SolidColorInfo
-} from 'api/tokens/index.types';
-import { defineStore } from 'pinia';
+} from '~api/tokens/index.types';
 import { Broker } from '~comm/ui.broker';
 import { hexToRgb } from './colors.store.helpers';
 import { ItemError } from './store.types';
+import { useZeplinStore } from './zeplin.store';
 
-
-
+type ModifiedSolidColor = SolidColor & { isInZeplin: boolean; };
 
 /** */
 export const useColorsStore = defineStore('colors', {
   state: () => {
     return {
-      colors: {} as Record<ColorNameExtended, SolidColor[]>,
+      colors: {} as Record<ColorNameExtended, ModifiedSolidColor[]>,
     };
   },
   getters: {
@@ -27,12 +27,20 @@ export const useColorsStore = defineStore('colors', {
   },
   actions: {
     async fetchColorStyles (): Promise<void> {
+      const zeplinColors = useZeplinStore().colors;
       const colors = await Broker.listSolidColors();
       const colorsObject = colors.reduce((t, color) => {
-        if (!t[color.colorName]) t[color.colorName] = [color];
-        else t[color.colorName].push(color);
+        const zeplinColor = zeplinColors[`${color.colorName}-${color.colorShadow}`.toLowerCase()];
+
+        if (!zeplinColor) color.errors.push('The color is not in Zeplin.');
+        else if (zeplinColor === color.colorSpaces.HEX) color.errors.push('The color in Zeplin is different.');
+
+        const convertedColor: ModifiedSolidColor = { ...color, isInZeplin: !!zeplinColor };
+
+        if (!t[color.colorName]) t[color.colorName] = [convertedColor];
+        else t[color.colorName].push(convertedColor);
         return t;
-      }, {} as Record<ColorNameExtended, SolidColor[]>);
+      }, {} as Record<ColorNameExtended, ModifiedSolidColor[]>);
       Object.keys(colorsObject).forEach((k) => {
         this.colors[k as ColorNameExtended] =
           [...colorsObject[k as ColorNameExtended]].sort((a, b) => a.colorShadow - b.colorShadow);

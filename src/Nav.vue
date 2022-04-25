@@ -36,7 +36,7 @@ const allowComponentActions = $computed(() => store.allowComponentActions)
     grid-auto-flow: column;
     grid-auto-columns: max-content;
     background-color: #b4b4b4;
-    padding: 5px 20px 0 20px;
+    padding: 5px 10px 0 10px;
     gap: 5px;
     height: 40px;
     align-items: end;

@@ -10,6 +10,7 @@ const store = useAppStore()
 
 const isReady = $computed(() => store.isReady)
 const hasFatalError = $computed(() => store.hasFatalError)
+const errorMessage = $computed(() => store.errorMessage)
 
 window.onmousedown = function (e: MouseEvent) {
   if (e.button === 3 && e.buttons === 8) { // Custom back
@@ -36,7 +37,10 @@ onBeforeMount(async() => await store.fetchStyles())
     </main>
   </template>
   <main v-else id="app__loading">
-    <p>Ups!</p>
+    <div>
+      <p>Ups!</p>
+      <small>{{ errorMessage }}</small>
+    </div>
   </main>
   <ResizeCorner/>
 </template>
@@ -52,6 +56,10 @@ onBeforeMount(async() => await store.fetchStyles())
       justify-content: center;
       height: 100%;
       font-size: 50px;
+      
+      small {
+        font-size: 16px;
+      }
     }
   }
 </style>

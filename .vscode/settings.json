@@ -9,6 +9,7 @@
     "uuidv",
     "Verdegris",
     "vite",
+    "vitest",
     "zeplin"
   ],
   "editor.codeActionsOnSave": {

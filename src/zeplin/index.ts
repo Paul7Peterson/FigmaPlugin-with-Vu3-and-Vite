@@ -9,5 +9,6 @@ import { ZEPLIN } from './_shared';
  */
 
 export async function getDesignTokens (): Promise<DesignTokens> {
-  return ZEPLIN<DesignTokens>('GET', `styleguides/${ENV.ZEPLIN_STYLEGUIDE_ID}/design_tokens?include_linked_styleguides=false&token_name_case=kebab`);
+  const { colors, textStyles, spacing } = await ZEPLIN<DesignTokens>('GET', `styleguides/${ENV.ZEPLIN_STYLEGUIDE_ID}/design_tokens?include_linked_styleguides=false&token_name_case=kebab`);
+  return { colors: colors || {}, textStyles: textStyles || {}, spacing: spacing || {} };
 }

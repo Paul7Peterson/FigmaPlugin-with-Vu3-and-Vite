@@ -21,11 +21,16 @@ export default defineConfig({
         path.resolve(__dirname, 'api'),
         path.resolve(__dirname, 'communication'),
         path.resolve(__dirname, 'assets'),
+        path.resolve(__dirname, 'helpers'),
       ]
     },
     assetsDir: path.resolve(__dirname, 'dist', 'assets'),
     rollupOptions: {
       inlineDynamicImports: true,
+      input: {
+        code: path.resolve(__dirname, 'api', 'index.ts'),
+        html: path.resolve(__dirname, 'src', 'ui.html'),
+      },
       output: {
         manualChunks: {
           code: [
@@ -35,17 +40,13 @@ export default defineConfig({
             path.resolve(__dirname, 'src', 'ui.html'),
           ]
         },
-        entryFileNames: `[name].js`,
+        entryFileNames: ({ name }) =>
+          name === 'html' ? `src/[name].js` : `[name].js`,
         chunkFileNames: `[name].js`,
-        assetFileNames: `src/[name].[ext]`,
-      },
-      input: {
-        code: path.resolve(__dirname, 'api', 'index.ts'),
-        html: path.resolve(__dirname, 'src', 'ui.html'),
+        assetFileNames: (x) => `src/[name].[ext]`,
       },
       external: [
         path.resolve(__dirname, 'communication'),
-        path.resolve(__dirname, 'helpers'),
       ]
     },
   },
@@ -60,7 +61,6 @@ export default defineConfig({
     alias: {
       '~ui': path.resolve(__dirname, 'src'),
       '~api': path.resolve(__dirname, 'api'),
-      '~helpers': path.resolve(__dirname, 'helpers'),
       '~comm': path.resolve(__dirname, 'communication'),
       '~assets': path.resolve(__dirname, 'assets'),
     },

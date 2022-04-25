@@ -15,7 +15,8 @@ export const useAppStore = defineStore('app', {
       isReady: false,
       hasFatalError: false,
       user: null as User | null,
-      documentInfo: {} as DocumentInfo
+      documentInfo: {} as DocumentInfo,
+      errorMessage: '',
     };
   },
   getters: {
@@ -36,6 +37,8 @@ export const useAppStore = defineStore('app', {
         this.user = user;
         this.documentInfo = document;
 
+        await useZeplinStore().fetchZeplinData();
+
         await Promise.all([
           useSizesStore().fetchRootSizes(),
           useGuttersStore().fetchGutters(),
@@ -47,12 +50,13 @@ export const useAppStore = defineStore('app', {
           this.allowComponentActions
             ? useComponentsStore().fetchComponents()
             : Promise.resolve(),
-          useZeplinStore().fetchZeplinData(),
         ]).catch((e) => {
           this.hasFatalError = true;
+          this.errorMessage = (e as Error).name;
         });
       } catch (e) {
         this.hasFatalError = true;
+        this.errorMessage = (e as Error).name;
       }
       this.isReady = true;
     },

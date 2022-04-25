@@ -14,7 +14,7 @@ figma.showUI(__html__, {
 
 figma.ui.onmessage = (message: string) => {
   const msg: AnyUIMessage = JSON.parse(message);
-  console.log('📦', msg.type, msg.payload);
+  // console.log('📦', msg.type, msg.payload);
   PostBroker[msg.type]?.(msg as any)
     .catch((e: Error) => {
       console.error('❌', e.message);

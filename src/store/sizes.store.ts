@@ -1,5 +1,5 @@
-import type { RootSize } from 'api/tokens/index.types';
 import { defineStore } from 'pinia';
+import type { RootSize } from '~api/tokens/index.types';
 import { Broker } from '~comm/ui.broker';
 import { ItemError } from './store.types';
 
