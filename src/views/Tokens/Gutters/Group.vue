@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { Gutter } from '~/api/tokens/index.types';
 import { SliderMultiple } from '~/components';
 import { useGuttersStore, useSizesStore } from '~/store';
+import { Gutter } from '~api/tokens/index.types';
 import { TokenSection } from '..';
 import GutterDetails from './Details.vue';
 

@@ -34,19 +34,19 @@
         "src/*"
       ],
       "~typescript": [
-        "src/api/typescript"
+        "api/typescript"
       ],
       "~typescript/*": [
-        "src/api/typescript/*"
+        "api/typescript/*"
       ],
       "~zeplin": [
-        "src/api/zeplin"
+        "api/zeplin"
       ],
       "~zeplin/*": [
-        "src/api/zeplin/*"
+        "api/zeplin/*"
       ],
       "~api/*": [
-        "src/api/*"
+        "api/*"
       ],
       "~shared/*": [
         "src/shared/*"

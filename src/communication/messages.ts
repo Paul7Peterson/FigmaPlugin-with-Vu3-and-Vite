@@ -1,9 +1,9 @@
 import {
   FigmaComponent
-} from '~/api/components/index.types';
+} from 'api/components/index.types';
 import type {
   BorderStyle, BoxShadowStyle, Color, FontStyle, GridStyle, Gutter, RootSize, SolidColor, SolidColorInfo
-} from '~/api/tokens/index.types';
+} from 'api/tokens/index.types';
 import { AppData } from './appData.types';
 
 

@@ -17,6 +17,7 @@ export default defineConfig({
     watch: {
       include: [
         path.resolve(__dirname, 'src'),
+        path.resolve(__dirname, 'api'),
         path.resolve(__dirname, 'assets'),
       ]
     },
@@ -25,7 +26,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           code: [
-            path.resolve(__dirname, 'src', 'api', 'index.ts'),
+            path.resolve(__dirname, 'api', 'index.ts'),
           ],
           html: [
             path.resolve(__dirname, 'src', 'ui.html')
@@ -36,7 +37,7 @@ export default defineConfig({
         assetFileNames: `[name].[ext]`
       },
       input: {
-        code: path.resolve(__dirname, 'src', 'api', 'index.ts'),
+        code: path.resolve(__dirname, 'api', 'index.ts'),
         html: path.resolve(__dirname, 'src', 'ui.html'),
       }
     },
@@ -50,7 +51,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~': path.resolve(__dirname, 'src'),
-      '~api': path.resolve(__dirname, 'src', 'api'),
+      '~api': path.resolve(__dirname, 'api'),
       '~shared': path.resolve(__dirname, 'src', 'shared'),
       '~comm': path.resolve(__dirname, 'src', 'communication'),
     },

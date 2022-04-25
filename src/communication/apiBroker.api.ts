@@ -1,3 +1,8 @@
+import * as Components from '../../api/components';
+import { initApp } from '../../api/init';
+import { FigmaStore } from '../../api/store/store';
+import * as Tokens from '../../api/tokens';
+import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 import type {
   BordersUIMessages,
   BoxShadowsUIMessages,
@@ -6,14 +11,9 @@ import type {
   FontsUIMessages,
   GridsUIMessages,
   GuttersUIMessages,
-  RootSizesUIMessages,
+  RootSizesUIMessages
 } from './messages';
-import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 
-import * as Tokens from '../api/tokens';
-import * as Components from '../api/components';
-import { FigmaStore } from '../api/store/store';
-import { initApp } from '../api/init';
 
 
 const RootSizesPostBroker: GenericPostBrokerType<RootSizesUIMessages> = {

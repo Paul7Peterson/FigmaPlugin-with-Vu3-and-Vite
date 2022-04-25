@@ -1,5 +1,5 @@
+import type { Gutter } from 'api/tokens/index.types';
 import { defineStore } from 'pinia';
-import type { Gutter } from '~/api/tokens/index.types';
 import { Broker } from '~comm/worker.api';
 import { ItemError } from './store.types';
 

@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
 import type {
   BoxShadowStyle,
   ExtendedBoxShadowType
-} from '~/api/tokens/index.types';
+} from 'api/tokens/index.types';
+import { defineStore } from 'pinia';
 import { Broker } from '~comm/worker.api';
 
 

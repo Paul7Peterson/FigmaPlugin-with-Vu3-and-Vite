@@ -1,5 +1,5 @@
+import { listBoxShadows, listSolidColors } from '.';
 import { FigmaStore } from '../store';
-import { listBoxShadows, listSolidColors } from '../tokens';
 import { documentColors } from './color/color.docs';
 import { documentBoxShadows } from './effect/effect.docs';
 import { documentGutters, documentRootSizes } from './space/space.docs';
@@ -25,3 +25,4 @@ export * from './effect';
 export * from './grid';
 export * from './space';
 export * from './text';
+
