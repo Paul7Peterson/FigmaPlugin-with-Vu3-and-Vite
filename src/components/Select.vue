@@ -33,7 +33,7 @@ defineEmits<{
         v-for="(option, i) in options"
         :key="i"
         :value="option.value"
-        :disabled="lockedOptions.includes(option.value)"
+        :disabled="lockedOptions?.includes(option.value)"
       >{{ option.value }}</option>
     </select>
   </div>

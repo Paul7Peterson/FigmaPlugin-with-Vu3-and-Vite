@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { onErrorCaptured } from 'vue'
-import { Slider } from '@/components';
+import { onErrorCaptured } from 'vue';
+import { Slider } from '~/components';
 
 interface Value {
   /** */

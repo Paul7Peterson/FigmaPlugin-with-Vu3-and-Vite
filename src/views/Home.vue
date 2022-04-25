@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-
-import { Broker } from '@comm/worker.api';
+import { Broker } from '~comm/worker.api';
 import { useAppStore } from '../store';
+
 
 const store = useAppStore()
 

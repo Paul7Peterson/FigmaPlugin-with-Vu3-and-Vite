@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
+import type { RootSize } from '~/api/tokens/index.types';
+import { SliderMultiple } from '~/components';
+import { useSizesStore } from '~/store';
 import { TokenSection } from '..';
-import { SliderMultiple } from '@/components';
-import { useSizesStore } from '@/store';
-import type { RootSize } from '@/api/tokens/index.types';
-import RootSizeDetails from './Details.vue'
+import RootSizeDetails from './Details.vue';
 
 const store = useSizesStore()
 

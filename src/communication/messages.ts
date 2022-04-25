@@ -1,20 +1,12 @@
-import type {
-  SolidColor,
-  Color,
-  SolidColorInfo,
-  RootSize,
-  GridStyle,
-  BoxShadowStyle,
-  FontStyle,
-  BorderStyle,
-  Gutter,
-} from '@/api/tokens/index.types';
-
 import {
-  FigmaComponent,
-} from '@/api/components/index.types';
-
+  FigmaComponent
+} from '~/api/components/index.types';
+import type {
+  BorderStyle, BoxShadowStyle, Color, FontStyle, GridStyle, Gutter, RootSize, SolidColor, SolidColorInfo
+} from '~/api/tokens/index.types';
 import { AppData } from './appData.types';
+
+
 
 type VoidFunction = (arg: null) => null;
 

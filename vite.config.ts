@@ -1,10 +1,10 @@
 /// <reference types="vitest" />
 
-import { defineConfig } from 'vite';
 import path from 'path';
-
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
 import { viteSingleFile } from 'vite-plugin-singlefile';
+import vue from '~vitejs/plugin-vue';
+
 // import svgLoader from 'vite-svg-loader';
 
 // https://vitejs.dev/config/
@@ -49,10 +49,10 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-      '@api': path.resolve(__dirname, 'src', 'api'),
-      '@shared': path.resolve(__dirname, 'src', 'shared'),
-      '@comm': path.resolve(__dirname, 'src', 'communication'),
+      '~': path.resolve(__dirname, 'src'),
+      '~api': path.resolve(__dirname, 'src', 'api'),
+      '~shared': path.resolve(__dirname, 'src', 'shared'),
+      '~comm': path.resolve(__dirname, 'src', 'communication'),
     },
   },
   define: {

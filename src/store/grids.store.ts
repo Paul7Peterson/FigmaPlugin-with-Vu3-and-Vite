@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
-
 import type {
-  GridStyle,
-  BorderStyle,
-} from '@/api/tokens/index.types';
+  GridStyle
+} from '~/api/tokens/index.types';
+import { Broker } from '~comm/worker.api';
 
-import { Broker } from '@comm/worker.api';
+
 
 /** */
 export const useGridsStore = defineStore('grids', {

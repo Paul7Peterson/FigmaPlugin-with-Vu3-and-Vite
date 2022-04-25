@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-
 import type {
   BoxShadowStyle,
-  ExtendedBoxShadowType,
-} from '@/api/tokens/index.types';
+  ExtendedBoxShadowType
+} from '~/api/tokens/index.types';
+import { Broker } from '~comm/worker.api';
 
-import { Broker } from '@comm/worker.api';
+
 
 /** */
 export const useBoxShadowsStore = defineStore('boxShadows', {

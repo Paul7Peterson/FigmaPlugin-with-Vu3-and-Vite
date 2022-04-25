@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
+import { Gutter } from '~/api/tokens/index.types';
+import { SliderMultiple } from '~/components';
+import { useGuttersStore, useSizesStore } from '~/store';
 import { TokenSection } from '..';
-import { useGuttersStore, useSizesStore } from '@/store';
-import { SliderMultiple } from '@/components';
-import { Gutter, RootSizeName, RootSize } from '@/api/tokens/index.types';
-import GutterDetails from './Details.vue'
+import GutterDetails from './Details.vue';
 
 const store = useGuttersStore()
 const sizesStore = useSizesStore()

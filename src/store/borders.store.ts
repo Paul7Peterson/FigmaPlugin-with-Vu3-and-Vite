@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
-
 import type {
-  BorderStyle,
-} from '@/api/tokens/index.types';
+  BorderStyle
+} from '~/api/tokens/index.types';
+import { Broker } from '~comm/worker.api';
 
-import { Broker } from '@comm/worker.api';
+
 
 /** */
 export const useBordersStore = defineStore('borders', {

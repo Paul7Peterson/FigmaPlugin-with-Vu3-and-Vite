@@ -1,15 +1,13 @@
 import { defineStore } from 'pinia';
-
 import type {
-  SolidColor,
-  ColorNameExtended,
-  SolidColorInfo,
-} from '@/api/tokens/index.types';
-
-import { Broker } from '@comm/worker.api';
-
+  ColorNameExtended, SolidColor, SolidColorInfo
+} from '~/api/tokens/index.types';
+import { Broker } from '~comm/worker.api';
 import { hexToRgb } from './colors.store.helpers';
 import { ItemError } from './store.types';
+
+
+
 
 /** */
 export const useColorsStore = defineStore('colors', {

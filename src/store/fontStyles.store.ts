@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia';
-
 import type {
-  FontStyle,
-  ExtendedFontStyleCategory,
-} from '@/api/tokens/index.types';
-
-import { Broker } from '@comm/worker.api';
+  ExtendedFontStyleCategory, FontStyle
+} from '~/api/tokens/index.types';
+import { Broker } from '~comm/worker.api';
 import { ItemError } from './store.types';
+
+
 
 /** */
 export const useFontStylesStore = defineStore('fontStyles', {

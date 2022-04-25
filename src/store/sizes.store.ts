@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-
-import type { RootSize } from '@/api/tokens/index.types';
-
-import { Broker } from '@comm/worker.api';
+import type { RootSize } from '~/api/tokens/index.types';
+import { Broker } from '~comm/worker.api';
 import { ItemError } from './store.types';
+
+
 
 type ModifiedRootSize = RootSize & { locked: boolean; };
 

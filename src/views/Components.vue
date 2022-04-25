@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useComponentsStore } from '@/store';
-import { FigmaComponent } from './Components'
+import { useComponentsStore } from '~/store';
+import { FigmaComponent } from './Components';
 
 const store = useComponentsStore()
 

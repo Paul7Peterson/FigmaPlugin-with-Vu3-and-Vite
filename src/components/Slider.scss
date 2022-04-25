@@ -148,7 +148,6 @@ $thumb-adjust: calc(($thumb-size / 2) - ($track-height / 2));
     grid-template: 
       "label  label" auto
       "inputs ticks" var(--height) / $input-height max-content;
-    // align-items: center;
 
     .slider {
       &__clickable {

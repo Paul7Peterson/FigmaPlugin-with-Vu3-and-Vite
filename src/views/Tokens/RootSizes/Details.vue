@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useSizesStore } from '@/store'
+import { useSizesStore } from '~/store';
 
 const store = useSizesStore()
 

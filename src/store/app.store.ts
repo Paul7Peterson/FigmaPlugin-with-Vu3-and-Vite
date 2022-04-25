@@ -1,17 +1,11 @@
 import { defineStore } from 'pinia';
-
-import { Broker } from '@comm/worker.api';
+import { Broker } from '~comm/worker.api';
 import {
-  useBordersStore,
-  useSizesStore,
-  useGuttersStore,
-  useBoxShadowsStore,
-  useGridsStore,
-  useFontStylesStore,
-  useColorsStore,
-  useComponentsStore,
+  useBordersStore, useBoxShadowsStore, useColorsStore,
+  useComponentsStore, useFontStylesStore, useGridsStore, useGuttersStore, useSizesStore
 } from '.';
 import { DocumentInfo } from '../communication/appData.types';
+
 
 
 /** */

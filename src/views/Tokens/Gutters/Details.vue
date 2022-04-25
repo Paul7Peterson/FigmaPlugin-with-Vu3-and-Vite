@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useGuttersStore } from '@/store'
+import { useGuttersStore } from '~/store';
 
 const store = useGuttersStore()
 

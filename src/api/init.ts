@@ -1,5 +1,5 @@
-import { ENV } from '@/envVariables';
-import { AppData, DocumentInfo, ProjectFlags } from '@comm/appData.types';
+import { ENV } from '~/envVariables';
+import { AppData, DocumentInfo, ProjectFlags } from '~comm/appData.types';
 import { FontRef } from './nodes/_shared.types';
 import { FigmaStore } from './store';
 

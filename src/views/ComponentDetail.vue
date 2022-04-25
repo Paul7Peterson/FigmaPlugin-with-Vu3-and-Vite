@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import { useComponentsStore } from '@/store';
+import { useComponentsStore } from '~/store';
 
 const route = useRoute()
 const store = useComponentsStore()

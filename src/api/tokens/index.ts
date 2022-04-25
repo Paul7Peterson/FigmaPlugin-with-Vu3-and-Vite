@@ -1,9 +1,9 @@
 import { FigmaStore } from '../store';
-
 import { listBoxShadows, listSolidColors } from '../tokens';
 import { documentColors } from './color/color.docs';
 import { documentBoxShadows } from './effect/effect.docs';
 import { documentGutters, documentRootSizes } from './space/space.docs';
+
 
 export async function writeDocs () {
   console.log('Documenting...');
@@ -21,7 +21,7 @@ export async function writeDocs () {
 };
 
 export * from './color';
+export * from './effect';
+export * from './grid';
 export * from './space';
 export * from './text';
-export * from './grid';
-export * from './effect';

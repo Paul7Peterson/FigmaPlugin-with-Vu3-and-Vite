@@ -1,5 +1,5 @@
-import { AnyUIMessage } from '@comm/messages.types';
-import { PostBroker } from '@comm/apiBroker.api';
+import { PostBroker } from '~comm/apiBroker.api';
+import { AnyUIMessage } from '~comm/messages.types';
 import { UI } from './config';
 
 
