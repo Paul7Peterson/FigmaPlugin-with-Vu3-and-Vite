@@ -37,8 +37,8 @@ async function loadFonts (): Promise<void> {
 
 function getProjectsFlags (): ProjectFlags {
   return {
-    isDesignSystemProject: ENV.DESIGN_TOKENS_FIGMA_PROJECT_ID === figma.fileKey,
-    isDesignTokensProject: ENV.DESIGN_SYSTEM_FIGMA_PROJECT_ID === figma.fileKey,
+    isDesignSystemProject: ENV.DESIGN_SYSTEM_FIGMA_PROJECT_ID === figma.fileKey,
+    isDesignTokensProject: ENV.DESIGN_TOKENS_FIGMA_PROJECT_ID === figma.fileKey,
     isTestProject: ENV.TEST_FIGMA_PROJECT_ID === figma.fileKey,
   };
 }

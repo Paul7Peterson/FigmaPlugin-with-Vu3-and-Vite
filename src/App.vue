@@ -1,14 +1,24 @@
 <script lang="ts" setup>
 import { onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAppStore } from '~ui/store';
 import { ResizeCorner } from './components';
 import Nav from './Nav.vue';
 
-
+const router = useRouter()
 const store = useAppStore()
 
 const isReady = $computed(() => store.isReady)
 const hasFatalError = $computed(() => store.hasFatalError)
+
+window.onmousedown = function (e: MouseEvent) {
+  if (e.button === 3 && e.buttons === 8) { // Custom back
+    router.back()   
+  }
+  if (e.button === 4 && e.buttons === 16) { // Custom forward
+    router.forward()   
+  }
+}
 
 onBeforeMount(async() => await store.fetchStyles())
 </script>

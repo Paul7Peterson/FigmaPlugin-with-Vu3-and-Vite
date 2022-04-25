@@ -1,11 +1,11 @@
-import { createRouter, createMemoryHistory } from 'vue-router';
-
-import HomeView from '../views/Home.vue';
-import TokensView from '../views/Tokens.vue';
-import SemanticView from '../views/Semantic.vue';
+import { createMemoryHistory, createRouter } from 'vue-router';
+import ComponentDetailView from '../views/ComponentDetail.vue';
 import ComponentsView from '../views/Components.vue';
 import DebugView from '../views/Debug.vue';
-import ComponentDetailView from '../views/ComponentDetail.vue';
+import HomeView from '../views/Home.vue';
+import SemanticView from '../views/Semantic.vue';
+import TokensView from '../views/Tokens.vue';
+
 
 const router = createRouter({
   history: createMemoryHistory(),

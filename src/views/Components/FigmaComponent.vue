@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { FigmaComponent } from '../../api/components/index.types';
+import { FigmaComponent } from "~api/components/index.types";
 
 interface Props {
   /** */
-  figmaComponent: FigmaComponent
+  figmaComponent: FigmaComponent;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 </script>
 
 <template>
@@ -20,6 +20,7 @@ defineProps<Props>()
 <style lang="scss">
   .figma-component {
     border: 2px solid var(--color-dark);
-    padding: 2px;
+    padding: 5px;
+    color: var(--color-dark)
   }
 </style>

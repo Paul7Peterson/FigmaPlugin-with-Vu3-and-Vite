@@ -47,7 +47,7 @@ const allowComponentActions = $computed(() => store.allowComponentActions)
       border-top-left-radius: 5px;
       transition: padding-bottom .1s ease-in-out;
 
-      &.router-link-exact-active {
+      &.router-link-active {
         background-color: white;
         color: black;
         padding-bottom: 12px;
