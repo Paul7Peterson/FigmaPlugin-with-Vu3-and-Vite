@@ -1,7 +1,7 @@
-import * as Components from '../../api/components';
-import { initApp } from '../../api/init';
-import { FigmaStore } from '../../api/store/store';
-import * as Tokens from '../../api/tokens';
+import * as Components from '../api/components';
+import { initApp } from '../api/init';
+import { FigmaStore } from '../api/store/store';
+import * as Tokens from '../api/tokens';
 import { answer, GenericPostBrokerType, PostBrokerType } from './apiBroker';
 import type {
   BordersUIMessages,

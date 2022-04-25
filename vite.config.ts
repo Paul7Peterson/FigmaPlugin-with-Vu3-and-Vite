@@ -39,7 +39,10 @@ export default defineConfig({
       input: {
         code: path.resolve(__dirname, 'api', 'index.ts'),
         html: path.resolve(__dirname, 'src', 'ui.html'),
-      }
+      },
+      external: [
+        path.resolve(__dirname, 'communication')
+      ]
     },
   },
   plugins: [
@@ -53,7 +56,7 @@ export default defineConfig({
       '~': path.resolve(__dirname, 'src'),
       '~api': path.resolve(__dirname, 'api'),
       '~shared': path.resolve(__dirname, 'src', 'shared'),
-      '~comm': path.resolve(__dirname, 'src', 'communication'),
+      '~comm': path.resolve(__dirname, 'communication'),
     },
   },
   define: {

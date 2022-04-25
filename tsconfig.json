@@ -52,7 +52,7 @@
         "src/shared/*"
       ],
       "~comm/*": [
-        "src/communication/*"
+        "communication/*"
       ]
     },
   },
