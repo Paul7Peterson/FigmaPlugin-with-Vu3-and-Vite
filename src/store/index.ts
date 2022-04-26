@@ -8,4 +8,4 @@ export * from './fontStyles.store';
 export * from './grids.store';
 export * from './gutters.store';
 export * from './sizes.store';
-export * from './zeplin.store';
+

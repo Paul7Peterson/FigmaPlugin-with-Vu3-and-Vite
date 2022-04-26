@@ -5,9 +5,8 @@ import type {
 import { Broker } from '~comm/ui.broker';
 import { hexToRgb } from './colors.store.helpers';
 import { ItemError } from './store.types';
-import { useZeplinStore } from './zeplin.store';
 
-type ModifiedSolidColor = SolidColor & { isInZeplin: boolean; };
+type ModifiedSolidColor = SolidColor;
 
 /** */
 export const useColorsStore = defineStore('colors', {
@@ -27,15 +26,9 @@ export const useColorsStore = defineStore('colors', {
   },
   actions: {
     async fetchColorStyles (): Promise<void> {
-      const zeplinColors = useZeplinStore().colors;
       const colors = await Broker.listSolidColors();
       const colorsObject = colors.reduce((t, color) => {
-        const zeplinColor = zeplinColors[`${color.colorName}-${color.colorShadow}`.toLowerCase()];
-
-        if (!zeplinColor) color.errors.push('The color is not in Zeplin.');
-        else if (zeplinColor === color.colorSpaces.HEX) color.errors.push('The color in Zeplin is different.');
-
-        const convertedColor: ModifiedSolidColor = { ...color, isInZeplin: !!zeplinColor };
+        const convertedColor: ModifiedSolidColor = color;
 
         if (!t[color.colorName]) t[color.colorName] = [convertedColor];
         else t[color.colorName].push(convertedColor);

@@ -5,7 +5,6 @@ import DebugView from '../views/Debug.vue';
 import HomeView from '../views/Home.vue';
 import SemanticView from '../views/Semantic.vue';
 import TokensView from '../views/Tokens.vue';
-import ZeplinView from '../views/Zeplin.vue';
 
 
 const router = createRouter({
@@ -34,11 +33,6 @@ const router = createRouter({
     {
       path: '/components/:id',
       component: ComponentDetailView
-    },
-    {
-      path: '/zeplin',
-      name: 'Zeplin',
-      component: ZeplinView
     },
     {
       path: '/debug',

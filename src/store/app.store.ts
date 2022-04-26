@@ -2,11 +2,15 @@ import { defineStore } from 'pinia';
 import { DocumentInfo } from '~comm/appData.types';
 import { Broker } from '~comm/ui.broker';
 import {
-  useBordersStore, useBoxShadowsStore, useColorsStore,
-  useComponentsStore, useFontStylesStore, useGridsStore, useGuttersStore, useSizesStore, useZeplinStore
+  useBordersStore,
+  useBoxShadowsStore,
+  useColorsStore,
+  useComponentsStore,
+  useFontStylesStore,
+  useGridsStore,
+  useGuttersStore,
+  useSizesStore
 } from '.';
-
-
 
 /** */
 export const useAppStore = defineStore('app', {
@@ -36,8 +40,6 @@ export const useAppStore = defineStore('app', {
         const { user, document } = await Broker.initApp();
         this.user = user;
         this.documentInfo = document;
-
-        await useZeplinStore().fetchZeplinData();
 
         await Promise.all([
           useSizesStore().fetchRootSizes(),
