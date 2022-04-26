@@ -2,7 +2,7 @@
 import { Broker } from '~comm/ui.broker';
 // import { UI } from '~helpers';
 
-const MIN_WIDTH = 500
+const MIN_WIDTH = 520
 const MIN_HEIGHT = 600
 
 const corner = $ref(null as SVGElement | null)

@@ -20,11 +20,10 @@ export const useZeplinStore = defineStore('zeplin', {
     async fetchZeplinData (): Promise<void> {
       const { colors, spacing, textStyles } = await getDesignTokens();
       this.colors = Object.entries(colors).reduce((t, [name, { value }]) => {
-        const [from, to] = [value.indexOf('(') + 1, value.length - 2];
+        const [from, to] = [value.indexOf('(') + 1, value.length - 1];
         const HEX = '#' + value.substring(from, to).split(',')
-          .map((x) => parseInt(x).toString(16))
+          .map((x) => parseInt(x).toString(16).padStart(2, '0'))
           .join('');
-
         t[name] = HEX;
         return t;
       }, {} as Record<string, string>);

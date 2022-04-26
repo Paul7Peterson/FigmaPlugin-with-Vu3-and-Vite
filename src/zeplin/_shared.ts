@@ -17,7 +17,7 @@ export function ZEPLIN<T, U = null> (method: HTTPMethod, url: string, body?: U):
     headers: FETCH_HEADERS,
   };
   if (method !== 'GET' && body) {
-    options.body = JSON.stringify(body || {});
+    options.body = JSON.stringify(body);
     // @ts-ignore
     options.headers['Content-Type'] = 'application/json';
   }
