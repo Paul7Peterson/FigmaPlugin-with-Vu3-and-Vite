@@ -54,7 +54,9 @@ export default defineConfig({
     vue({
       reactivityTransform: true,
     }),
-    svgLoader(),
+    svgLoader({
+      defaultImport: 'component'
+    }),
     viteSingleFile(),
   ],
   resolve: {

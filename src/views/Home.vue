@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import ZeplinLogo from '~assets/zeplin.svg?component';
+import ZeplinLogo from '~assets/zeplin.svg';
 import { Broker } from '~comm/ui.broker';
 import { useAppStore } from '../store';
-
-
 
 const store = useAppStore()
 

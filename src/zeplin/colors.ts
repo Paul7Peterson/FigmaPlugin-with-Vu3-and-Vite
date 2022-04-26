@@ -16,7 +16,7 @@ export const ColorAPI = {
    * @link https://docs.zeplin.dev/reference/getstyleguidecolors
    */
   list: () => {
-    return ZEPLIN<Color[]>('GET', BASE_ROOT, null);
+    return ZEPLIN<Color[]>('GET', BASE_ROOT);
   },
   /**
    * @link https://docs.zeplin.dev/reference/createstyleguidecolor
