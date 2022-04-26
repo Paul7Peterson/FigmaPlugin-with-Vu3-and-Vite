@@ -10,7 +10,7 @@ const FETCH_HEADERS = {
   Authorization: `Bearer ${ENV.STORYBOOK_ZEPLIN_TOKEN}`
 };
 
-export function ZEPLIN<T, U = null> (method: HTTPMethod, url: string, body?: U): Promise<T> {
+export function ZEPLIN<T, U = null> (method: HTTPMethod, url: string, body: U): Promise<T> {
   return fetch(`${URL_ROOT}/${url}`, {
     method,
     headers: FETCH_HEADERS,
