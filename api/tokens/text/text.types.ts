@@ -18,6 +18,7 @@ export type ExtendedFontStyleCategory = FontStyleCategory | 'Other';
 
 /** */
 export interface FontStyle extends BaseToken {
+  ids: Partial<Record<RootSizeName, string>>;
   /** */
   fontSize: number;
   /** */

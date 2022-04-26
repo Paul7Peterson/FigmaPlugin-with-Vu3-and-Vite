@@ -1,5 +1,5 @@
-import { colorToPaint } from '../tokens';
-import { AutoLayoutDirection, AutoLayoutOptions, ResizingOptions, DirectionalAssign, NodeFill, DefaultColor } from './_shared.types';
+import { ColorAlpha, colorToPaint } from '../tokens';
+import { AutoLayoutDirection, AutoLayoutOptions, DefaultColor, DirectionalAssign, NodeFill, ResizingOptions } from './_shared.types';
 
 type AxisMode =
   | 'primaryAxisSizingMode'
@@ -70,9 +70,13 @@ export function assignBorderRadius (node: FigmaNode, cornerRadius: DirectionalAs
   }
 }
 
-export function assignFills (node: MinimalFillsMixin, fills: NodeFill[]) {
-  node.fills = fills.map((c) => {
-    if (typeof c === 'object') return colorToPaint(c.color);
-    return DefaultColor[c];
-  });
+export function assignFills (node: MinimalFillsMixin, fill: { id: string; }): void;
+export function assignFills (node: MinimalFillsMixin, fill: { color: ColorAlpha; }[] | DefaultColor[]): void;
+export function assignFills (node: MinimalFillsMixin, fill: NodeFill): void {
+  if (Array.isArray(fill)) {
+    node.fills = fill.map((c) => typeof c === 'string'
+      ? DefaultColor[c] : colorToPaint(c.color));
+  } else {
+    node.fillStyleId = fill.id;
+  }
 }

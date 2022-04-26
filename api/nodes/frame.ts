@@ -9,7 +9,7 @@ export interface FrameOptions {
   };
   autoLayout: AutoLayoutOptions;
   resizing: ResizingOptions;
-  fills: NodeFill[];
+  fills: NodeFill;
 };
 
 export class Frame extends BaseNode<FrameNode> {
@@ -36,7 +36,7 @@ export class Frame extends BaseNode<FrameNode> {
     if (options.props) this.setProps(options.props);
     if (options.autoLayout) this.setAutoLayout(options.autoLayout);
     if (options.resizing) this.setResizing(options.resizing, options.autoLayout?.direction);
-    if (options.fills) assignFills(this._node, options.fills);
+    if (options.fills) assignFills(this._node, options.fills as any);
     return this;
   }
 

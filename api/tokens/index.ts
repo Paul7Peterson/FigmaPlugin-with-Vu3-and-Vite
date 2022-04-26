@@ -3,6 +3,8 @@ import { FigmaStore } from '../store';
 import { documentColors } from './color/color.docs';
 import { documentBoxShadows } from './effect/effect.docs';
 import { documentGutters, documentRootSizes } from './space/space.docs';
+import { listFontStyles } from './text';
+import { documentFontStyles } from './text/text.docs';
 
 
 export async function writeDocs () {
@@ -17,6 +19,8 @@ export async function writeDocs () {
       .then((solidColors) => documentColors(solidColors)),
     listBoxShadows()
       .then((boxShadows) => documentBoxShadows(boxShadows)),
+    listFontStyles()
+      .then((fonStyles) => documentFontStyles(fonStyles, sizes))
   ]);
 };
 

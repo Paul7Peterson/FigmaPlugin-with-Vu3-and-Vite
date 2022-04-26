@@ -5,7 +5,7 @@ import { Store, StoreKey } from './store.api';
 
 const LOCAL_STORAGE_NAME = 'Storage';
 const FONT: FontRef = { family: 'Consolas', style: 'Regular' };
-const TEXT_STYLE: TextOptions = { font: { ...FONT, size: 12 }, fills: 'White' };
+const TEXT_STYLE: TextOptions = { font: { ...FONT, size: 12 }, fills: ['White'] };
 
 /** */
 export class FigmaStore {

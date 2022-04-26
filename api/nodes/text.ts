@@ -1,6 +1,6 @@
 import { BaseNode } from './base';
 import { assignFills } from './_shared';
-import { FontFamily, FontStyle, NodeFill, VerticalPosition, HorizontalPosition } from './_shared.types';
+import { FontFamily, FontStyle, HorizontalPosition, NodeFill, VerticalPosition } from './_shared.types';
 
 export interface TextOptions {
   fills: NodeFill;
@@ -31,7 +31,7 @@ export class Text extends BaseNode<TextNode> {
 
   modify (options: Partial<TextOptions>): Text {
     if (options.font) this.setFont(options.font);
-    if (options.fills) assignFills(this._node, [options.fills]);
+    if (options.fills) assignFills(this._node, options.fills as any);
     return this;
   }
 

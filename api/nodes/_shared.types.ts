@@ -27,7 +27,10 @@ export interface NodeSize {
   height: number;
 }
 
-export type NodeFill = { color: ColorAlpha; } | DefaultColor;
+export type NodeFill =
+  | { color: ColorAlpha; }[]
+  | DefaultColor[]
+  | { id: string; };
 
 export const DefaultColor = {
   Black: colorToPaint({ r: 0, g: 0, b: 0 }),

@@ -1,10 +1,10 @@
-import { parseBaseToken } from '../_shared';
-import { FontStyle, ExtendedFontStyleCategory, FontStyleCategory } from './text.types';
-import { RootSize, RootSizeName } from '../space/space.types';
-import { parseLineHeight, parseTextDecoration, parseLetterSpacing } from './text.helpers';
 import { listRootSizes } from '../space/space.rootSizes';
+import { RootSize, RootSizeName } from '../space/space.types';
+import { parseBaseToken } from '../_shared';
+import { parseLetterSpacing, parseLineHeight, parseTextDecoration } from './text.helpers';
+import { ExtendedFontStyleCategory, FontStyle, FontStyleCategory } from './text.types';
 
-type ExtendedTextStyle = Omit<FontStyle & { size: RootSizeName; }, 'category' | 'sizes'>;
+type ExtendedTextStyle = Omit<FontStyle & { size: RootSizeName; }, 'category' | 'sizes' | 'ids'>;
 
 /** */
 export async function listFontStyles (): Promise<FontStyle[]> {
@@ -93,10 +93,17 @@ function parseFontStyle (category: ExtendedFontStyleCategory, texts: ExtendedTex
     if (!sizes.includes(s)) errors.push(`Missing "${s}" size.`);
   });
 
-  const text = texts[0];
+  let text = texts.find((t) => t.size === RootSizeName.Medium);
+  if (!text) {
+    errors.push('A "Medium" size in compulsory');
+    text = texts[0];
+  }
+  const ids = texts.reduce((t, text) => ({ ...t, [text.size]: text.id }),
+    {} as Partial<Record<RootSizeName, string>>);
 
   return {
     ...text,
+    ids,
     category,
     sizes,
     errors: [...errors, ...texts.flatMap((t) => t.errors)],

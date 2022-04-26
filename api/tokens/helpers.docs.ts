@@ -153,7 +153,7 @@ function createHeaderFromComponent (table: Frame, component: ComponentNode, prop
           style: 'Medium',
           justify: 'center',
         },
-        fills: 'White'
+        fills: ['White']
       });
       const parsedName = name.substring(1);
       if (fieldsToHide?.includes(parsedName)) text.visible = false;
