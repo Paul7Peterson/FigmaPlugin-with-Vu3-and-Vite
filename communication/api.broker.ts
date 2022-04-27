@@ -2,12 +2,14 @@ import * as Components from '~api/components';
 import { initApp } from '~api/init';
 import { FigmaStore } from '~api/store/store';
 import * as Tokens from '~api/tokens';
+import { FrameAPI } from '../api/nodes/frame.mods';
 import { answer, GenericPostBrokerType, PostBrokerType } from './api';
 import type {
   BordersUIMessages,
   BoxShadowsUIMessages,
   ColorsUIMessages,
   ComponentsUIMessages,
+  EditorUIMessages,
   FontsUIMessages,
   GridsUIMessages,
   GuttersUIMessages,
@@ -97,6 +99,17 @@ const ComponentsPostBroker: GenericPostBrokerType<ComponentsUIMessages> = {
   },
 };
 
+const EditorPostBroker: GenericPostBrokerType<EditorUIMessages> = {
+  modifyGap: async (msg) => {
+    FrameAPI(msg.payload.nodeId).modifyGap(msg.payload.gap);
+    return answer(msg, null);
+  },
+  modifyPadding: async (msg) => {
+    FrameAPI(msg.payload.nodeId).modifyPadding(msg.payload.padding);
+    return answer(msg, null);
+  },
+};
+
 /** */
 export const PostBroker: PostBrokerType = {
   ...RootSizesPostBroker,
@@ -107,6 +120,7 @@ export const PostBroker: PostBrokerType = {
   ...BordersPostBroker,
   ...GridsPostBroker,
   ...ComponentsPostBroker,
+  ...EditorPostBroker,
   initApp: async (msg) => {
     return answer(msg, await initApp());
   },

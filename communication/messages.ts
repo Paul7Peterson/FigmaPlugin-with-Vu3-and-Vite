@@ -7,6 +7,7 @@ import type {
 import { AppData } from './appData.types';
 
 type VoidFunction = (arg: null) => null;
+type NodeId = { nodeId: string; };
 
 export type RootSizesUIMessages = {
   listRootSizes: (args: null) => RootSize[];
@@ -50,6 +51,11 @@ export type ComponentsUIMessages = {
   listComponents: (args: null) => FigmaComponent[];
 };
 
+export type EditorUIMessages = {
+  modifyGap: (args: NodeId & { gap: number; }) => null;
+  modifyPadding: (args: NodeId & { padding: [number, number, number, number]; }) => null;
+};
+
 export type UIMessagePayload =
   & RootSizesUIMessages
   & GuttersUIMessages
@@ -59,6 +65,7 @@ export type UIMessagePayload =
   & BordersUIMessages
   & GridsUIMessages
   & ComponentsUIMessages
+  & EditorUIMessages
   & {
     initApp: (arg: null) => AppData;
     resize: (args: { width: number, height: number; }) => null;

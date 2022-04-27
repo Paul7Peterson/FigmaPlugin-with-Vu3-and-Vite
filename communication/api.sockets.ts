@@ -1,3 +1,4 @@
+import { NodeInfo } from '~api/nodes/_shared.types';
 import { sendSocket } from './api';
 import { APISocketMessage } from './sockets';
 
@@ -6,5 +7,5 @@ type APISocketsType = {
 };
 
 export const APISockets: APISocketsType = {
-  selectedNode: (node: SceneNode) => sendSocket('selectedNode', node),
+  selectedNode: (node: NodeInfo) => sendSocket('selectedNode', node),
 };

@@ -85,7 +85,7 @@ export async function documentInTable<T extends object, S extends string> (
 
   values.forEach((value) => {
     const instance = component.createInstance();
-    const instanceFrame = Frame.fromComponentInstance(instance);
+    const instanceFrame = Frame.fromComponent(instance);
     const propsToDoc = docs(value);
 
     const props = Object.keys(propsToDoc).map((k) => `#${k}`);
@@ -133,7 +133,7 @@ function createHeaderFromComponent (table: Frame, component: ComponentNode, prop
   })
     .setParent(table);
 
-  const header = Frame.fromComponentInstance(component.createInstance())
+  const header = Frame.fromComponent(component.createInstance())
     .modify({
       resizing: {
         width: 'fill container',

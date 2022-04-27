@@ -39,8 +39,8 @@
       "~comm/*": [
         "communication/*"
       ],
-      "~assets/*": [
-        "assets/*"
+      "~assets": [
+        "assets/index"
       ]
     },
   },

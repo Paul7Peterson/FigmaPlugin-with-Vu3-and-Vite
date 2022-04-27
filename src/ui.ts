@@ -19,4 +19,5 @@ createApp(App)
   .component('Spinner', Component.Spinner)
   .component('Table', Component.Table)
   .component('TextInput', Component.TextInput)
+  .component('NumberInput', Component.NumberInput)
   .mount('#app');

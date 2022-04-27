@@ -61,3 +61,11 @@ export type FontRef = {
   family: FontFamily;
   style: FontStyle;
 };
+
+export interface NodeInfo {
+  id: string;
+  type: SceneNode['type'];
+  name: string;
+  gap: number | null;
+  padding: Record<'top' | 'right' | 'bottom' | 'left', number> | null;
+}

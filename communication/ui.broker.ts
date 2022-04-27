@@ -3,6 +3,7 @@ import {
   BoxShadowsUIMessages,
   ColorsUIMessages,
   ComponentsUIMessages,
+  EditorUIMessages,
   FontsUIMessages,
   GridsUIMessages,
   GuttersUIMessages,
@@ -55,6 +56,10 @@ const ComponentsBroker: BrokerGenericType<ComponentsUIMessages> = {
   listComponents: () => registerCall('listComponents', null),
 };
 
+const EditorBroker: BrokerGenericType<EditorUIMessages> = {
+  modifyGap: (payload) => registerCall('modifyGap', payload),
+  modifyPadding: (payload) => registerCall('modifyPadding', payload),
+};
 
 export const Broker: BrokerGenericType<UIMessagePayload> = {
   ...RootSizesBroker,
@@ -65,6 +70,7 @@ export const Broker: BrokerGenericType<UIMessagePayload> = {
   ...BordersBroker,
   ...GridsBroker,
   ...ComponentsBroker,
+  ...EditorBroker,
   initApp: () => registerCall('initApp', null),
   resize: (payload) => registerCall('resize', payload),
   updateDocumentation: () => registerCall('updateDocumentation', null),

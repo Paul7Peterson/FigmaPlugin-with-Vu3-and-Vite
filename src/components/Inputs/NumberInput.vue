@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import capitalize from 'just-capitalize'
+import capitalize from 'just-capitalize';
 
 interface Props {
   /** */
@@ -8,6 +8,8 @@ interface Props {
   label: string
   /** */
   locked?: boolean;
+  min?: number; 
+  max?: number; 
 }
 
 withDefaults(defineProps<Props>(), {
@@ -30,6 +32,8 @@ function onInput (e: Event) {
       type="number"
       :name="label"
       :value="modelValue"
+      :min="min"
+      :max="max"
       @input="onInput"
     />
   </label>

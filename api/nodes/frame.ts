@@ -28,7 +28,7 @@ export class Frame extends BaseNode<FrameNode> {
     return new Frame(frame);
   }
 
-  static fromComponentInstance (instance: InstanceNode): Frame {
+  static fromComponent (instance: InstanceNode | ComponentNode): Frame {
     return new Frame(instance as unknown as FrameNode);
   }
 

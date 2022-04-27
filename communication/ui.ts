@@ -17,12 +17,15 @@ type FigmaMessage = {
   pluginId: string;
 };
 
+type PluginMessage = AnyUIMessage | ErrorMessage | GenericSocket;
+
 const REGISTER = new Map<string, { resolve: VoidFunc; reject: VoidFunc; }>();
 
 self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
-  const pluginMessage: AnyUIMessage | ErrorMessage | GenericSocket = JSON.parse(data.pluginMessage);
+  const pluginMessage: PluginMessage = JSON.parse(data.pluginMessage);
 
-  if ('isSocket' in pluginMessage) return SocketHandler(pluginMessage);
+  if ('isSocket' in pluginMessage)
+    return SocketHandler(pluginMessage);
 
   const { id, type, payload } = pluginMessage;
   const result = REGISTER.get(id);
