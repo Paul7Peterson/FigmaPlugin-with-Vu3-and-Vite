@@ -2,6 +2,7 @@ import { createMemoryHistory, createRouter } from 'vue-router';
 import ComponentDetailView from '../views/ComponentDetail.vue';
 import ComponentsView from '../views/Components.vue';
 import DebugView from '../views/Debug.vue';
+import EditorView from '../views/Editor.vue';
 import HomeView from '../views/Home.vue';
 import SemanticView from '../views/Semantic.vue';
 import TokensView from '../views/Tokens.vue';
@@ -33,6 +34,11 @@ const router = createRouter({
     {
       path: '/components/:id',
       component: ComponentDetailView
+    },
+    {
+      path: '/editor',
+      name: 'Editor',
+      component: EditorView
     },
     {
       path: '/debug',

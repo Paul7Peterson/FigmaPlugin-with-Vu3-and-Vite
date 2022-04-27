@@ -36,12 +36,6 @@
       "~api/*": [
         "api/*"
       ],
-      "~helpers": [
-        "helpers/index.ts"
-      ],
-      "~helpers/*": [
-        "helpers/*"
-      ],
       "~comm/*": [
         "communication/*"
       ],

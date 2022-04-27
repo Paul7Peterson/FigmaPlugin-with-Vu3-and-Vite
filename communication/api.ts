@@ -1,10 +1,10 @@
 import { UIMessagePayload } from './messages';
 import type {
-  UIAnswer,
   GenericMessageCollection,
   GenericUIMessage,
-  MessageInfo,
+  MessageInfo, UIAnswer
 } from './messages.types';
+import { APISocketMessage } from './sockets';
 
 export type GenericPostBrokerType<T extends GenericMessageCollection> = {
   [K in keyof T]: ((msg: GenericUIMessage<T, K>) => Promise<boolean>)
@@ -17,5 +17,13 @@ export function answer<T extends keyof UIMessagePayload> (
   payload: UIAnswer<T>['payload']
 ): Promise<boolean> {
   figma.ui.postMessage(JSON.stringify({ type, id, payload }));
+  return Promise.resolve(true);
+}
+
+export function sendSocket<T extends keyof APISocketMessage> (
+  type: T,
+  payload: APISocketMessage[T]
+): Promise<boolean> {
+  figma.ui.postMessage(JSON.stringify({ type, payload, isSocket: true }));
   return Promise.resolve(true);
 }

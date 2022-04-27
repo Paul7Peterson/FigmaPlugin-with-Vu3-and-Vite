@@ -14,8 +14,6 @@ import type {
   RootSizesUIMessages
 } from './messages';
 
-
-
 const RootSizesPostBroker: GenericPostBrokerType<RootSizesUIMessages> = {
   listRootSizes: async (msg) => {
     return answer(msg, await Tokens.listRootSizes());

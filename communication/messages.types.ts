@@ -1,4 +1,5 @@
 import { UIMessagePayload } from './messages';
+import { APISocketMessage } from './sockets';
 
 export type GenericMessageCollection = Record<string, (arg: any) => any>;
 
@@ -38,4 +39,10 @@ export type BrokerGenericType<T extends GenericMessageCollection> = {
   [K in keyof T]: Parameters<T[K]>[0] extends null
   ? (() => Promise<ReturnType<T[K]>>)
   : ((arg: Parameters<T[K]>[0]) => Promise<ReturnType<T[K]>>)
+};
+
+export type SocketMessage<T extends keyof APISocketMessage> = {
+  type: T;
+  isSocket: true;
+  payload: APISocketMessage[T];
 };

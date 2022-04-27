@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { useAppStore } from './store';
+import { useAppStore, useEditorStore } from './store';
 
-const store = useAppStore()
+const appStore = useAppStore()
+const editorStore = useEditorStore()
 
-const allowComponentActions = $computed(() => store.allowComponentActions)
+const selectedNode = $computed(() => editorStore.selectedNode)
+const allowComponentActions = $computed(() => appStore.allowComponentActions)
 </script>
 
 <template>
@@ -16,11 +18,15 @@ const allowComponentActions = $computed(() => store.allowComponentActions)
     >Tokens</router-link>
     <router-link 
       to="/semantic"
-    >Semantic tokens</router-link>
+    >Semantics</router-link>
     <router-link 
       v-if="allowComponentActions"
       to="/components"
     >Components</router-link>
+    <router-link 
+      v-if="selectedNode"
+      to="/editor"
+    >Editor</router-link>
     <router-link 
       to="/debug"
     >Debug</router-link>

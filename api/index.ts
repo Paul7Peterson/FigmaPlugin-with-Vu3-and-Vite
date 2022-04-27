@@ -1,4 +1,5 @@
 import { PostBroker } from '~comm/api.broker';
+import { APISockets } from '~comm/api.sockets';
 import { AnyUIMessage } from '~comm/messages.types';
 import { UI } from './config';
 
@@ -26,7 +27,11 @@ figma.ui.onmessage = (message: string) => {
 };
 
 figma.on('selectionchange', () => {
-  console.log('🔵 Select:', figma.currentPage.selection);
+  if (figma.currentPage.selection.length === 1) {
+    const selection = figma.currentPage.selection[0];
+    console.log('🔵 Select:', selection);
+    APISockets.selectedNode(selection);
+  }
 });
 
 figma.on('currentpagechange', () => {

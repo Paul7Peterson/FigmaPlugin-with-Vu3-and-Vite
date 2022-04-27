@@ -1,22 +1,29 @@
-import type {
-  ErrorMessage,
-  AnyUIMessage,
-} from './messages.types';
 import { v4 as uuidv4 } from 'uuid';
+import { SocketHandler } from '../src/sockets';
 import { UIMessagePayload } from './messages';
+import type {
+  AnyUIMessage,
+  ErrorMessage,
+  SocketMessage
+} from './messages.types';
+import { APISocketMessage } from './sockets';
 
 type VoidFunc = (...args: any[]) => void;
 
-/** */
-const REGISTER = new Map<string, { resolve: VoidFunc; reject: VoidFunc; }>();
+type GenericSocket = SocketMessage<keyof APISocketMessage>;
 
 type FigmaMessage = {
   pluginMessage: string,
   pluginId: string;
 };
 
+const REGISTER = new Map<string, { resolve: VoidFunc; reject: VoidFunc; }>();
+
 self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
-  const pluginMessage: AnyUIMessage | ErrorMessage = JSON.parse(data.pluginMessage);
+  const pluginMessage: AnyUIMessage | ErrorMessage | GenericSocket = JSON.parse(data.pluginMessage);
+
+  if ('isSocket' in pluginMessage) return SocketHandler(pluginMessage);
+
   const { id, type, payload } = pluginMessage;
   const result = REGISTER.get(id);
   if (!result) throw new Error('No resolver');
