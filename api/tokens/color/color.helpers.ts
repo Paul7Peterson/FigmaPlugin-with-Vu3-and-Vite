@@ -1,13 +1,9 @@
 import { rgb } from 'color-convert';
-
 import {
-  ColorValues,
-  ColorName,
-  Color,
-  RGB,
-  SolidColor,
-  ColorAlpha
+  Color, ColorAlpha, ColorName, ColorValues, RGB,
+  SolidColor
 } from './color.types';
+
 
 function format (number: number): string {
   return number.toString().padStart(3);
@@ -32,8 +28,8 @@ export function fromRGB (color: ColorAlpha) {
       array: () => rgb.hex(RGB),
       text: () => {
         const result = rgb.hex(RGB);
-        const alpha = a ? a.toString(16).toUpperCase().padStart(2, '0') : '';
-        return `#${result}${alpha}`;
+        // const alpha = a ? a.toString(16).toUpperCase().padStart(2, '0') : '';
+        return `#${result}`;
       },
     },
     toHSL: {

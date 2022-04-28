@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
-
-import type { SolidColor } from "@api/tokens/index.types";
+import type { SolidColor } from "~api/tokens/index.types";
 import ColorDetails from "./Details.vue";
+
 
 interface Props {
   /** */
@@ -20,36 +20,23 @@ const data = reactive({
   isEditing: false,
 });
 
-const title = $computed(() => 
+const title = $computed(() =>
   Object.entries(props.color.colorSpaces)
-    .map(([k, v]) => `${k}: ${v};`).join('\n'))
+    .map(([k, v]) => `${k}: ${v};`).join('\n'));
 
 </script>
 
 <template>
-  <div 
-    class="color-token" 
-    :style="{ '--color': color.colorSpaces.HEX }"
-  >
-    <div 
-      class="color-token__slot" 
-      :title="title" 
-      @click="data.showModal = true"
-    >
+  <div class="color-token" :style="{ '--color': color.colorSpaces.HEX }">
+    <div class="color-token__slot" :title="title" @click="data.showModal = true">
       <span class="color-token__sample"></span>
-      <span
-        class="color-token__label truncate"
-        :title="color.alternativeText || `${color.colorName} - ${color.colorShadow}`"
-      >
+      <span class="color-token__label truncate"
+        :title="color.alternativeText || `${color.colorName} - ${color.colorShadow}`">
         {{ color.alternativeText || color.colorShadow }}
-        <ErrorsBadge :errors="color.errors"/>
+        <ErrorsBadge :errors="color.errors" />
       </span>
     </div>
-    <ColorDetails 
-      v-model="data.showModal" 
-      :color="color" 
-      @rerender="$emit('rerender')" 
-    />
+    <ColorDetails v-model="data.showModal" :color="color" @rerender="$emit('rerender')" />
   </div>
 </template>
 
