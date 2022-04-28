@@ -1,9 +1,10 @@
+import { uuid } from '../../helper';
 import { FigmaStore } from '../../store';
 import { deleteFromArray, getNextOrPrevious, modifyInArray } from './space.helpers';
 import {
   RootSize,
   RootSizeName,
-  rootSizeScale,
+  rootSizeScale
 } from './space.types';
 
 export async function listRootSizes (): Promise<RootSize[]> {
@@ -20,12 +21,14 @@ export async function createRootSize (): Promise<RootSize> {
 
   const size: RootSize = sizes.length
     ? {
+      id: uuid(),
       ...getAlternateValue(rootSizeScale, sizes, 2),
       errors: [],
     }
     : {
-      value: 14,
+      id: uuid(),
       name: RootSizeName.Medium,
+      value: 14,
       errors: []
     };
 

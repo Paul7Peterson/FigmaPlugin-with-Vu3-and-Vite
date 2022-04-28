@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 interface Props {
   /** */
-  modelValue: string;
+  modelValue: number;
   /** */
   label: string;
   /** */
-  options: { text: string, value: string }[]
+  options: { text: string, value: number }[]
   /** */
   locked?: boolean 
   /** */
-  lockedOptions?: string[]
+  lockedOptions?: number[]
 }
 
 withDefaults(defineProps<Props>(), {
@@ -18,12 +18,12 @@ withDefaults(defineProps<Props>(), {
 })
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', modelValue: string): void
+  (e: 'update:modelValue', modelValue: number): void
 }>()
 
 function onChange (e: Event) {
   const value = (e.target as HTMLSelectElement).value
-  emits('update:modelValue', value)
+  emits('update:modelValue', parseInt(value))
 }
 </script>
 

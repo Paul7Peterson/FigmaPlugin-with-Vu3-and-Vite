@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuid } from 'uuid';
 import { SocketHandler } from '../src/sockets';
 import { UIMessagePayload } from './messages';
 import type {
@@ -35,7 +35,7 @@ self.addEventListener('message', ({ data }: MessageEvent<FigmaMessage>) => {
     console.error(pluginMessage.payload.message);
     result.reject(new Error(pluginMessage.payload.message));
   } else {
-    console.log('💌', type, payload);
+    console.log('💌', type, { payload });
     result.resolve(payload || null);
     REGISTER.delete(id);
   }
@@ -47,7 +47,7 @@ export function registerCall<T extends keyof UIMessagePayload> (
   payload: Parameters<UIMessagePayload[T]>[0]
 ): Promise<ReturnType<UIMessagePayload[T]>> {
   return new Promise((resolve, reject) => {
-    const id = uuidv4();
+    const id = (Math.random() * 1_000_000_000).toFixed(0);
     parent.postMessage({ pluginMessage: JSON.stringify({ payload, type, id }) }, '*');
     REGISTER.set(id, { resolve, reject });
   });

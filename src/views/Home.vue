@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import { Broker } from '~comm/ui.broker';
 import { useAppStore } from '../store';
+import ProjectConfig from './Home/ProjectConfig.vue';
 
 const store = useAppStore()
 
@@ -28,12 +29,11 @@ async function onDocument () {
 <template>
   <header id="home__welcome" v-if="user">
     <img class="avatar" :src="user.photoUrl || ''" :alt="singleName">
-    <h3>Hello, {{ singleName }}!</h3>
+    <h2>Hello, {{ singleName }}!</h2>
   </header>
-  <hr>
-  <section>
-    <ZeplinLogo :style="{ width: '50px'}"/>
-  </section>
+  <hr/>
+  <ProjectConfig/>
+  <hr/>
   <footer id="home__footer" class="button-group">
     <Button 
       :isLoading="data.isGeneratingDocs" 

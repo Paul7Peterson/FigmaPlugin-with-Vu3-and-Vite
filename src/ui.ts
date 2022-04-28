@@ -6,7 +6,7 @@ import App from './App.vue';
 import { router } from './router';
 import './ui.scss';
 
-createApp(App)
+const app = createApp(App)
   .use(router)
   .use(createPinia())
   .component('Button', Component.Button)
@@ -19,5 +19,6 @@ createApp(App)
   .component('Spinner', Component.Spinner)
   .component('Table', Component.Table)
   .component('TextInput', Component.TextInput)
-  .component('NumberInput', Component.NumberInput)
-  .mount('#app');
+  .component('NumberInput', Component.NumberInput);
+
+app.mount('#app');

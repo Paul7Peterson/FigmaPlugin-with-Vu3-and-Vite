@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { RootSize, RootSizeName } from '~api/tokens';
 import { DocumentInfo } from '~comm/appData.types';
 import { Broker } from '~comm/ui.broker';
 import {
@@ -21,6 +22,9 @@ export const useAppStore = defineStore('app', {
       user: null as User | null,
       documentInfo: {} as DocumentInfo,
       errorMessage: '',
+      projectConfig: {
+        projectSize: {} as RootSize
+      }
     };
   },
   getters: {
@@ -56,6 +60,16 @@ export const useAppStore = defineStore('app', {
           this.hasFatalError = true;
           this.errorMessage = (e as Error).name;
         });
+
+        const rootSize = useSizesStore().rootSizes
+          .find((rs) => rs.name === 'Small' || rs.name === 'Medium');
+        this.projectConfig.projectSize = rootSize || {
+          id: '',
+          value: 16,
+          name: 'Medium' as RootSizeName,
+          errors: []
+        };
+
       } catch (e) {
         this.hasFatalError = true;
         this.errorMessage = (e as Error).name;

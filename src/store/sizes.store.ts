@@ -41,6 +41,11 @@ export const useSizesStore = defineStore('sizes', {
       await Broker.deleteRootSize(size);
       await this.fetchRootSizes();
     },
+    findRootSize (id: string): ModifiedRootSize {
+      const rootSize = this.rootSizes.find((rs) => rs.id === id);
+      if (!rootSize) throw new Error('');
+      return rootSize;
+    }
   }
 });
 

@@ -15,6 +15,7 @@ export const rootSizeScale: RootSizeName[] = [
 ];
 
 export interface RootSize {
+  id: string;
   value: number;
   name: RootSizeName;
   errors: string[];
@@ -49,6 +50,7 @@ export const gutterScale: GutterName[] = [
 ];
 
 export interface Gutter {
+  id: string;
   name: GutterName;
   value: number;
   errors: string[];

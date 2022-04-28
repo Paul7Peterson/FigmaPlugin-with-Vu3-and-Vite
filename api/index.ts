@@ -41,4 +41,3 @@ figma.on('close', () => {
 // console.info(`
 //   PluginId: ${figma.pluginId} 
 // `);
-

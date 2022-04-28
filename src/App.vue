@@ -28,9 +28,7 @@ onBeforeMount(async() => await store.fetchStyles())
   <template v-if="!hasFatalError">
     <Nav/>
     <main id="app__main" v-if="isReady">
-      <KeepAlive>
-        <router-view></router-view>
-      </KeepAlive>
+      <router-view></router-view>
     </main>
     <main v-else id="app__loading">
       <Spinner/>

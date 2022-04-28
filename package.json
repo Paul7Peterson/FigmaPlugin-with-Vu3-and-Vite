@@ -4,10 +4,12 @@
   "description": "Your Figma Plugin",
   "main": "dist/code.js",
   "scripts": {
-    "dev": "vite build --watch",
+    "dev": "vite build --watch --mode development",
+    "debug": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "test": "vitest"
   },
+  "devtools": "./node_modules/.bin/vue-devtools",
   "author": "",
   "license": "",
   "devDependencies": {
@@ -40,7 +42,6 @@
     "chalk": "^4.1.2",
     "color-convert": "^2.0.1",
     "pinia": "^2.0.13",
-    "uuid": "^8.3.2",
     "vue": "^3.2.33",
     "vue-router": "^4.0.14"
   }

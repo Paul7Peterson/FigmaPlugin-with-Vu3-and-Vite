@@ -1,4 +1,7 @@
 import { Frame } from './frame';
+import { NAMESPACE } from './_shared';
+import { spaceToNumber } from './_shared.mods';
+import { Space } from './_shared.types';
 
 function getFrame (id: string): Frame {
   const node = figma.getNodeById(id);
@@ -14,13 +17,17 @@ export function FrameAPI (id: string) {
 
   return {
     /** */
-    modifyGap (gap: number) {
+    modifyGap (space: Space) {
+      const gap = spaceToNumber(space);
       frame.modify({ autoLayout: { gap } });
+      frame.node.setSharedPluginData(NAMESPACE, 'gap', gap.toString());
       return this;
     },
     /** */
-    modifyPadding (padding: [number, number, number, number]) {
+    modifyPadding (paddingSpace: [Space, Space, Space, Space]) {
+      const padding = paddingSpace.map((s) => spaceToNumber(s)) as [number, number, number, number];
       frame.modify({ autoLayout: { padding } });
+      frame.node.setSharedPluginData(NAMESPACE, 'padding', padding.toString());
       return this;
     }
   };

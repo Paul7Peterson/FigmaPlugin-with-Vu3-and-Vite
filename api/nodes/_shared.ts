@@ -1,6 +1,8 @@
 import { ColorAlpha, colorToPaint } from '../tokens';
 import { AutoLayoutDirection, AutoLayoutOptions, DefaultColor, DirectionalAssign, NodeFill, ResizingOptions } from './_shared.types';
 
+export const NAMESPACE = 'PohlCon';
+
 type AxisMode =
   | 'primaryAxisSizingMode'
   | 'counterAxisSizingMode';

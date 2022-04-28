@@ -1,3 +1,4 @@
+import { Gutter, RootSize } from '../tokens';
 import { colorToPaint } from '../tokens/color/color.helpers';
 import { ColorAlpha } from '../tokens/color/color.types';
 
@@ -69,3 +70,8 @@ export interface NodeInfo {
   gap: number | null;
   padding: Record<'top' | 'right' | 'bottom' | 'left', number> | null;
 }
+
+export type Space = {
+  rootSize: RootSize;
+  gutter: Gutter;
+};

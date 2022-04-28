@@ -19,7 +19,7 @@ export const useGuttersStore = defineStore('gutters', {
       return state.gutters
         .filter((n) => n.errors.length)
         .map((g) => ({ itemType: 'Gutter', itemName: g.name, errors: [] }));
-    }
+    },
   },
   actions: {
     async fetchGutters (): Promise<void> {
@@ -40,6 +40,11 @@ export const useGuttersStore = defineStore('gutters', {
       await Broker.deleteGutter(gutter);
       await this.fetchGutters();
     },
+    findGutter (id: string): ModifiedGutter {
+      const gutter = this.gutters.find((g) => g.id === id);
+      if (!gutter) throw new Error('');
+      return gutter;
+    }
   }
 });
 

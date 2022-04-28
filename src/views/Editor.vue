@@ -1,12 +1,17 @@
 <script lang="ts" setup>
 import { onBeforeMount, reactive, watch } from 'vue';
 import { NodeInfo } from '~api/nodes/_shared.types';
-import { useEditorStore } from '../store';
+import { Gutter } from '../../api/tokens';
+import NumberSelect from '../components/NumberSelect.vue';
+import { useAppStore, useEditorStore } from '../store';
 import NodeIcon from './Editor/NodeIcon.vue';
 
+const appStore = useAppStore()
 const store = useEditorStore()
 
 const selectedNode = $computed(() => store.selectedNode)
+const rootSize = $computed(() => appStore.projectConfig.projectSize)
+const appliedGutters = $computed(() => store.getAppliedGutters())
 
 const data = reactive({
   gap: null as number | null,
@@ -14,7 +19,11 @@ const data = reactive({
 })
 
 watch(() => [data.gap] , () => { 
-  if (typeof data.gap === 'number') store.editGap(data.gap) 
+  if (typeof data.gap === 'number') {
+    const gutter = getGutter(data.gap)
+    if (!gutter) return
+    store.editGap({ rootSize, gutter }) 
+  }
 })
 
 watch(() => [
@@ -24,10 +33,15 @@ watch(() => [
   data.padding?.left
   ] , () => { 
   if (data.padding) {
-    console.log('Hey');
-    
     const { top, right, bottom, left } = data.padding
-    store.editPadding([top, right, bottom, left]) 
+    const [pT, pR, pB, pL] = [getGutter(top), getGutter(right), getGutter(bottom), getGutter(left)] 
+    if (!(pT && pR && pB && pL)) return
+    store.editPadding([
+      { rootSize, gutter: pT },
+      { rootSize, gutter: pR },
+      { rootSize, gutter: pB },
+      { rootSize, gutter: pL },
+    ]) 
   }
 })
 
@@ -35,13 +49,23 @@ watch(() => [selectedNode], setValues)
 
 function setValues () {
   if (store.selectedNode) {
-    if (typeof store.selectedNode.gap === 'number') data.gap = store.selectedNode.gap;
-    if (store.selectedNode.padding) data.padding = store.selectedNode.padding
+    const { gap, padding } = store.selectedNode;
+    
+    data.gap = gap ?? null;
+    data.padding = padding
   }
 }
 
+function getGutter (value: number): Gutter | null {
+  const gutter = appliedGutters.find((g) => g.value === value)
+  if (!gutter) return null
+  return gutter
+}
+
 onBeforeMount(() => { 
-  setValues()
+  setValues();
+  console.log(appliedGutters);
+  
 })
 </script>
 
@@ -60,36 +84,38 @@ onBeforeMount(() => {
       >X</Button>
     </header>
     <main>
-      <NumberInput 
-        v-if="typeof data.gap === 'number'" 
+      <NumberSelect 
+        v-if="data.gap !== null"
         v-model="data.gap" 
-        :min="0"
+        :options="appliedGutters"
         label="gap"
       />
-      <NumberInput 
-        v-if="data.padding" 
-        v-model="data.padding.top"  
-        :min="0"
-        label="Padding top"
-      />
-      <NumberInput 
-        v-if="data.padding" 
-        v-model="data.padding.right" 
-        :min="0" 
-        label="Padding right"
-      />
-      <NumberInput 
-        v-if="data.padding" 
-        v-model="data.padding.bottom"  
-        :min="0"
-        label="Padding bottom"
-      />
-      <NumberInput 
-        v-if="data.padding" 
-        v-model="data.padding.left" 
-        :min="0" 
-        label="Padding left"
-      />
+      <template v-if="data.padding">
+        <NumberSelect 
+          v-model="data.padding.top"  
+          :locked="!data.padding" 
+          :options="appliedGutters"
+          label="Padding top"
+        />
+        <NumberSelect 
+          v-model="data.padding.right" 
+          :locked="!data.padding" 
+          :options="appliedGutters" 
+          label="Padding right"
+        />
+        <NumberSelect 
+          v-model="data.padding.bottom"  
+          :locked="!data.padding" 
+          :options="appliedGutters"
+          label="Padding bottom"
+        />
+        <NumberSelect 
+          v-model="data.padding.left"  
+          :locked="!data.padding" 
+          :options="appliedGutters"
+          label="Padding left"
+        />
+      </template>
     </main>
   </section>
 </template>
@@ -104,6 +130,7 @@ onBeforeMount(() => {
     }
     main {
       display: grid;
+      row-gap: 5px;
     }
   }
 </style>

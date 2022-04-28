@@ -6,7 +6,7 @@ interface Props {
   btnType?: 'primary' | 'info' | 'danger',
   /** */
   hollow?: boolean;
-  /** */
+  /** ... */
   isLoading?: boolean;
 }
 

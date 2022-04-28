@@ -4,6 +4,7 @@ import {
 import type {
   BorderStyle, BoxShadowStyle, Color, FontStyle, GridStyle, Gutter, RootSize, SolidColor, SolidColorInfo
 } from '~api/tokens/index.types';
+import { Space } from '../api/nodes/_shared.types';
 import { AppData } from './appData.types';
 
 type VoidFunction = (arg: null) => null;
@@ -52,8 +53,8 @@ export type ComponentsUIMessages = {
 };
 
 export type EditorUIMessages = {
-  modifyGap: (args: NodeId & { gap: number; }) => null;
-  modifyPadding: (args: NodeId & { padding: [number, number, number, number]; }) => null;
+  modifyGap: (args: NodeId & { gap: Space; }) => null;
+  modifyPadding: (args: NodeId & { padding: [Space, Space, Space, Space]; }) => null;
 };
 
 export type UIMessagePayload =
