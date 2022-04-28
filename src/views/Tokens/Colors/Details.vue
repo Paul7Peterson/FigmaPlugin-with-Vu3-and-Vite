@@ -53,6 +53,7 @@ async function onEdit () {
   }
   if (window.confirm('Are you sure?')) {
     await store.createOrModifyColor(data.newColor, props.color.id);
+    data.isEditing = false;
     onFinish();
   }
 }

@@ -1,19 +1,13 @@
 import { parseBaseToken } from '../_shared';
 import {
-  SolidColor,
-  ColorName,
-  ColorValues,
-  SolidColorInfo,
-  Color,
-  ColorNameExtended,
-} from './color.types';
-import {
-  getColorName,
+  colorToPaint, getColorName,
   getColorShadow,
   getColorSpaces,
-  paintToColor,
-  colorToPaint,
+  paintToColor
 } from './color.helpers';
+import {
+  Color, ColorName, ColorNameExtended, ColorValues, SolidColor, SolidColorInfo
+} from './color.types';
 
 /** */
 export async function listSolidColors (): Promise<SolidColor[]> {

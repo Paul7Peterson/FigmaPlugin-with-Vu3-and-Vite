@@ -17,7 +17,6 @@ defineEmits<{
 
 const data = reactive({
   showModal: false,
-  isEditing: false,
 });
 
 const title = $computed(() =>

@@ -52,6 +52,7 @@ export const useColorsStore = defineStore('colors', {
     },
     async deleteSolidColor ({ id }: SolidColor): Promise<void> {
       await Broker.deleteSolidColor({ id });
+      await this.fetchColorStyles();
     }
   }
 });
