@@ -35,6 +35,10 @@ export const useColorsStore = defineStore('colors', {
         else t[color.colorName].push(convertedColor);
         return t;
       }, {} as Record<ColorNameExtended, ModifiedSolidColor[]>);
+      // if a color group is deleted, we have to delete this dynamically created property explicitly from this.colors
+      Object.keys(this.colors).forEach((k) => {
+        if (!colorsObject[k as ColorNameExtended]) delete this.colors[k as ColorNameExtended];
+      });
       Object.keys(colorsObject).forEach((k) => {
         this.colors[k as ColorNameExtended] =
           [...colorsObject[k as ColorNameExtended]].sort((a, b) => a.colorShadow - b.colorShadow);

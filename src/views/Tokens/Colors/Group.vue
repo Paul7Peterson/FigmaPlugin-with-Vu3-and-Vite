@@ -6,6 +6,7 @@ import { useColorsStore } from "~ui/store";
 import { TokenSection } from "..";
 import NewColor from './New.vue';
 import ColorToken from './Token.vue';
+
 const store = useColorsStore();
 
 const colors: Record<ColorNameExtended, SolidColor[]> = $computed(() => store.colors);
@@ -33,7 +34,7 @@ async function onCreate () {
     </template>
     <section class="color-tokens">
       <Details v-for="(colorGroup, name) in colors" :key="name">
-        <template #summary>{{ name }}</template>
+        <template v-if="colorGroup" #summary>{{ name }}</template>
         <div class="color-tokens__list">
           <ColorToken v-for="(color, i) in colorGroup" :key="i" :color="color" />
           <NewColor v-model="data.setNew" v-if="newColor" :color="newColor" />

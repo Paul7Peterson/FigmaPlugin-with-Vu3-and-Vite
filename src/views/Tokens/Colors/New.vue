@@ -70,6 +70,10 @@ function onFinish () {
 <style lang="scss">
 $sample-size: 20px;
 
+.color-token {
+  --color: transparent;
+}
+
 #color-details__header {
   display: grid;
   grid-template-columns: max-content 1fr max-content;
