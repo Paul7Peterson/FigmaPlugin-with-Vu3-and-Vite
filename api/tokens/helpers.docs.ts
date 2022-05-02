@@ -1,7 +1,7 @@
 import { Frame, Text } from '../nodes';
 
-const TABLE_PREFIX = '🆔';
-const COMPONENT_PREFIX = '🟪';
+const TABLE_PREFIX = '.🆔';
+const COMPONENT_PREFIX = '.🟪';
 
 
 export enum Page {
