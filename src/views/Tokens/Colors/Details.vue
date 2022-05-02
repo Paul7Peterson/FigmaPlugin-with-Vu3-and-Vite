@@ -71,7 +71,7 @@ function onFinish () {
 </script>
 
 <template>
-  <Modal :modelValue="props.modelValue" @update:modelValue="$emit('update:modelValue', $event)">
+  <Modal :modelValue="props.modelValue" @update:modelValue="onCancel()">
     <template #header>
       <header id="color-details__header">
         <span class="color__sample" :style="{ '--color': colorPicked.colorSpaces.HEX }"></span>
@@ -134,5 +134,11 @@ code.color-id {
   width: $sample-size;
   height: $sample-size;
   border-radius: calc($sample-size / 2);
+}
+
+.color-picker {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 10px;
 }
 </style>

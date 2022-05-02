@@ -71,11 +71,5 @@ $sample-size: 20px;
     left: calc($sample-size - 6px);
     bottom: -2px;
   }
-
-  .color-picker {
-    width: 100%;
-    padding: 0;
-    margin-bottom: 10px;
-  }
 }
 </style>

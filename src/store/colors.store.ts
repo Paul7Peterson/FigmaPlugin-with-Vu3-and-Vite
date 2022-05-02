@@ -13,6 +13,7 @@ export const useColorsStore = defineStore('colors', {
   state: () => {
     return {
       colors: {} as Record<ColorNameExtended, ModifiedSolidColor[]>,
+      newColor: null as SolidColorInfo | null
     };
   },
   getters: {
@@ -41,6 +42,11 @@ export const useColorsStore = defineStore('colors', {
     },
     async getColorInfo (hexColor: string): Promise<SolidColorInfo> {
       return Broker.getColorInfo(hexToRgb(hexColor));
+    },
+    async setNewColor (hexColor: string | null): Promise<void> {
+      hexColor
+        ? this.newColor = await this.getColorInfo(hexColor)
+        : this.newColor = null;
     },
     async createOrModifyColor (hexColor: string, id?: string): Promise<SolidColor> {
       const color = hexToRgb(hexColor);
