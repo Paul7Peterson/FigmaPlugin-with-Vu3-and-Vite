@@ -95,8 +95,10 @@ function getColorNameAndShadowFromName (paint: PaintStyle): ValidatedOutput {
   const [name, shadow, ..._] = paint.name.split('/');
 
   if (!name) throw new Error('A solid color must have a name');
-  let colorName: ColorNameExtended = name as ColorName;
-  if (![...Object.keys(ColorValues), 'Grey'].includes(name)) {
+  // we trim the obtained name in case of naming a created color token in figma accidently holds spaces around the '/'
+  // figma apparently detects that by default and still groups this token correctly
+  let colorName: ColorNameExtended = name.trim() as ColorName;
+  if (![...Object.keys(ColorValues), 'Grey'].includes(name.trim())) {
     errors.push('A solid color must have valid color name');
     colorName = 'Other';
   }
