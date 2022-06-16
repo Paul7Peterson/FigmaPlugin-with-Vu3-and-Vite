@@ -28,7 +28,7 @@ export function fromRGB (color: ColorAlpha) {
       array: () => rgb.hex(RGB),
       text: () => {
         const result = rgb.hex(RGB);
-        // const alpha = a ? a.toString(16).toUpperCase().padStart(2, '0') : '';
+        // const alpha = a ? Math.round(a * 255).toString(16).toUpperCase().padStart(2, '0') : '';
         return `#${result}`;
       },
     },

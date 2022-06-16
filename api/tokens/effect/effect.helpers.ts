@@ -38,7 +38,8 @@ export function parseCSSBoxShadow (boxShadow: BoxShadowStyle): string {
 export function shadowToValue (s: Shadow) {
   const values = [s.x, s.y, s.blur, s.spread]
     .map((x) => format(x ? `${x.toFixed(1)}px` : 0)).join(' ');
-  return `${values} ${s.color.HEX}`;
+  const alphaHEX = Math.round(s.color.alpha * 255).toString(16).toUpperCase().padStart(2, '0')
+  return `${values} ${s.color.HEX}${alphaHEX}`;
 }
 
 function format (number: number | string): string {

@@ -1,11 +1,9 @@
+import { getColorSpaces, paintToColor } from '../color/color.helpers';
 import { parseBaseToken } from '../_shared';
 import {
-  BoxShadowStyle,
-  BorderStyle,
-  BoxShadowType,
+  BorderStyle, BoxShadowStyle, BoxShadowType,
   ExtendedBoxShadowType
 } from './effect.types';
-import { getColorSpaces, paintToColor } from '../color/color.helpers';
 
 /** */
 export async function listBoxShadows (): Promise<BoxShadowStyle[]> {
@@ -68,7 +66,7 @@ function assignEffects (boxShadow: BoxShadowStyle, effects: readonly Effect[]) {
           y: e.offset.y,
           spread: e.spread || 0,
           blendMode: e.blendMode,
-          color: getColorSpaces({ ...color, a: color.a || 255 })
+          color: getColorSpaces({ ...color, a:color.a || 255 })
         });
         break;
       default: throw new Error(`Unknown effect.`);
