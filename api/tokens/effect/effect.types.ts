@@ -1,11 +1,13 @@
+import { ColorSpaces, SolidColor } from '../color/color.types';
 import { BaseToken } from '../_shared';
-import { SolidColor, ColorSpaces } from '../color/color.types';
 
 export enum BoxShadowType {
   Elevation = 'Elevation',
   DieCut = 'Die cut',
   Boxed = 'Boxed',
   Setoff = 'Setoff',
+  Embossed = 'Embossed',
+  Debossed = 'Debossed'
 }
 
 export type ExtendedBoxShadowType = BoxShadowType | 'Other';
