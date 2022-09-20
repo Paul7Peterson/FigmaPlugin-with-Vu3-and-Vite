@@ -16,11 +16,23 @@ const rootFontSize = $computed(() => {
 
 const style: Record<string, any> = $computed(() => {
   const f = props.fontStyle
+  let fontStyle = 'not evaluated';
+  switch (f.fontWeight) {
+    case 300: fontStyle = 'light';
+      break;
+    case 500: fontStyle = 'medium';
+      break;
+    case 700: fontStyle = 'bold';
+      break;
+    default: fontStyle = 'regular';
+      break;
+  }
+
   const result = {
     'font-family': f.fontFamily,
     'font-weight': f.fontWeight,
-    'font-style': f.fontWeight,
-    'font-size': `${(f.fontSize / rootFontSize).toFixed(0)}rem`,
+    'font-style': fontStyle,
+    'font-size': `${(f.fontSize / rootFontSize).toFixed(1)}rem`,
     'text-decoration': f.textDecorationCSS,
     'line-height': f.lineHeightCSS,
     'letter-spacing': f.letterSpacingCSS,
@@ -29,7 +41,7 @@ const style: Record<string, any> = $computed(() => {
   return result
 })
 
-const title = $computed(() => 
+const title = $computed(() =>
   Object.entries(style)
     .map(([k, v]) => `${k}: ${v};`).join('\n'))
 const sampleText = 'Abc'
@@ -41,7 +53,7 @@ const sampleText = 'Abc'
       {{ fontStyle.name }}
       <ErrorsBadge :errors="fontStyle.errors"/>
     </label>
-    <div 
+    <div
       class="font-style-token__sample"
       :style="style"
       :title="title"

@@ -26,7 +26,7 @@ export interface FontStyle extends BaseToken {
   /** */
   isItalic: boolean;
   /** */
-  fontWeight: string | number;
+  fontWeight: number;
   /** */
   textDecoration: TextDecoration;
   /** */
@@ -51,4 +51,12 @@ export interface FontStyle extends BaseToken {
   sizes: RootSizeName[];
   /** */
   errors: string[];
+}
+
+/** */
+export enum FontWeights {
+  'light' = 300,
+  'regular' = 400,
+  'medium' = 500,
+  'bold' = 700
 }

@@ -2,7 +2,7 @@ import { listRootSizes } from '../space/space.rootSizes';
 import { RootSize, RootSizeName } from '../space/space.types';
 import { parseBaseToken } from '../_shared';
 import { parseLetterSpacing, parseLineHeight, parseTextDecoration } from './text.helpers';
-import { ExtendedFontStyleCategory, FontStyle, FontStyleCategory } from './text.types';
+import { ExtendedFontStyleCategory, FontStyle, FontStyleCategory, FontWeights } from './text.types';
 
 type ExtendedTextStyle = Omit<FontStyle & { size: RootSizeName; }, 'category' | 'sizes' | 'ids'>;
 
@@ -34,7 +34,9 @@ export async function listFontStyles (): Promise<FontStyle[]> {
 
         const lowerStyle = text.fontName.style.toLowerCase();
         const isItalic = lowerStyle.includes('italic');
-        const fontWeight = lowerStyle.replace('italic', '').trim();
+        const fontWeight = lowerStyle.replace('italic', '').trim() === ''
+          ? FontWeights['regular']
+          : FontWeights[lowerStyle.replace('italic', '').trim() as keyof typeof FontWeights];
 
         const extendedText: ExtendedTextStyle = {
           ...parseBaseToken(text),
